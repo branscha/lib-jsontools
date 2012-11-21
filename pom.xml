@@ -1,5 +1,7 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     
@@ -8,25 +10,14 @@
     <packaging>jar</packaging>
     <version>1.7-SNAPSHOT</version>
     <name>Java JSON Tools</name>
-    <url>http://jsontools.berlios.de</url>
+
     <description>
-        Java JSON Tools core library. It is independent of third party libraries.
+        Java JSON Tools library. 
         It is meant to minimize transitive dependencies.
         Applications of the JSON tools which relate to other libraries will
         be in separate optional pacakges.
     </description>
-    <licenses>
-        <license>
-            <name>GNU LESSER GENERAL PUBLIC LICENSE Version 2.1</name>
-            <url>http://www.gnu.org/licenses/lgpl.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-    <scm>
-        <url>http://svn.berlios.de/viewcvs/jsontools/</url>
-        <developerConnection>scm:svn:https://svn.berlios.de/svnroot/repos/jsontools/trunk/jsontools-core</developerConnection>
-        <connection>scm:svn:http://svn.berlios.de/jsontools/trunk/jsontools-core</connection>
-    </scm>
+   
     <developers>
         <developer>
             <name>Bruno Ranschaert</name>
@@ -42,6 +33,11 @@
             <email>itaylor@bat.berlios.de</email>            
         </developer>
     </developers>
+    
+     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -65,6 +61,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>antlr3-maven-plugin</artifactId>
+                <version>1.0</version>
                 <configuration>
                 </configuration>
                 <executions>
@@ -79,6 +76,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
                 <configuration>
                     <source>1.5</source>
                     <target>1.5</target>
