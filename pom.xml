@@ -11,12 +11,7 @@
     <version>2.0-SNAPSHOT</version>
     <name>Java JSON Tools</name>
 
-    <description>
-        Java JSON Tools library. 
-        It is meant to minimize transitive dependencies.
-        Applications of the JSON tools which relate to other libraries will
-        be in separate optional pacakges.
-    </description>
+    <description>Java JSON Tools library.</description>
    
     <developers>
         <developer>
@@ -78,8 +73,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
 

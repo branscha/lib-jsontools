@@ -135,7 +135,6 @@ NUMBER
 		)
 	;
 
-
 EXPONENT
 	:	('e') ('+'|'-')? INTEGER
 	;

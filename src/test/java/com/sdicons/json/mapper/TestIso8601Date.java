@@ -1,3 +1,8 @@
+/*******************************************************************************
+ * Copyright (c) 2006-2012 Bruno Ranschaert
+ * Released under the MIT License: http://opensource.org/licenses/MIT
+ * Library "jsontools"
+ ******************************************************************************/
 /*Dec 4, 2006 Danny
 */
 package com.sdicons.json.mapper;
