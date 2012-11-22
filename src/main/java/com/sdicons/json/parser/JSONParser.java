@@ -5,20 +5,24 @@
  ******************************************************************************/
 package com.sdicons.json.parser;
 
-import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.parser.impl.JsonAntlrLexer;
-import org.antlr.runtime.*;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONBoolean;
+import com.sdicons.json.model.JSONDecimal;
+import com.sdicons.json.model.JSONInteger;
+import com.sdicons.json.model.JSONNull;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
 
 /**
  * Reads JSON text and convert it into a Java model for further handling.
@@ -27,6 +31,7 @@ public class JSONParser
 {
 //    private com.sdicons.json.parser.impl.JsonAntlrParser parser;
     private String streamName = "[unknown]";
+    private StreamTokenizer st = null;
 
     /**
      * Construct a parser using a stream.
@@ -39,14 +44,9 @@ public class JSONParser
     public JSONParser(InputStream aStream, String aStreamName)
     throws JSONParserException
     {
-        try
-        {
-            initParser(new ANTLRInputStream(aStream), aStreamName);
-        }
-        catch(IOException e)
-        {
-            throw new JSONParserException(streamName, -1, -1, e.getMessage());
-        }
+        streamName = aStreamName;
+        st = new StreamTokenizer(new InputStreamReader(aStream));
+        st.commentChar('#');
     }
 
     /**
@@ -71,23 +71,9 @@ public class JSONParser
     public JSONParser(Reader aReader, String aStreamName)
     throws JSONParserException
     {
-        try
-        {
-            initParser(new ANTLRReaderStream(aReader), aStreamName);
-        }
-        catch(IOException e)
-        {
-            throw new JSONParserException(streamName, -1, -1, e.getMessage());
-        }
-    }
-
-    private void initParser(CharStream aCharStream, String aStreamName )
-    {
-        if(aStreamName != null) streamName = aStreamName;
-        final JsonAntlrLexer lLexer = new JsonAntlrLexer(aCharStream);
-        final CommonTokenStream lTokens = new CommonTokenStream();
-        lTokens.setTokenSource(lLexer);
-        parser = new com.sdicons.json.parser.impl.JsonAntlrParser(lTokens);
+        streamName = aStreamName;
+        st = new StreamTokenizer(aReader);
+        st.commentChar('#');
     }
 
     /**
@@ -112,11 +98,11 @@ public class JSONParser
     {
         try
         {
-            return parser.value(streamName).val;
+            return parseJson(st,  new StringBuilder());
         }
-        catch(RecognitionException e)
+        catch(Exception e)
         {
-            throw new JSONParserException(streamName, e.line, e.charPositionInLine, e.getMessage());
+            throw new JSONParserException(streamName, st.lineno(), 0, e.getMessage());
         }
     }
     
@@ -129,7 +115,6 @@ public class JSONParser
     private static final String JSON003 = "JSON003: Expected symbol '%s' but received token/symbol '%s'.\nContext: %s X <--ERROR";
 
     private static final String EOF = "EOF";
-    private static final String INDENT = "  ";
     private static final String NULL_LITERAL = "null";
     
     /**
@@ -162,7 +147,7 @@ public class JSONParser
 
     // The parsing workhorse.
     //
-    protected static Object parseJson(StreamTokenizer st, StringBuilder parsed) {
+    protected static JSONValue parseJson(StreamTokenizer st, StringBuilder parsed) {
         // This is the top-level of the JSON parser, it decides which kind of
         // JSON expression is next in the input stream. The general strategy
         // is to look at the first characters, make a decision about which
@@ -189,32 +174,41 @@ public class JSONParser
                 // Plain JSON Number.
                 //
                 parsed.append(st.nval);
-                return st.nval;
+                BigDecimal number = new BigDecimal(st.nval);
+                try
+                {
+                    BigInteger integer = number.toBigIntegerExact();
+                    return new JSONInteger(integer);
+                }
+                catch(ArithmeticException e) 
+                {
+                    return new JSONDecimal(number);
+                }
             case '"':
                 // JSON String expression.
                 //
                 st.quoteChar('"');
                 parsed.append('"').append(st.sval).append('"');
-                return st.sval;
+                return new JSONString(st.sval);
             case '\'':
                 // JSON String expression.
                 //
                 st.quoteChar('\'');
                 parsed.append('\'').append(st.sval).append('\'');
-                return st.sval;
+                return new JSONString(st.sval);
             default:
                 if ("false".equalsIgnoreCase(st.sval)) {
                     // JSON boolean "false" constant.
                     //
-                    return Boolean.FALSE;
+                    return JSONBoolean.FALSE;
                 } else if ("true".equalsIgnoreCase(st.sval)) {
                     // JSON boolean "true" constant.
                     //
-                    return Boolean.TRUE;
+                    return JSONBoolean.TRUE;
                 } else if (NULL_LITERAL.equalsIgnoreCase(st.sval)) {
                     // JSON null.
                     //
-                    return null;
+                    return JSONNull.NULL;
                 } else {
                     throw new IllegalArgumentException(String.format(JSON001, parsed.toString()));
                 }
@@ -228,17 +222,18 @@ public class JSONParser
     // The first '{' is not in the stream anymore, the top-level parsing routine
     // already read it.
     //
-    private static Map<String, Object> parseJsonObject(StreamTokenizer st, StringBuilder parsed) {
+    private static JSONObject parseJsonObject(StreamTokenizer st, StringBuilder parsed) {
         // This is the JSON object parser, it parses expressions of the form: {
         // key : value , ... }.
         //
         try {
-            final Map<String, Object> map = new LinkedHashMap<String, Object>();
+            final JSONObject obj = new JSONObject();
             st.nextToken();
             while (st.ttype != '}') {
                 // Key.
                 st.pushBack();
-                final Object key = parseJson(st, parsed);
+                final JSONValue key = parseJson(st, parsed);
+                if(!(key instanceof JSONString)) throw new IllegalArgumentException("Key should be a string.");
 
                 // Colon.
                 st.nextToken();
@@ -248,8 +243,8 @@ public class JSONParser
                 parsed.append(':');
 
                 // Value.
-                final Object value = parseJson(st, parsed);
-                map.put(key.toString(), value);
+                final JSONValue value = parseJson(st, parsed);
+                obj.getValue().put(((JSONString)key).getValue(), value);
 
                 // Comma.
                 st.nextToken();
@@ -265,7 +260,7 @@ public class JSONParser
                     st.nextToken();
                 }
             }
-            return map;
+            return obj;
         } catch (IOException e) {
             throw new IllegalArgumentException(String.format(JSON002, parsed.toString()), e);
         }
@@ -298,19 +293,19 @@ public class JSONParser
     // The first '[' is not in the stream anymore, the top-level parsing routine
     // already read it.
     //
-    private static List<?> parseJsonList(StreamTokenizer st, StringBuilder parsed) {
+    private static JSONArray parseJsonList(StreamTokenizer st, StringBuilder parsed) {
         // This is the JSON list parser, it parses expressions of the form: [
         // val-1, val-2, ... val-n ].
         //
         try {
-            final List<? super Object> list = new ArrayList<Object>();
+            final JSONArray array = new JSONArray();
             st.nextToken();
             while (st.ttype != ']') {
                 // Element
                 st.pushBack();
-                Object element = parseJson(st, parsed);
+                JSONValue element = parseJson(st, parsed);
 
-                list.add(element);
+                array.getValue().add(element);
 
                 // Comma.
                 st.nextToken();
@@ -326,7 +321,7 @@ public class JSONParser
                     st.nextToken();
                 }
             }
-            return list;
+            return array;
         } catch (IOException e) {
             throw new IllegalArgumentException(String.format(JSON002, parsed.toString()), e);
         }
