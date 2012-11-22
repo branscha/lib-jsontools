@@ -1,4 +1,4 @@
-# JSON Tools
+# JSON Tools v1.7
 ## Description
 
 A copy of the original version from [Berlios](http://jsontools.berlios.de/). More documentation can be found in the docs/ directory of this project.

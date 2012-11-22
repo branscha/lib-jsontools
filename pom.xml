@@ -8,7 +8,7 @@
     <groupId>com.sdicons.jsontools</groupId>
     <artifactId>jsontools</artifactId>
     <packaging>jar</packaging>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.7</version>
     <name>Java JSON Tools</name>
 
     <description>
