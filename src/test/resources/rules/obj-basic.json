@@ -10,7 +10,7 @@
         },
     "good" :
         [
-            {"name":"Bruno Ranschaert", "country":"Belgium", "salary":100.0 },
+            {"name":"Bruno Ranschaert", "country":"Belgium", "salary":100.10 },
             {"name":"Benedicte Ermens", "country":"Belgium" },
             {"country":"Belgium", "name":"Alexander Ranschaert" }
         ],

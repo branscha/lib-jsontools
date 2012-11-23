@@ -115,7 +115,7 @@ extends JSONComplex
 
     /**
      * Utility method, get the element with specified name without having to
-     * retreive the map first using getValue().
+     * retrieve the map first using getValue().
      * @param aKey The key for which you want to retrieve the element.
      * @return The element corresponding to the key or null if the object
      * does not contain a key with this name.

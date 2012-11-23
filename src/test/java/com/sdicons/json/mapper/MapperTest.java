@@ -408,7 +408,7 @@ extends TestCase
         catch(Exception e)
         {
             e.printStackTrace(System.out);
-            Assert.fail();
+            Assert.fail(e.getMessage());
         }
     }
     

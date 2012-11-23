@@ -8,6 +8,8 @@ package com.sdicons.json.parser;
 public class JSONParserException
 extends Exception
 {
+    private static final long serialVersionUID = 1L;
+    
     private int line = -1;
     private int column = -1;
     private String streamName = "[unknown stream]";

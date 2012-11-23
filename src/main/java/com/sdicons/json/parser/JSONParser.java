@@ -5,21 +5,43 @@
  ******************************************************************************/
 package com.sdicons.json.parser;
 
-import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.parser.impl.JsonAntlrLexer;
-import org.antlr.runtime.*;
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StreamTokenizer;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONBoolean;
+import com.sdicons.json.model.JSONDecimal;
+import com.sdicons.json.model.JSONInteger;
+import com.sdicons.json.model.JSONNull;
+import com.sdicons.json.model.JSONNumber;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
 
 /**
  * Reads JSON text and convert it into a Java model for further handling.
  */
 public class JSONParser
 {
-    private com.sdicons.json.parser.impl.JsonAntlrParser parser;
-    private String streamName = "[unknown]";
+    // Error messages.
+    //
+    private static final String JSON001 = "JSON001: Unexpected content encountered.\nContext: %s X <--ERROR";
+    private static final String JSON002 = "JSON002: Input error during parsing.\nContext: %s X <--ERROR";
+    private static final String JSON003 = "JSON003: Expected symbol '%s' but received token/symbol '%s'.\nContext: %s X <--ERROR";
+    private static final String JSON004 = "JSON004: The object contains a key that is not a string.\nContext: %s X <--ERROR";
+    private static final String JSON005 = "JSON005: The parser was not initialized correctly.";
+    //
+    private static final String EOF = "EOF";
+    private static final String NULL_LITERAL = "null";
+    private static final String UNKNOWN_STREAM = "[unknown]";
+    //
+    private String streamName = UNKNOWN_STREAM;
+    private StreamTokenizer st = null;
 
     /**
      * Construct a parser using a stream.
@@ -32,14 +54,9 @@ public class JSONParser
     public JSONParser(InputStream aStream, String aStreamName)
     throws JSONParserException
     {
-        try
-        {
-            initParser(new ANTLRInputStream(aStream), aStreamName);
-        }
-        catch(IOException e)
-        {
-            throw new JSONParserException(streamName, -1, -1, e.getMessage());
-        }
+        streamName = aStreamName==null?UNKNOWN_STREAM:aStreamName;
+        st = new StreamTokenizer(new InputStreamReader(aStream));
+        st.commentChar('#');
     }
 
     /**
@@ -64,23 +81,9 @@ public class JSONParser
     public JSONParser(Reader aReader, String aStreamName)
     throws JSONParserException
     {
-        try
-        {
-            initParser(new ANTLRReaderStream(aReader), aStreamName);
-        }
-        catch(IOException e)
-        {
-            throw new JSONParserException(streamName, -1, -1, e.getMessage());
-        }
-    }
-
-    private void initParser(CharStream aCharStream, String aStreamName )
-    {
-        if(aStreamName != null) streamName = aStreamName;
-        final JsonAntlrLexer lLexer = new JsonAntlrLexer(aCharStream);
-        final CommonTokenStream lTokens = new CommonTokenStream();
-        lTokens.setTokenSource(lLexer);
-        parser = new com.sdicons.json.parser.impl.JsonAntlrParser(lTokens);
+        streamName = aStreamName==null?UNKNOWN_STREAM:aStreamName;
+        st = new StreamTokenizer(aReader);
+        st.commentChar('#');
     }
 
     /**
@@ -103,13 +106,212 @@ public class JSONParser
     public JSONValue nextValue()
     throws JSONParserException
     {
+        if(st == null) throw new JSONParserException(JSON005);
+        
         try
         {
-            return parser.value(streamName).val;
+            return parseJson(new StringBuilder());
         }
-        catch(RecognitionException e)
+        catch(Exception e)
         {
-            throw new JSONParserException(streamName, e.line, e.charPositionInLine, e.getMessage());
+            throw new JSONParserException(streamName, st.lineno(), 0, e.getMessage());
+        }
+    }
+    
+    // The parsing workhorse.
+    //
+    protected JSONValue parseJson(StringBuilder parsed) {
+        // This is the top-level of the JSON parser, it decides which kind of
+        // JSON expression is next in the input stream. The general strategy
+        // is to look at the first characters, make a decision about which
+        // expression we expect and call the appropriate expression parser. In order to
+        // make sure the individual expression parsers see the whole expression we push
+        // back the tokens we used to make the decision.
+        // Each JSON expression type should have an entry here.
+        try {
+            st.nextToken();
+            switch (st.ttype) {
+            case '{':
+                // The start of a JSON object.
+                //
+                parsed.append("{");
+                return parseJsonObject(parsed);
+            case '[':
+                // The start of a JSON list.
+                //
+                parsed.append("[");
+                return parseJsonList(parsed);
+            case StreamTokenizer.TT_NUMBER:
+                // Plain JSON Number.
+                //
+                parsed.append(st.nval);
+                BigDecimal number = new BigDecimal(st.nval);
+                JSONNumber resultNumber = null;
+                try
+                {
+                    BigInteger integer = number.toBigIntegerExact();
+                    resultNumber = new JSONInteger(integer);
+                }
+                catch(ArithmeticException e) 
+                {
+                    resultNumber = new JSONDecimal(number);
+                }
+                resultNumber.setLineCol(st.lineno(), 0);
+                resultNumber.setStreamName(streamName);
+                return resultNumber;
+            case '"':
+                // JSON String expression.
+                //
+                st.quoteChar('"');
+                parsed.append('"').append(st.sval).append('"');
+                JSONString resultString =  new JSONString(st.sval);
+                resultString.setLineCol(st.lineno(), 0);
+                resultString.setStreamName(streamName);
+                return resultString;
+            case '\'':
+                // JSON String expression.
+                //
+                st.quoteChar('\'');
+                parsed.append('\'').append(st.sval).append('\'');
+                JSONString resultString2 = new JSONString(st.sval);
+                resultString2.setLineCol(st.lineno(), 0);
+                resultString2.setStreamName(streamName);
+                return resultString2;
+            default:
+                if ("false".equalsIgnoreCase(st.sval)) {
+                    // JSON boolean "false" constant.
+                    //
+                    return JSONBoolean.FALSE;
+                } else if ("true".equalsIgnoreCase(st.sval)) {
+                    // JSON boolean "true" constant.
+                    //
+                    return JSONBoolean.TRUE;
+                } else if (NULL_LITERAL.equalsIgnoreCase(st.sval)) {
+                    // JSON null.
+                    //
+                    return JSONNull.NULL;
+                } else {
+                    throw new IllegalArgumentException(String.format(JSON001, parsed.toString()));
+                }
+            }
+        } catch (IOException e) {
+            throw new IllegalArgumentException(String.format(JSON002, parsed.toString()), e);
+        }
+    }
+
+    // Parse an object.
+    // The first '{' is not in the stream anymore, the top-level parsing routine
+    // already read it.
+    //
+    private JSONObject parseJsonObject(StringBuilder parsed) {
+        // This is the JSON object parser, it parses expressions of the form: {
+        // key : value , ... }.
+        //
+        try {
+            final JSONObject obj = new JSONObject();
+            obj.setLineCol(st.lineno(), 0);
+            obj.setStreamName(streamName);
+            
+            st.nextToken();
+            while (st.ttype != '}') {
+                // Key.
+                st.pushBack();
+                final JSONValue key = parseJson(parsed);
+                if(!(key instanceof JSONString)) {
+                    throw new IllegalArgumentException(String.format(JSON004, parsed.toString()));
+                }
+
+                // Colon.
+                st.nextToken();
+                if ((char) st.ttype != ':') {
+                    expectationError(":", st, parsed);
+                }
+                parsed.append(':');
+
+                // Value.
+                final JSONValue value = parseJson(parsed);
+                obj.getValue().put(((JSONString)key).getValue(), value);
+
+                // Comma.
+                st.nextToken();
+                if ((char) st.ttype != ',') {
+                    if ((char) st.ttype != '}') {
+                        expectationError("}", st, parsed);
+                    } else {
+                        parsed.append("}");
+                        break;
+                    }
+                } else {
+                    parsed.append(",");
+                    st.nextToken();
+                }
+            }
+            return obj;
+        } catch (IOException e) {
+            throw new IllegalArgumentException(String.format(JSON002, parsed.toString()), e);
+        }
+    }
+
+    // Convert the current tokenizer token into a readable string so that
+    // we can create readable error messages with it.
+    //
+    private String errToken() {
+        switch (st.ttype) {
+        case StreamTokenizer.TT_EOF:
+            return EOF;
+        case StreamTokenizer.TT_WORD:
+            return st.sval;
+        case StreamTokenizer.TT_NUMBER:
+            return "" + st.nval;
+        default:
+            return Character.toString((char) st.ttype);
+        }
+    }
+
+    // Create an error message, the tokenizer did not contain an expected
+    // character.
+    //
+    private String expectationError(String expected, StreamTokenizer st, StringBuilder parsed) {
+        throw new IllegalArgumentException(String.format(JSON003, expected, errToken(), parsed.toString()));
+    }
+
+    // Parse an object.
+    // The first '[' is not in the stream anymore, the top-level parsing routine
+    // already read it.
+    //
+    private JSONArray parseJsonList(StringBuilder parsed) {
+        // This is the JSON list parser, it parses expressions of the form: [
+        // val-1, val-2, ... val-n ].
+        //
+        try {
+            final JSONArray array = new JSONArray();
+            array.setLineCol(st.lineno(), 0);
+            array.setStreamName(streamName);
+            
+            st.nextToken();
+            while (st.ttype != ']') {
+                // Element
+                st.pushBack();
+                JSONValue element = parseJson(parsed);
+                array.getValue().add(element);
+
+                // Comma.
+                st.nextToken();
+                if ((char) st.ttype != ',') {
+                    if ((char) st.ttype != ']') {
+                        expectationError("]", st, parsed);
+                    } else {
+                        parsed.append("]");
+                        break;
+                    }
+                } else {
+                    parsed.append(",");
+                    st.nextToken();
+                }
+            }
+            return array;
+        } catch (IOException e) {
+            throw new IllegalArgumentException(String.format(JSON002, parsed.toString()), e);
         }
     }
 }
