@@ -28,18 +28,19 @@ import com.sdicons.json.model.JSONValue;
  */
 public class JSONParser
 {
-    
     // Error messages.
     //
     private static final String JSON001 = "JSON001: Unexpected content encountered.\nContext: %s X <--ERROR";
     private static final String JSON002 = "JSON002: Input error during parsing.\nContext: %s X <--ERROR";
     private static final String JSON003 = "JSON003: Expected symbol '%s' but received token/symbol '%s'.\nContext: %s X <--ERROR";
     private static final String JSON004 = "JSON004: The object contains a key that is not a string.\nContext: %s X <--ERROR";
-
+    private static final String JSON005 = "JSON005: The parser was not initialized correctly.";
+    //
     private static final String EOF = "EOF";
     private static final String NULL_LITERAL = "null";
-
-    private String streamName = "[unknown]";
+    private static final String UNKNOWN_STREAM = "[unknown]";
+    //
+    private String streamName = UNKNOWN_STREAM;
     private StreamTokenizer st = null;
 
     /**
@@ -53,7 +54,7 @@ public class JSONParser
     public JSONParser(InputStream aStream, String aStreamName)
     throws JSONParserException
     {
-        streamName = aStreamName;
+        streamName = aStreamName==null?UNKNOWN_STREAM:aStreamName;
         st = new StreamTokenizer(new InputStreamReader(aStream));
         st.commentChar('#');
     }
@@ -80,7 +81,7 @@ public class JSONParser
     public JSONParser(Reader aReader, String aStreamName)
     throws JSONParserException
     {
-        streamName = aStreamName;
+        streamName = aStreamName==null?UNKNOWN_STREAM:aStreamName;
         st = new StreamTokenizer(aReader);
         st.commentChar('#');
     }
@@ -105,6 +106,8 @@ public class JSONParser
     public JSONValue nextValue()
     throws JSONParserException
     {
+        if(st == null) throw new JSONParserException(JSON005);
+        
         try
         {
             return parseJson(new StringBuilder());
