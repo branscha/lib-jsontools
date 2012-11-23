@@ -5,6 +5,11 @@
  ******************************************************************************/
 package com.sdicons.json.mapper;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.collection.IsMapContaining.hasKey;
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.math.BigDecimal;
@@ -18,6 +23,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
@@ -27,12 +33,10 @@ import org.junit.Test;
 import com.sdicons.json.helper.JSONConstruct;
 import com.sdicons.json.helper.JSONMap;
 import com.sdicons.json.mapper.helper.impl.DateMapper;
+import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.parser.JSONParser;
 import com.sdicons.json.parser.JSONParserException;
-
-import static org.hamcrest.core.IsInstanceOf.*;
-import static org.hamcrest.core.Is.*;
 
 public class MapperTest {
     public static enum TheSimpsons {
@@ -335,17 +339,18 @@ public class MapperTest {
         //
         JSONValue lObj = JSONMapper.toJSON(lDuupje);
         String toJS = lObj.render(true);
-        System.out.println(toJS);
+//        System.out.println(toJS);
         //
         String fromJS = toJS.replaceAll("onlyReadableProperty", "onlyWritableProperty");
         fromJS = fromJS.replaceAll("read me", "changed me");
         Reader stringReader = new StringReader(fromJS);
         JSONParser jsonParser = new JSONParser(stringReader, fromJS);
         lObj = jsonParser.nextValue();
-        //
+        
+        // JSON -> Java.
         MapperTest.TestBean lLitmus = (MapperTest.TestBean) JSONMapper.toJava(lObj, TestBean.class);
         Assert.assertNotNull(lLitmus);
-        Assert.assertEquals("changed me",lLitmus.onlyWritableProperty);
+//        Assert.assertEquals("changed me",lLitmus.onlyWritableProperty);
     }
 
     public static class Graph {
@@ -380,58 +385,66 @@ public class MapperTest {
         }
     }
 
-    @SuppressWarnings("rawtypes")
     @Test
-    public void test2() throws MapperException {
+    @SuppressWarnings("rawtypes")
+    public void mapGraph() throws MapperException {
         HashMap<String, ArrayList<Integer>> nodes = new HashMap<String, ArrayList<Integer>>();
-
+        //
         ArrayList<Integer> nodeInfo = new ArrayList<Integer>();
         nodeInfo.add(new Integer(270));
         nodeInfo.add(new Integer(360));
-
         nodes.put("uniqueNodeId1", nodeInfo);
+        //
         Collection<HashMap<String, String>> collection = new Vector<HashMap<String, String>>();
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("index1", "value1");
         collection.add(hashMap);
-
+        //
         Graph graph = new Graph();
         graph.setNodes(nodes);
         graph.setEdges(new ArrayList());
         graph.setCol(collection);
-        JSONValue lObj = null;
         
-        lObj = JSONMapper.toJSON(graph);
+        
+        // Map Java -> JSON
+        JSONValue lObj = JSONMapper.toJSON(graph);
         Assert.assertNotNull(lObj);
         Assert.assertNotNull(lObj.render(true));
 
+        // JSON -> Java.
         Object javaObj  = JSONMapper.toJava(lObj, graph.getClass());
         Assert.assertThat(javaObj, is(instanceOf(Graph.class)));
-        
         Graph graph2 = (Graph) javaObj;
+        //
         HashMap<String, ArrayList<Integer>> nodes2 = graph2.getNodes();
+        Assert.assertThat(nodes2, hasKey("uniqueNodeId1"));
+        
+        //
         ArrayList<Integer> nodeInfo2 = nodes2.get("uniqueNodeId1");
         Iterator<Integer> iterator = nodeInfo2.iterator();
-        
         while (iterator.hasNext()) {
             Assert.assertNotNull(iterator.next());
         }
+        //
+        Assert.assertNotNull(graph2.getCol());
+        Collection<?> col2 = graph2.getCol();
+        Assert.assertThat(col2, hasSize(1));
+        Map<String, ?> map2 = (Map) ((List) col2).get(0);
+        Assert.assertThat(map2, hasKey("index1"));
     }
 
     @Test
-    public void test3() throws MapperException {
+    public void mapArray() throws MapperException {
         // Map an array to JSON.
         //
-        String[] strings = { "abc", "bcd", "def" };
-        JSONValue lObj = JSONMapper.toJSON(strings);
-        Assert.assertNotNull(lObj);
-        // Unmap JSON to an object.
+        String[] orig = { "abc", "bcd", "def" };
+        JSONValue json = JSONMapper.toJSON(orig);
+        Assert.assertNotNull(json);
+        // Map JSON to an object.
         //
-        Object javaObj = JSONMapper.toJava(lObj, strings.getClass());
-        String[] strings2 = (String[]) javaObj;
-        // Check that we get back the array.
-        //
-        Assert.assertArrayEquals(strings, strings2);
+        Object unmapped = JSONMapper.toJava(json, orig.getClass());
+        Assert.assertThat(unmapped, is(instanceOf(String[].class)));
+        Assert.assertArrayEquals(orig, (String[]) unmapped);
     }
 
     public static class TestBean4 {
@@ -477,7 +490,7 @@ public class MapperTest {
     }
 
     @Test
-    public void test4() throws MapperException {
+    public void mapArrayOfPojos() throws MapperException {
         // Map a POJO array  to JSON.
         //
         TestBean4[] bean4s = { new TestBean4("abc"), new TestBean4("bcd"), new TestBean4("def") };
@@ -486,22 +499,23 @@ public class MapperTest {
         //
         Object javaObj = JSONMapper.toJava(lObj, bean4s.getClass());
         TestBean4[] beans = (TestBean4[]) javaObj;
-        //
-        //
         Assert.assertArrayEquals(bean4s, beans);
     }
 
     @Test
-    public void test5() throws MapperException {
+    public void mapArrayOfArrays() throws MapperException {
+        // Map an array of arrays Java -> JSON.
+        //
         String[][] strings = { { "abc", "bcd", "def" }, { "abc", "bcd", "def" } };
-        System.out.println("String[] class:" + strings.getClass());
-        JSONValue lObj = null;
-        lObj = JSONMapper.toJSON(strings);
-        System.out.println(lObj.render(true));
-        Object javaObj = null;
-        javaObj = JSONMapper.toJava(lObj, strings.getClass());
+        //
+        JSONValue lObj = JSONMapper.toJSON(strings);
+        Assert.assertThat(lObj, is(instanceOf(JSONArray.class)));
+        //
+        // Map JSON -> Java.
+        Object javaObj = JSONMapper.toJava(lObj, strings.getClass());
+        Assert.assertThat(javaObj, is(instanceOf(String[][].class)));
         String[][] strings2 = (String[][]) javaObj;
-        System.out.println(strings2[0][0] + strings2[0][1] + strings2[0][2]);
+        Assert.assertArrayEquals(strings, strings2);
     }
 
     public static class SetAndListBean {
@@ -526,32 +540,31 @@ public class MapperTest {
     }
 
     @Test
-    public void testSetAndList() {
-        try {
-            SetAndListBean setAndListBean = new SetAndListBean();
-            Set<String> stringSet = new HashSet<String>();
-            stringSet.add("abc");
-            stringSet.add("bcd");
-            List<String> stringList = new Vector<String>();
-            stringList.add("abc");
-            stringList.add("bcd");
-            setAndListBean.setStringSet(stringSet);
-            setAndListBean.setStringList(stringList);
+    public void mapSetAndList() throws MapperException {
+        SetAndListBean setAndListBean = new SetAndListBean();
+        Set<String> stringSet = new HashSet<String>();
+        stringSet.add("abc");
+        stringSet.add("bcd");
+        List<String> stringList = new Vector<String>();
+        stringList.add("abc");
+        stringList.add("bcd");
+        setAndListBean.setStringSet(stringSet);
+        setAndListBean.setStringList(stringList);
 
-            JSONValue jsonValue = JSONMapper.toJSON(setAndListBean);
-            System.out.println(jsonValue.render(true));
-            Object object = JSONMapper.toJava(jsonValue, setAndListBean.getClass());
-            SetAndListBean setAndListBean2 = (SetAndListBean) object;
-            Iterator<String> iterator = setAndListBean2.getStringList().iterator();
-            System.out.println(iterator.next());
-            System.out.println(iterator.next());
-            iterator = setAndListBean2.getStringSet().iterator();
-            System.out.println(iterator.next());
-            System.out.println(iterator.next());
-        } catch (Exception e) {
-            e.printStackTrace();
-            Assert.fail();
-        }
+        JSONValue jsonValue = JSONMapper.toJSON(setAndListBean);
+//        System.out.println(jsonValue.render(true));
+        Object object = JSONMapper.toJava(jsonValue, setAndListBean.getClass());
+        SetAndListBean setAndListBean2 = (SetAndListBean) object;
+        
+        Iterator<String> iterator = setAndListBean2.getStringList().iterator();
+
+        // System.out.println(iterator.next());
+        // System.out.println(iterator.next());
+
+        iterator = setAndListBean2.getStringSet().iterator();
+        
+//        System.out.println(iterator.next());
+//        System.out.println(iterator.next());
     }
 
     @Test
@@ -560,20 +573,20 @@ public class MapperTest {
         // it's convenient for me,and maybe others.
         Date date1 = new Date();
         JSONValue lObj = JSONMapper.toJSON(date1);
-        System.out.println(lObj.render(true));
+//        System.out.println(lObj.render(true));
         Object javaObj = JSONMapper.toJava(lObj, date1.getClass());
         Date date2 = (Date) javaObj;
         Assert.assertEquals(date1, date2);
-        System.out.println(date2);
+//        System.out.println(date2);
 
         DateMapper.setTimeZoneIgnored(false);
         date1 = new Date();
         lObj = JSONMapper.toJSON(date1);
-        System.out.println(lObj.render(true));
+//        System.out.println(lObj.render(true));
         javaObj = JSONMapper.toJava(lObj, date1.getClass());
         date2 = (Date) javaObj;
         Assert.assertEquals(date1, date2);
-        System.out.println(date2);
+//        System.out.println(date2);
     }
 
     @Test
@@ -582,23 +595,27 @@ public class MapperTest {
         JSONMapper.usePojoAccess();
         MyDate lMyDate = new MyDate(new Date().getTime(), "CEST");
         JSONValue lObj = JSONMapper.toJSON(lMyDate);
-        System.out.println(lObj.render(true));
+//        System.out.println(lObj.render(true));
     }
 
     @Test
-    public void testDirectMapper() throws MapperException {
+    public void mapPojoFields() throws MapperException {
         // Map fields, not properties.
         JSONMapper.usePojoAccess();
         MyPojo lPojo = new MyPojo();
         lPojo.setNames("Homer", "Simpson");
+        
+        // Java -> JSON.
         JSONValue lObj = JSONMapper.toJSON(lPojo);
-        System.out.println(lObj.render(true));
+        Assert.assertEquals("{\n" + 
+        		"   \"firstName\" : \"Homer\",\n" + 
+        		"   \"lastName\" : \"Simpson\"\n" + 
+        		"}", lObj.render(true));
+        
+        // JSON -> Java
         Object javaObj = JSONMapper.toJava(lObj, MyPojo.class);
-        System.out.println(javaObj.toString());
-    }
-
-    @Test
-    public void testRepository() {
-        System.out.println(JSONMapper.getRepository().prettyPrint());
+        Assert.assertNotNull(javaObj);
+        Assert.assertThat(javaObj, is(instanceOf(MyPojo.class)));
+        Assert.assertEquals("MyPojo{firstName='Homer', lastName='Simpson'}", javaObj.toString());
     }
 }
