@@ -5,15 +5,6 @@
  ******************************************************************************/
 package com.sdicons.json.mapper;
 
-import com.sdicons.json.mapper.helper.impl.DateMapper;
-import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.parser.JSONParser;
-import com.sdicons.json.helper.JSONMap;
-import com.sdicons.json.helper.JSONConstruct;
-
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
 import java.io.Reader;
 import java.io.StringReader;
 import java.math.BigDecimal;
@@ -24,14 +15,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import org.junit.Assert;
+import org.junit.Test;
+
+import com.sdicons.json.helper.JSONConstruct;
+import com.sdicons.json.helper.JSONMap;
+import com.sdicons.json.mapper.helper.impl.DateMapper;
+import com.sdicons.json.model.JSONValue;
+import com.sdicons.json.parser.JSONParser;
+
 public class MapperTest
-extends TestCase
 {
     public static enum TheSimpsons {HOMER, BART, LISA, MARGE, MAGGY};
 
@@ -58,6 +57,7 @@ extends TestCase
         private Boolean false2;
         private Boolean false3;
         private String onlyReadableProperty="read me";
+        @SuppressWarnings("unused")
         private String onlyWritableProperty;
         private LinkedList<String> linkedList;
         private ArrayList<Date> arrayList;
@@ -343,11 +343,8 @@ extends TestCase
         }
     }
 
-    public MapperTest(String lName)
-    {
-        super(lName);
-    }
-
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test
     public void testIt()
     {
         try
@@ -415,15 +412,17 @@ extends TestCase
     public static class Graph
     {
     	private HashMap<String, ArrayList<Integer>> nodes;
-    	private ArrayList edges;
+    	@SuppressWarnings("rawtypes")
+        private ArrayList edges;
     	private Collection<HashMap<String,String>> col;
     	
-		public ArrayList getEdges()
+        @SuppressWarnings("rawtypes")
+        public ArrayList getEdges()
         {
 			return edges;
 		}
 
-        public void setEdges(ArrayList edges)
+        public void setEdges(@SuppressWarnings("rawtypes") ArrayList edges)
         {
 			this.edges = edges;
 		}
@@ -449,6 +448,8 @@ extends TestCase
 		}
     }
 
+    @SuppressWarnings("rawtypes")
+    @Test
     public void test2()
     {
     	HashMap<String, ArrayList<Integer>> nodes = new HashMap<String, ArrayList<Integer>>();
@@ -497,6 +498,7 @@ extends TestCase
     	System.out.println(javaObj);
     }
 
+    @Test
     public void test3(){
     	String[] strings={"abc","bcd","def"};
     	System.out.println("String[] class:"+strings.getClass());
@@ -541,6 +543,7 @@ extends TestCase
 		}
     }
 
+    @Test
     public void test4()
     {
         try
@@ -561,6 +564,7 @@ extends TestCase
         }
     }
 
+    @Test
     public void test5()
     {
         try
@@ -604,6 +608,7 @@ extends TestCase
 		}
     }
 
+    @Test
     public void testSetAndList()
     {
         try
@@ -636,6 +641,7 @@ extends TestCase
         }
     }
 
+    @Test
     public void testDateMapper()
     {
         try
@@ -666,6 +672,7 @@ extends TestCase
         }
     }
 
+    @Test
     public void testAnnotatedMapper()
     {
         try
@@ -675,7 +682,6 @@ extends TestCase
             MyDate lMyDate = new MyDate(new Date().getTime(), "CEST");
             JSONValue lObj = JSONMapper.toJSON(lMyDate);
             System.out.println(lObj.render(true));
-            Object javaObj = JSONMapper.toJava(lObj, MyDate.class);
         }
         catch(MapperException e)
         {
@@ -684,6 +690,7 @@ extends TestCase
         }      
     }
 
+    @Test
     public void testDirectMapper()
     {
        try
@@ -704,6 +711,7 @@ extends TestCase
         }
     }
 
+    @Test
      public void testRepository()
      {
          System.out.println(JSONMapper.getRepository().prettyPrint());
