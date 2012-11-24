@@ -5,27 +5,34 @@
  ******************************************************************************/
 package com.sdicons.json.serializer;
 
-import junit.framework.*;
+import java.util.HashMap;
 
-import java.util.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-import com.sdicons.json.serializer.helper.impl.*;
-import com.sdicons.json.serializer.helper.MarshallHelper;
 import com.sdicons.json.helper.HelperRepository;
-import com.sdicons.json.serializer.marshall.MarshallException;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
 import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.serializer.helper.MarshallHelper;
+import com.sdicons.json.serializer.helper.impl.BooleanHelper;
+import com.sdicons.json.serializer.helper.impl.ByteHelper;
+import com.sdicons.json.serializer.helper.impl.CharacterHelper;
+import com.sdicons.json.serializer.helper.impl.DateHelper;
+import com.sdicons.json.serializer.helper.impl.DoubleHelper;
+import com.sdicons.json.serializer.helper.impl.FloatHelper;
+import com.sdicons.json.serializer.helper.impl.IntegerHelper;
+import com.sdicons.json.serializer.helper.impl.LongHelper;
+import com.sdicons.json.serializer.helper.impl.ObjectHelper;
+import com.sdicons.json.serializer.helper.impl.ShortHelper;
+import com.sdicons.json.serializer.helper.impl.StringHelper;
+import com.sdicons.json.serializer.marshall.JSONMarshall;
+import com.sdicons.json.serializer.marshall.MarshallException;
 
 public class RepositoryTest
-extends TestCase
 {
-    public RepositoryTest(String lName)
-    {
-        super(lName);
-    }
-
     HelperRepository<MarshallHelper> repo;
 
+    @Before
     public void setUp()
     throws Exception
     {
@@ -44,6 +51,7 @@ extends TestCase
         repo.addHelper(new DateHelper());
     }
 
+    @Test
     public void testBasicHelpers()
     {
         {
@@ -104,6 +112,7 @@ extends TestCase
         }
     }
 
+    @Test
     public void testInheritance()
     {
         class A
@@ -195,5 +204,4 @@ extends TestCase
         MarshallHelper lH3 = repo.findHelper(C.class);
         Assert.assertEquals(C.class, lH3.getHelpedClass());
     }
-
 }

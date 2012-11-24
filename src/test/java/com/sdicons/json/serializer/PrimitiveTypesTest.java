@@ -5,160 +5,95 @@
  ******************************************************************************/
 package com.sdicons.json.serializer;
 
-import junit.framework.*;
-import com.sdicons.json.serializer.marshall.Marshall;
-import com.sdicons.json.serializer.marshall.MarshallValue;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import com.sdicons.json.serializer.marshall.JSONMarshall;
+import com.sdicons.json.serializer.marshall.Marshall;
+import com.sdicons.json.serializer.marshall.MarshallException;
+import com.sdicons.json.serializer.marshall.MarshallValue;
 
 public class PrimitiveTypesTest
-extends TestCase
 {
-
-    public PrimitiveTypesTest(String lName)
-    {
-        super(lName);
-    }
-
     Marshall marshall;
 
+    @Before
     public void setUp()
     throws Exception
     {
         marshall = new JSONMarshall();
     }
 
-    public void testBoolean1()
+    @Test
+    public void testBoolean1() throws MarshallException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall(false));
-            Assert.assertTrue(MarshallValue.BOOLEAN == lResult.getType());
-            Assert.assertTrue(!lResult.getBoolean());
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        MarshallValue lResult = marshall.unmarshall(marshall.marshall(false));
+        Assert.assertTrue(MarshallValue.BOOLEAN == lResult.getType());
+        Assert.assertTrue(!lResult.getBoolean());
     }
 
-    public void testBoolean2()
+    @Test
+    public void testBoolean2() throws MarshallException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall(true));
-            Assert.assertTrue(MarshallValue.BOOLEAN == lResult.getType());
-            Assert.assertTrue(lResult.getBoolean());
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        MarshallValue lResult = marshall.unmarshall(marshall.marshall(true));
+        Assert.assertTrue(MarshallValue.BOOLEAN == lResult.getType());
+        Assert.assertTrue(lResult.getBoolean());
     }
 
-    public void testByte()
+    @Test
+    public void testByte() throws MarshallException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall((byte) 7));
-            Assert.assertTrue(MarshallValue.BYTE == lResult.getType());
-            Assert.assertTrue(lResult.getByte() == 7);
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        MarshallValue lResult = marshall.unmarshall(marshall.marshall((byte) 7));
+        Assert.assertTrue(MarshallValue.BYTE == lResult.getType());
+        Assert.assertTrue(lResult.getByte() == 7);
     }
 
-    public void testShort()
+    @Test
+    public void testShort() throws MarshallException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall((short) -13));
-            Assert.assertTrue(MarshallValue.SHORT == lResult.getType());
-            Assert.assertTrue(lResult.getShort() == -13);
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        MarshallValue lResult = marshall.unmarshall(marshall.marshall((short) -13));
+        Assert.assertTrue(MarshallValue.SHORT == lResult.getType());
+        Assert.assertTrue(lResult.getShort() == -13);
     }
 
-    public void testChar()
+    @Test
+    public void testChar() throws MarshallException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall('q'));
-            Assert.assertTrue(MarshallValue.CHAR == lResult.getType());
-            Assert.assertTrue(lResult.getChar() == 'q');
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        MarshallValue lResult = marshall.unmarshall(marshall.marshall('q'));
+        Assert.assertTrue(MarshallValue.CHAR == lResult.getType());
+        Assert.assertTrue(lResult.getChar() == 'q');
     }
 
-    public void testInteger()
+    @Test
+    public void testInteger() throws MarshallException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall(177));
-            Assert.assertTrue(MarshallValue.INT == lResult.getType());
-            Assert.assertTrue(lResult.getInt() == 177);
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        MarshallValue lResult = marshall.unmarshall(marshall.marshall(177));
+        Assert.assertTrue(MarshallValue.INT == lResult.getType());
+        Assert.assertTrue(lResult.getInt() == 177);
     }
 
-    public void testLong()
+    @Test
+    public void testLong() throws MarshallException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall((long) 117));
-            Assert.assertTrue(MarshallValue.LONG == lResult.getType());
-            Assert.assertTrue(lResult.getLong() == 117);
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        MarshallValue lResult = marshall.unmarshall(marshall.marshall((long) 117));
+        Assert.assertTrue(MarshallValue.LONG == lResult.getType());
+        Assert.assertTrue(lResult.getLong() == 117);
     }
 
-    public void testFloat()
+    @Test
+    public void testFloat() throws MarshallException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall((float) 3.14));
-            Assert.assertTrue(MarshallValue.FLOAT == lResult.getType());
-            Assert.assertTrue(lResult.getFloat() == (float) 3.14);
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        MarshallValue lResult = marshall.unmarshall(marshall.marshall((float) 3.14));
+        Assert.assertTrue(MarshallValue.FLOAT == lResult.getType());
+        Assert.assertTrue(lResult.getFloat() == (float) 3.14);
     }
 
-    public void testDouble()
+    @Test
+    public void testDouble() throws MarshallException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall(3.141567));
-            Assert.assertTrue(MarshallValue.DOUBLE == lResult.getType());
-            Assert.assertTrue(lResult.getDouble() == 3.141567);
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        MarshallValue lResult = marshall.unmarshall(marshall.marshall(3.141567));
+        Assert.assertTrue(MarshallValue.DOUBLE == lResult.getType());
+        Assert.assertTrue(lResult.getDouble() == 3.141567);
     }
 }

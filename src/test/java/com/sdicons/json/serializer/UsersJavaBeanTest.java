@@ -5,6 +5,12 @@
  ******************************************************************************/
 package com.sdicons.json.serializer;
 
+import java.util.Date;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import com.sdicons.json.helper.JSONConstruct;
 import com.sdicons.json.helper.JSONSerialize;
 import com.sdicons.json.model.JSONObject;
@@ -12,13 +18,8 @@ import com.sdicons.json.serializer.marshall.JSONMarshall;
 import com.sdicons.json.serializer.marshall.Marshall;
 import com.sdicons.json.serializer.marshall.MarshallException;
 import com.sdicons.json.serializer.marshall.MarshallValue;
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-import java.util.Date;
 
 public class UsersJavaBeanTest
-extends TestCase
 {
     public static class MyDate
     {
@@ -140,92 +141,67 @@ extends TestCase
         }
     }
 
-    public UsersJavaBeanTest(String lName)
-    {
-        super(lName);
-    }
-
     Marshall marshall;
 
+    @Before
     public void setUp()
     throws Exception
     {
         marshall = new JSONMarshall();
     }
 
-    public void testIt()
+    @Test
+    public void testIt() throws MarshallException
     {
-        try
-        {
-            Transportable lEvil = new Transportable();
-            Integer lID = 13;
-            lEvil.setEventType(lID);
-            lEvil.setParentID(lID);
-            lEvil.setSubObjectID(lID);
-            lEvil.setObjectID(lID);
-            String lStr = "Test";
-            lEvil.setParam1(lStr);
-            lEvil.setParam2(lStr);
-
-            JSONObject lObj = marshall.marshall(lEvil);
-            System.out.println(lObj.render(true));
-            MarshallValue lResult = marshall.unmarshall(lObj);
-            Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
-            Transportable lLitmus = (Transportable) lResult.getReference();
-
-            // Test if the contents are intact.
-            Assert.assertNotNull(lLitmus);
-            Assert.assertEquals(lLitmus.getEventType(), lID);
-            Assert.assertTrue(lLitmus.getEventType() == lLitmus.getParentID());
-            Assert.assertTrue(lLitmus.getEventType() == lLitmus.getSubObjectID());
-            Assert.assertTrue(lLitmus.getEventType()== lLitmus.getObjectID());
-            Assert.assertEquals(lLitmus.getParam1(), lStr);
-            Assert.assertTrue(lLitmus.getParam1() == lLitmus.getParam2());
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        Transportable lEvil = new Transportable();
+        Integer lID = 13;
+        lEvil.setEventType(lID);
+        lEvil.setParentID(lID);
+        lEvil.setSubObjectID(lID);
+        lEvil.setObjectID(lID);
+        String lStr = "Test";
+        lEvil.setParam1(lStr);
+        lEvil.setParam2(lStr);
+        
+        JSONObject lObj = marshall.marshall(lEvil);
+        System.out.println(lObj.render(true));
+        MarshallValue lResult = marshall.unmarshall(lObj);
+        Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
+        Transportable lLitmus = (Transportable) lResult.getReference();
+        
+        // Test if the contents are intact.
+        Assert.assertNotNull(lLitmus);
+        Assert.assertEquals(lLitmus.getEventType(), lID);
+        Assert.assertTrue(lLitmus.getEventType() == lLitmus.getParentID());
+        Assert.assertTrue(lLitmus.getEventType() == lLitmus.getSubObjectID());
+        Assert.assertTrue(lLitmus.getEventType() == lLitmus.getObjectID());
+        Assert.assertEquals(lLitmus.getParam1(), lStr);
+        Assert.assertTrue(lLitmus.getParam1() == lLitmus.getParam2());
     }
 
-    public void testAnnotatedSerializer()
+    @Test
+    public void testAnnotatedSerializer() throws MarshallException
     {
-        try
-        {
-            // Map fields, not properties.
-            ((JSONMarshall) marshall).usePojoAccess();
-            MyDate lMyDate = new MyDate(new Date().getTime(), "CEST");
-            JSONObject lObj = marshall.marshall(lMyDate);
-            System.out.println(lObj.render(true));
-
-            Object javaObj = marshall.unmarshall(lObj);
-        }
-        catch(MarshallException e)
-        {
-            e.printStackTrace();
-            Assert.fail();
-        }
+        // Map fields, not properties.
+        ((JSONMarshall) marshall).usePojoAccess();
+        MyDate lMyDate = new MyDate(new Date().getTime(), "CEST");
+        JSONObject lObj = marshall.marshall(lMyDate);
+        System.out.println(lObj.render(true));
+        
+        Object javaObj = marshall.unmarshall(lObj);
     }
 
-    public void testDirectHelper()
+    @Test
+    public void testDirectHelper() throws MarshallException
     {
-       try
-        {
-            // Map fields, not properties.
-            ((JSONMarshall) marshall).usePojoAccess();
-            MyPojo lPojo = new MyPojo();
-            lPojo.setNames("Homer", "Simpson");
-            JSONObject lObj = marshall.marshall(lPojo);
-            System.out.println(lObj.render(true));
-
-            Object javaObj =  marshall.unmarshall(lObj);
-            System.out.println(javaObj.toString());
-        }
-        catch(MarshallException e)
-        {
-            e.printStackTrace();
-            Assert.fail();
-        }
+        // Map fields, not properties.
+        ((JSONMarshall) marshall).usePojoAccess();
+        MyPojo lPojo = new MyPojo();
+        lPojo.setNames("Homer", "Simpson");
+        JSONObject lObj = marshall.marshall(lPojo);
+        System.out.println(lObj.render(true));
+        
+        Object javaObj = marshall.unmarshall(lObj);
+        System.out.println(javaObj.toString());
     }
 }

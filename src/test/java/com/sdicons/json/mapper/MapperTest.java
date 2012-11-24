@@ -552,19 +552,19 @@ public class MapperTest {
         setAndListBean.setStringList(stringList);
 
         JSONValue jsonValue = JSONMapper.toJSON(setAndListBean);
-//        System.out.println(jsonValue.render(true));
+        System.out.println(jsonValue.render(true));
         Object object = JSONMapper.toJava(jsonValue, setAndListBean.getClass());
         SetAndListBean setAndListBean2 = (SetAndListBean) object;
         
         Iterator<String> iterator = setAndListBean2.getStringList().iterator();
 
-        // System.out.println(iterator.next());
-        // System.out.println(iterator.next());
+         System.out.println(iterator.next());
+         System.out.println(iterator.next());
 
         iterator = setAndListBean2.getStringSet().iterator();
         
-//        System.out.println(iterator.next());
-//        System.out.println(iterator.next());
+        System.out.println(iterator.next());
+        System.out.println(iterator.next());
     }
 
     @Test
@@ -573,20 +573,20 @@ public class MapperTest {
         // it's convenient for me,and maybe others.
         Date date1 = new Date();
         JSONValue lObj = JSONMapper.toJSON(date1);
-//        System.out.println(lObj.render(true));
+        System.out.println(lObj.render(true));
         Object javaObj = JSONMapper.toJava(lObj, date1.getClass());
         Date date2 = (Date) javaObj;
         Assert.assertEquals(date1, date2);
-//        System.out.println(date2);
+        System.out.println(date2);
 
         DateMapper.setTimeZoneIgnored(false);
         date1 = new Date();
         lObj = JSONMapper.toJSON(date1);
-//        System.out.println(lObj.render(true));
+        System.out.println(lObj.render(true));
         javaObj = JSONMapper.toJava(lObj, date1.getClass());
         date2 = (Date) javaObj;
         Assert.assertEquals(date1, date2);
-//        System.out.println(date2);
+        System.out.println(date2);
     }
 
     @Test
@@ -595,7 +595,7 @@ public class MapperTest {
         JSONMapper.usePojoAccess();
         MyDate lMyDate = new MyDate(new Date().getTime(), "CEST");
         JSONValue lObj = JSONMapper.toJSON(lMyDate);
-//        System.out.println(lObj.render(true));
+        System.out.println(lObj.render(true));
     }
 
     @Test
@@ -607,10 +607,10 @@ public class MapperTest {
         
         // Java -> JSON.
         JSONValue lObj = JSONMapper.toJSON(lPojo);
-        Assert.assertEquals("{\n" + 
-        		"   \"firstName\" : \"Homer\",\n" + 
-        		"   \"lastName\" : \"Simpson\"\n" + 
-        		"}", lObj.render(true));
+        Assert.assertEquals("{\n" +
+                "   \"firstName\" : \"Homer\",\n" +
+                "   \"lastName\" : \"Simpson\"\n" +
+                "}", lObj.render(true));
         
         // JSON -> Java
         Object javaObj = JSONMapper.toJava(lObj, MyPojo.class);
