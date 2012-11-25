@@ -5,23 +5,24 @@
  ******************************************************************************/
 package com.sdicons.json.mapper.helper.impl;
 
-import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import java.math.BigInteger;
+
+import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.model.JSONValue;
+import com.sdicons.json.mapper.helper.SimpleMapperHelper;
 import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONString;
-
-import java.math.BigInteger;
+import com.sdicons.json.model.JSONValue;
 
 public class LongMapper
 implements SimpleMapperHelper
 {
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Long.class;
     }
 
-    public Object toJava(JSONValue aValue, Class aRequestedClass) throws MapperException
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
         if(aValue.isString())
         {
@@ -38,7 +39,7 @@ implements SimpleMapperHelper
         else throw new MapperException("LongMapper cannot map: " + aValue.getClass().getName());
     }
 
-    public JSONValue toJSON(Object aPojo)
+    public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
         if(!Long.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("LongMapper cannot map: " + aPojo.getClass().getName());

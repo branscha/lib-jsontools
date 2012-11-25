@@ -5,21 +5,22 @@
  ******************************************************************************/
 package com.sdicons.json.mapper.helper.impl;
 
+import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.mapper.helper.SimpleMapperHelper;
 import com.sdicons.json.model.JSONBoolean;
-import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
 
 public class BooleanMapper
 implements SimpleMapperHelper
 {
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Boolean.class;
     }
 
-    public Object toJava(JSONValue aValue, Class aRequestedClass) throws MapperException
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
         if(aValue.isString())
         {
@@ -29,10 +30,10 @@ implements SimpleMapperHelper
         {
             return ((JSONBoolean) aValue).getValue();
         }
-        else throw new MapperException("BooleanMapper cannot map: " + aValue.getClass().getName());        
+        else throw new MapperException("BooleanMapper cannot map: " + aValue.getClass().getName());
     }
 
-    public JSONValue toJSON(Object aPojo)
+    public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
         if(!Boolean.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("BooleanMapper cannot map: " + aPojo.getClass().getName());

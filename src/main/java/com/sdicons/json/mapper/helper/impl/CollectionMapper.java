@@ -5,36 +5,37 @@
  ******************************************************************************/
 package com.sdicons.json.mapper.helper.impl;
 
-import com.sdicons.json.mapper.JSONMapper;
-import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.ComplexMapperHelper;
-import com.sdicons.json.model.JSONArray;
-import com.sdicons.json.model.JSONValue;
-
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+
+import com.sdicons.json.mapper.JSONMapper;
+import com.sdicons.json.mapper.MapperException;
+import com.sdicons.json.mapper.helper.ComplexMapperHelper;
+import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONValue;
 
 public class CollectionMapper
 implements ComplexMapperHelper
 {
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Collection.class;
     }
 
-    public Object toJava(JSONValue aValue, Class aRequestedClass)
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass)
     throws MapperException
     {
-        return this.toJava(aValue, aRequestedClass, new Type[0]);
+        return this.toJava(mapper, aValue, aRequestedClass, new Type[0]);
     }
 
-    public Object toJava(JSONValue aValue, Class aRawClass, Type[] aTypes)
+    @SuppressWarnings("unchecked")
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRawClass, Type[] aTypes)
     throws MapperException
     {
         if (!aValue.isArray()) throw new MapperException("CollectionMapper cannot map: " + aValue.getClass().getName());
@@ -42,23 +43,25 @@ implements ComplexMapperHelper
             throw new MapperException("CollectionMapper cannot map: " + aValue.getClass().getName());
         JSONArray aObject = (JSONArray) aValue;
 
-        Collection lCollObj;
+        Collection<Object> lCollObj;
 
         try
         {
             // First we try to instantiate the correct
             // collection class.
             if(aRawClass.isInterface()){
-            	//we still can't deal with some unusual interfaces. 
+            	//we still can't deal with some unusual interfaces.
             	if(aRawClass==Set.class){
-            		lCollObj = new HashSet();
-            	}else if(aRawClass==SortedSet.class){
-            		lCollObj = new TreeSet();
-            	}else{
-            		lCollObj = new LinkedList();
+            		lCollObj = new HashSet<Object>();
+            	}
+            	else if(aRawClass==SortedSet.class){
+            		lCollObj = new TreeSet<Object>();
+            	}
+            	else{
+            		lCollObj = new LinkedList<Object>();
             	}
             }else{
-            	lCollObj = (Collection) aRawClass.newInstance();	
+            	lCollObj = (Collection<Object>) aRawClass.newInstance();
             }
         }
         catch (Exception e)
@@ -67,7 +70,7 @@ implements ComplexMapperHelper
             // it is abstract, or an interface, we use a default fallback class.
             // This solution is far from perfect, but we try to make the mapper
             // as convenient as possible.
-            lCollObj = new LinkedList();
+            lCollObj = new LinkedList<Object>();
         }
 
         if(aTypes.length == 0)
@@ -75,19 +78,19 @@ implements ComplexMapperHelper
             // Simple, raw collection.
             for (JSONValue lVal : aObject.getValue())
             {
-                lCollObj.add(JSONMapper.toJava(lVal));
+                lCollObj.add(mapper.toJava(lVal));
             }
         }
         else if(aTypes.length == 1)
         {
-            // Generic collection, we can make use of the type of the elements.            
+            // Generic collection, we can make use of the type of the elements.
             for (JSONValue lVal : aObject.getValue())
             {
-                
+
                 if(aTypes[0] instanceof Class)
-                	lCollObj.add(JSONMapper.toJava(lVal, (Class) aTypes[0]));
+                	lCollObj.add(mapper.toJava(lVal, (Class<?>) aTypes[0]));
                 else
-                	lCollObj.add(JSONMapper.toJava(lVal, (ParameterizedType) aTypes[0]));                	               
+                	lCollObj.add(mapper.toJava(lVal, (ParameterizedType) aTypes[0]));
             }
         }
         else
@@ -100,16 +103,17 @@ implements ComplexMapperHelper
         return lCollObj;
     }
 
-    public JSONValue toJSON(Object aPojo)
+    @SuppressWarnings("unchecked")
+    public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
         JSONArray lArray = new JSONArray();
         if(! Collection.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("CollectionMapper cannot map: " + aPojo.getClass().getName());
 
-        Collection lColl = (Collection) aPojo;
+        Collection<Object> lColl = (Collection<Object>) aPojo;
         for(Object lEl : lColl)
         {
-            lArray.getValue().add(JSONMapper.toJSON(lEl));
+            lArray.getValue().add(mapper.toJSON(lEl));
         }
         return lArray;
     }

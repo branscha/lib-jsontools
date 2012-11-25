@@ -5,17 +5,18 @@
  ******************************************************************************/
 package com.sdicons.json.mapper.helper;
 
+import java.lang.reflect.Type;
+
+import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.model.JSONValue;
 
-import java.lang.reflect.Type;
-
 public interface ComplexMapperHelper
-extends SimpleMapperHelper    
+extends SimpleMapperHelper
 {
-    Object toJava(JSONValue aValue, Class aRequestedClass, Type[] aTypes)
+    Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass, Type[] aTypes)
     throws MapperException;
 
-    JSONValue toJSON(Object aPojo)
+    JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException;
 }
