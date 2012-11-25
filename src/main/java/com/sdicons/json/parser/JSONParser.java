@@ -30,11 +30,11 @@ public class JSONParser
 {
     // Error messages.
     //
-    private static final String JSON001 = "JSON001: Unexpected content encountered.\nContext: %s X <--ERROR";
-    private static final String JSON002 = "JSON002: Input error during parsing.\nContext: %s X <--ERROR";
-    private static final String JSON003 = "JSON003: Expected symbol '%s' but received token/symbol '%s'.\nContext: %s X <--ERROR";
-    private static final String JSON004 = "JSON004: The object contains a key that is not a string.\nContext: %s X <--ERROR";
-    private static final String JSON005 = "JSON005: The parser was not initialized correctly.";
+    private static final String PARSER001 = "JSONParser/001: Unexpected content encountered.\nContext: %s X <--ERROR";
+    private static final String PARSER002 = "JSONParser/002: Input error during parsing.\nContext: %s X <--ERROR";
+    private static final String PARSER003 = "JSONParser/003: Expected symbol '%s' but received token/symbol '%s'.\nContext: %s X <--ERROR";
+    private static final String PARSER004 = "JSONParser/004: The object contains a key that is not a string.\nContext: %s X <--ERROR";
+    private static final String PARSER005 = "JSONParser/005: The parser was not initialized correctly.";
     //
     private static final String EOF = "EOF";
     private static final String NULL_LITERAL = "null";
@@ -106,8 +106,8 @@ public class JSONParser
     public JSONValue nextValue()
     throws JSONParserException
     {
-        if(st == null) throw new JSONParserException(JSON005);
-        
+        if(st == null) throw new JSONParserException(PARSER005);
+
         try
         {
             return parseJson(new StringBuilder());
@@ -117,7 +117,7 @@ public class JSONParser
             throw new JSONParserException(streamName, st.lineno(), 0, e.getMessage());
         }
     }
-    
+
     // The parsing workhorse.
     //
     protected JSONValue parseJson(StringBuilder parsed) {
@@ -152,7 +152,7 @@ public class JSONParser
                     BigInteger integer = number.toBigIntegerExact();
                     resultNumber = new JSONInteger(integer);
                 }
-                catch(ArithmeticException e) 
+                catch(ArithmeticException e)
                 {
                     resultNumber = new JSONDecimal(number);
                 }
@@ -191,11 +191,11 @@ public class JSONParser
                     //
                     return JSONNull.NULL;
                 } else {
-                    throw new IllegalArgumentException(String.format(JSON001, parsed.toString()));
+                    throw new IllegalArgumentException(String.format(PARSER001, parsed.toString()));
                 }
             }
         } catch (IOException e) {
-            throw new IllegalArgumentException(String.format(JSON002, parsed.toString()), e);
+            throw new IllegalArgumentException(String.format(PARSER002, parsed.toString()), e);
         }
     }
 
@@ -211,14 +211,14 @@ public class JSONParser
             final JSONObject obj = new JSONObject();
             obj.setLineCol(st.lineno(), 0);
             obj.setStreamName(streamName);
-            
+
             st.nextToken();
             while (st.ttype != '}') {
                 // Key.
                 st.pushBack();
                 final JSONValue key = parseJson(parsed);
                 if(!(key instanceof JSONString)) {
-                    throw new IllegalArgumentException(String.format(JSON004, parsed.toString()));
+                    throw new IllegalArgumentException(String.format(PARSER004, parsed.toString()));
                 }
 
                 // Colon.
@@ -248,7 +248,7 @@ public class JSONParser
             }
             return obj;
         } catch (IOException e) {
-            throw new IllegalArgumentException(String.format(JSON002, parsed.toString()), e);
+            throw new IllegalArgumentException(String.format(PARSER002, parsed.toString()), e);
         }
     }
 
@@ -272,7 +272,7 @@ public class JSONParser
     // character.
     //
     private String expectationError(String expected, StreamTokenizer st, StringBuilder parsed) {
-        throw new IllegalArgumentException(String.format(JSON003, expected, errToken(), parsed.toString()));
+        throw new IllegalArgumentException(String.format(PARSER003, expected, errToken(), parsed.toString()));
     }
 
     // Parse an object.
@@ -287,7 +287,7 @@ public class JSONParser
             final JSONArray array = new JSONArray();
             array.setLineCol(st.lineno(), 0);
             array.setStreamName(streamName);
-            
+
             st.nextToken();
             while (st.ttype != ']') {
                 // Element
@@ -311,7 +311,7 @@ public class JSONParser
             }
             return array;
         } catch (IOException e) {
-            throw new IllegalArgumentException(String.format(JSON002, parsed.toString()), e);
+            throw new IllegalArgumentException(String.format(PARSER002, parsed.toString()), e);
         }
     }
 }
