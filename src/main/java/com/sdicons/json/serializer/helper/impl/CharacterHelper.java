@@ -15,12 +15,16 @@ import com.sdicons.json.serializer.JSONSerializer;
 public class CharacterHelper
 extends AbstractHelper
 {
+    // Error messages
+    //
+    private static final String CHAR001 = "JSONSerializer/CharacterHelper/001: Length of the character value should be > 0";
+
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
         final String lValue = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue();
-        if(lValue.length() < 1) throw new JSONSerializeException("Length of value too short: " + lValue);
+        if(lValue.length() < 1) throw new JSONSerializeException(CHAR001);
         return lValue.charAt(0);
     }
 
