@@ -235,7 +235,7 @@ implements SerializeHelper
             }
             catch(ClassNotFoundException e)
             {
-                throw new JSONSerializeException(String.format(ARR002, lArrClassName));
+                throw new JSONSerializeException(String.format(ARR002, lArrClassName), e);
             }
         }
     }

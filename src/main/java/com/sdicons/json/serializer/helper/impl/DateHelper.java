@@ -18,6 +18,11 @@ import com.sdicons.json.serializer.helper.SerializeHelper;
 public class DateHelper
 implements SerializeHelper
 {
+
+    // Error messages.
+    //
+    private static final String DAT001 = "JSONSerializer/DateHelper/001: Could not parse the date '%s'.";
+
     private SimpleDateFormat dateFormat;
 
     public DateHelper()
@@ -36,14 +41,15 @@ implements SerializeHelper
     throws JSONSerializeException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
+        String dateRepr = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue().trim();
 
         try
         {
-            return dateFormat.parse(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue().trim());
+            return dateFormat.parse(dateRepr);
         }
         catch(Exception e)
         {
-            throw new JSONSerializeException(e.getMessage());
+            throw new JSONSerializeException(String.format(DAT001, dateRepr), e);
         }
     }
 

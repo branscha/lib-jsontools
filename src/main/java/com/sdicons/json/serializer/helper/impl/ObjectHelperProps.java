@@ -21,16 +21,27 @@ import com.sdicons.json.serializer.helper.SerializeHelper;
 public class ObjectHelperProps
 implements SerializeHelper
 {
+    // Error messages.
+    //
+    private static final String OBJ001 = "JSONSerializer/ObjectHelperProps/001: Error while introspecting JavaBean of class '%s'.";
+    private static final String OBJ002 = "JSONSerializer/ObjectHelperProps/002: Illegal access while trying to fetch a bean property '%s' of class '%s'.";
+    private static final String OBJ003 = "JSONSerializer/ObjectHelperProps/003: Could not find a setter for property '%s' in class '%s'.";
+    private static final String OBJ004 = "JSONSerializer/ObjectHelperProps/004: Could not find JavaBean class '%s'.";
+    private static final String OBJ005 = "JSONSerializer/ObjectHelperProps/005: IllegalAccessException while trying to instantiate bean '%s'.";
+    private static final String OBJ006 = "JSONSerializer/ObjectHelperProps/006: InstantiationException while trying to instantiate bean '%s'.";
+    private static final String OBJ007 = "JSONSerializer/ObjectHelperProps/007: IntrospectionException while trying to fill bean '%s'.";
+    private static final String OBJ008 = "JSONSerializer/ObjectHelperProps/008: InvocationTargetException while trying to fill bean '%s'.";
+
     public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         // We will render the bean properties as the elements of a JSON object.
         final JSONObject lElements = new JSONObject();
         aObjectElement.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, lElements);
+        Class<?> lClass = aObj.getClass();
 
         try
         {
-            Class<?> lClass = aObj.getClass();
             PropertyDescriptor[] lPropDesc = Introspector.getBeanInfo(lClass, Introspector.USE_ALL_BEANINFO).getPropertyDescriptors();
             for (PropertyDescriptor aLPropDesc : lPropDesc)
             {
@@ -41,24 +52,23 @@ implements SerializeHelper
                 // Only serialize if the property is READ-WRITE.
                 if (lReader != null && lWriter != null)
                 {
-                    lElements.getValue().put(lPropName, aMarshall.marshalImpl(lReader.invoke(aObj), aPool));
+                    try {
+                        lElements.getValue().put(lPropName, aMarshall.marshalImpl(lReader.invoke(aObj), aPool));
+                    }
+                    catch(IllegalAccessException e)
+                    {
+                        throw new JSONSerializeException(String.format(OBJ002, lPropName, lClass.getName()), e);
+                    }
+                    catch(InvocationTargetException e)
+                    {
+                        throw new JSONSerializeException(String.format(OBJ002, lPropName, lClass.getName()), e);
+                    }
                 }
             }
         }
         catch(IntrospectionException e)
         {
-            final String lMsg = "Error while introspecting JavaBean.";
-            throw new JSONSerializeException(lMsg);
-        }
-        catch(IllegalAccessException e)
-        {
-            final String lMsg = "Illegal access while trying to fetch a bean property (1).";
-            throw new JSONSerializeException(lMsg);
-        }
-        catch(InvocationTargetException e)
-        {
-            final String lMsg = "Illegal access while trying to fetch a bean property (2).";
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(OBJ001, lClass.getName()), e);
         }
     }
 
@@ -103,8 +113,7 @@ implements SerializeHelper
                         Method lWriter = aLPropDesc.getWriteMethod();
                         if(lWriter == null)
                         {
-                            final String lMsg = "Could not find a setter for prop: " + lPropname + " in class: " + lBeanClassName;
-                            throw new JSONSerializeException(lMsg);
+                            throw new JSONSerializeException(String.format(OBJ003, lPropname, lBeanClassName));
                         }
                         lWriter.invoke(lBean, lProp);
                         break;
@@ -113,8 +122,7 @@ implements SerializeHelper
 
                 if(!lFoundWriter)
                 {
-                    final String lMsg = "Could not find a setter for prop: " + lPropname + " in class: " + lBeanClassName;
-                    throw new JSONSerializeException(lMsg);
+                    throw new JSONSerializeException(String.format(OBJ003, lPropname, lBeanClassName));
                 }
             }
 
@@ -122,28 +130,23 @@ implements SerializeHelper
         }
         catch (ClassNotFoundException e)
         {
-            final String lMsg = "Could not find JavaBean class: " + lBeanClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(OBJ004, lBeanClassName), e);
         }
         catch (IllegalAccessException e)
         {
-            final String lMsg = "IllegalAccessException while trying to instantiate bean: " + lBeanClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(OBJ005, lBeanClassName), e);
         }
         catch (InstantiationException e)
         {
-            final String lMsg = "InstantiationException while trying to instantiate bean: " + lBeanClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(OBJ006, lBeanClassName), e);
         }
         catch (IntrospectionException e)
         {
-            final String lMsg = "IntrospectionException while trying to fill bean: " + lBeanClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(OBJ007, lBeanClassName), e);
         }
         catch (InvocationTargetException e)
         {
-            final String lMsg = "InvocationTargetException while trying to fill bean: " + lBeanClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(OBJ008, lBeanClassName), e);
         }
     }
 

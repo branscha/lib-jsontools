@@ -414,7 +414,7 @@ public class JSONSerializer
                    }
                    catch (ClassNotFoundException e)
                    {
-                       throw new JSONSerializeException(String.format(SER004, lBeanClassName));
+                       throw new JSONSerializeException(String.format(SER004, lBeanClassName), e);
                    }
                }
                else
@@ -456,7 +456,7 @@ public class JSONSerializer
         catch(Exception e)
         {
 
-            throw new JSONSerializeException(String.format(SER007, lType, lValue));
+            throw new JSONSerializeException(String.format(SER007, lType, lValue), e);
         }
     }
 

@@ -26,6 +26,22 @@ import com.sdicons.json.serializer.helper.SerializeHelper;
 public class ObjectHelperFields
 implements SerializeHelper
 {
+    // Error messages.
+    //
+    private static final String OBJ001 = "JSONSerializer/ObjectHelperFields/001: Found inconsistency in class: '%s'. If annotated methods are used, it should contain both @JSONConstruct and @JSONSerialize together.";
+    private static final String OBJ002 = "JSONSerializer/ObjectHelperFields/002: Error while trying to invoke 'writeReplace' on instance of class: '%1$s'.";
+    private static final String OBJ003 = "JSONSerializer/ObjectHelperFields/003: Error while serializing. Error while invoking the @JSONSerialize method called '%1$s(...)' on an instance of class: '%2$s'.";
+    private static final String OBJ004 = "JSONSerializer/ObjectHelperFields/004: Error while serializing. Error while serializing element nr %1$d from the @JSONSerialize method: '%2$s(...)' on instance of class: '%3$s'.";
+    private static final String OBJ005 = "JSONSerializer/ObjectHelperFields/005: Error while serializing. Error while serializing field: '%1$s' from instance of class: '%2$s'.";
+    private static final String OBJ006 = "JSONSerializer/ObjectHelperFields/006: Error while serializing. Error while reading field: '%1$s' from instance of class: '%2$s'.";
+    private static final String OBJ007 = "JSONSerializer/ObjectHelperFields/007: Error while deserializing. Error while calling the @JSONConstruct constructor in class: '%1$s' on parameter nr: %2$d with a value of class: '%3$s'.";
+    private static final String OBJ008 = "JSONSerializer/ObjectHelperFields/008: Error while deserializing. Tried to instantiate an object (using annotated constructor) of class: '%1$s'.";
+    private static final String OBJ009 = "JSONSerializer/ObjectHelperFields/009: Error while deserializing. Type error while trying to set the field: '%1$s' in class: '%2$s' with a value of class: '%3$s'.";
+    private static final String OBJ010 = "JSONSerializer/ObjectHelperFields/010: Error while deserializing. Tried to invoke 'readResolve' on instance of class: '%1$s'.";
+    private static final String OBJ011 = "JSONSerializer/ObjectHelperFields/011: Could not find JavaBean class '%s'.";
+    private static final String OBJ012 = "JSONSerializer/ObjectHelperFields/012: IllegalAccessException while trying to instantiate bean of class '%s'.";
+    private static final String OBJ013 = "JSONSerializer/ObjectHelperFields/013: InstantiationException while trying to instantiate bean of class '%s'. ";
+
     private Map<Class<?>, AnnotatedMethods> annotatedPool = new HashMap<Class<?>, AnnotatedMethods>();
 
     private static class AnnotatedMethods
@@ -51,7 +67,7 @@ implements SerializeHelper
             final Method lMeth = getAnnotatedSerializingMethod(aClass);
 
             if((lMeth == null && lCons != null) || (lMeth != null && lCons == null))
-                throw new JSONSerializeException(String.format("ObjectHelperFields found inconsistency in class: '%1$s'. If annotated methods are used, it should contain both @HessianConstruct and @HessianSerialize together.", aClass.getClass().getName()));
+                throw new JSONSerializeException(String.format(OBJ001, aClass.getClass().getName()));
 
             lResult = new AnnotatedMethods(lCons, lMeth);
             annotatedPool.put(aClass, lResult);
@@ -116,7 +132,7 @@ implements SerializeHelper
     throws JSONSerializeException
     {
         // First we have to cope with the special case of "writeReplace" objects.
-        // It is described in the official specs of the serializable interface.
+        // It is described in the official specifications of the serializable interface.
         ////////////////////////////////////////////////////////////////////////////
         if(aObj instanceof Serializable)
         {
@@ -137,7 +153,7 @@ implements SerializeHelper
             }
             catch(Exception e)
             {
-                throw new JSONSerializeException(String.format("ObjectHelperDirect error while trying to invoke 'writeReplace' on instance of class: '%1$s'.", aObj.getClass().getName()));
+                throw new JSONSerializeException(String.format(OBJ002, aObj.getClass().getName()), e);
             }
         }
         ////////////////////////////////////////////////////////////////////////////
@@ -162,7 +178,7 @@ implements SerializeHelper
             }
             catch(Exception e)
             {
-                throw new JSONSerializeException(String.format("ObjectHelperDirect error while serializing. Error while invoking the @HessianSerialize method called '%1$s(...)' on an instance of class: '%2$s'.", lAnnotated.serialize.getName(), lClass.getName()));
+                throw new JSONSerializeException(String.format(OBJ003, lAnnotated.serialize.getName(), lClass.getName()), e);
             }
 
             int i = 0;
@@ -176,7 +192,7 @@ implements SerializeHelper
             }
             catch(JSONSerializeException e)
             {
-                throw new JSONSerializeException(String.format("ObjectHelperDirect error while serializing. Error while serializing element nr %1$d from the @HessianSerialize method: '%2$s(...)' on instance of class: '%3$s'.", i, lAnnotated.serialize.getName(), lClass.getName()));
+                throw new JSONSerializeException(String.format(OBJ004, i, lAnnotated.serialize.getName(), lClass.getName()), e);
             }
         }
 
@@ -189,11 +205,11 @@ implements SerializeHelper
             }
             catch(JSONSerializeException e)
             {
-                throw new JSONSerializeException(String.format("ObjectHelperDirect error while serializing. Error while serializing field: '%1$s' from instance of class: '%2$s'.", lFld.getName(), lClass.getName()));
+                throw new JSONSerializeException(String.format(OBJ005, lFld.getName(), lClass.getName()), e);
             }
             catch(Exception e)
             {
-                throw new JSONSerializeException(String.format("ObjectHelperDirect error while serializing. Error while reading field: '%1$s' from instance of class: '%2$s'.", lFld.getName(), lClass.getName()));
+                throw new JSONSerializeException(String.format(OBJ006, lFld.getName(), lClass.getName()), e);
             }
         }
     }
@@ -238,7 +254,7 @@ implements SerializeHelper
                     }
                     catch(JSONSerializeException e)
                     {
-                        throw new JSONSerializeException(String.format("ObjectHelperDirect error while deserializing. Error while calling the @JSONConstruct constructor in class: '%1$s' on parameter nr: %2$d with a value of class: '%3$s'.", lBeanClass.getName(), i, lSubEl.getClass().getName()));
+                        throw new JSONSerializeException(String.format(OBJ007, lBeanClass.getName(), i, lSubEl.getClass().getName()), e);
                     }
                 }
 
@@ -249,7 +265,7 @@ implements SerializeHelper
                 }
                 catch(Exception e)
                 {
-                    throw new JSONSerializeException(String.format("ObjectHelperDirect error while deserializing. Tried to instantiate an object (using annotated constructor) of class: '%1$s'.", lBeanClass.getName()));
+                    throw new JSONSerializeException(String.format(OBJ008, lBeanClass.getName()), e);
                 }
             }
             else
@@ -278,7 +294,7 @@ implements SerializeHelper
                         }
                         catch (Exception e)
                         {
-                            throw new JSONSerializeException(String.format("ObjectHelperDirect error while deserializing. Type error while trying to set the field: '%1$s' in class: '%2$s' with a value of class: '%3$s'.", lFld.getName(), lBeanClass.getName(), lFldValue.getClass().getName()));
+                            throw new JSONSerializeException(String.format(OBJ009, lFld.getName(), lBeanClass.getName(), lFldValue.getClass().getName()), e);
                         }
                     }
                 }
@@ -306,7 +322,7 @@ implements SerializeHelper
                 }
                 catch (Exception e)
                 {
-                    throw new JSONSerializeException(String.format("ObjectHelperDirect error while deserializing. Tried to invoke 'readResolve' on instance of class: '%1$s'.", lBean.getClass().getName()));
+                    throw new JSONSerializeException(String.format(OBJ010, lBean.getClass().getName()), e);
                 }
             }
             ////////////////////////////////////////////////////////////////////////////
@@ -315,18 +331,15 @@ implements SerializeHelper
         }
         catch (ClassNotFoundException e)
         {
-            final String lMsg = "Could not find JavaBean class: " + lBeanClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(OBJ011, lBeanClassName), e);
         }
         catch (IllegalAccessException e)
         {
-            final String lMsg = "IllegalAccessException while trying to instantiate bean: " + lBeanClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(OBJ012, lBeanClassName), e);
         }
         catch (InstantiationException e)
         {
-            final String lMsg = "InstantiationException while trying to instantiate bean: " + lBeanClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(OBJ013, lBeanClassName), e);
         }
     }
 

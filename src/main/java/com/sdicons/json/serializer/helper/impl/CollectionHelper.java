@@ -71,15 +71,15 @@ implements SerializeHelper
         }
         catch (IllegalAccessException e)
         {
-            throw new JSONSerializeException(String.format(COLL001, lCollectionClassName));
+            throw new JSONSerializeException(String.format(COLL001, lCollectionClassName), e);
         }
         catch (InstantiationException e)
         {
-            throw new JSONSerializeException(String.format(COLL002, lCollectionClassName));
+            throw new JSONSerializeException(String.format(COLL002, lCollectionClassName), e);
         }
         catch (ClassNotFoundException e)
         {
-            throw new JSONSerializeException(String.format(COLL003, lCollectionClassName));
+            throw new JSONSerializeException(String.format(COLL003, lCollectionClassName), e);
         }
     }
 
