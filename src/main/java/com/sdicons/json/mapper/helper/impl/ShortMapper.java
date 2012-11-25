@@ -6,6 +6,7 @@
 package com.sdicons.json.mapper.helper.impl;
 
 import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.model.JSONInteger;
@@ -21,7 +22,7 @@ implements SimpleMapperHelper
         return Short.class;
     }
 
-    public Object toJava(JSONValue aValue, Class aRequestedClass) throws MapperException
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass) throws MapperException
     {
         if(aValue.isString())
         {
@@ -38,7 +39,7 @@ implements SimpleMapperHelper
         else throw new MapperException("ShortMapper cannot map: " + aValue.getClass().getName());        
     }
 
-    public JSONValue toJSON(Object aPojo)
+    public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
         if(!Short.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("ShortMapper cannot map: " + aPojo.getClass().getName());

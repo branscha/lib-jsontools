@@ -27,7 +27,7 @@ implements SimpleMapperHelper
         return Object.class;
     }
 
-    public Object toJava(JSONValue aValue, Class aRequestedClass)
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass)
     throws MapperException
     {
         if(!aValue.isObject()) throw new MapperException("ObjectMapper cannot map: " + aValue.getClass().getName());
@@ -68,13 +68,13 @@ implements SimpleMapperHelper
                                 // We can make use of the extra type information of the parameter of the
                                 // seter. This extra type information can be exploited by the mapper
                                 // to produce a more fine grained mapping.
-                                lProp = JSONMapper.toJava(lSubEl, (ParameterizedType) lTypes[0]);
+                                lProp = mapper.toJava(lSubEl, (ParameterizedType) lTypes[0]);
                             }
                             else
                             {
                                 // We cannot use extra type information, we fall back on the
                                 // raw class information.
-                                lProp = JSONMapper.toJava(lSubEl, aLPropDesc.getPropertyType());
+                                lProp = mapper.toJava(lSubEl, aLPropDesc.getPropertyType());
                             }
 
                             lWriter.invoke(lBean, lProp);
@@ -113,7 +113,7 @@ implements SimpleMapperHelper
         }
     }
 
-    public JSONValue toJSON(Object aPojo)
+    public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
          // We will render the bean properties as the elements of a JSON object.
@@ -141,7 +141,7 @@ implements SimpleMapperHelper
                 
                 if (lReader != null)
                 {
-                    lElements.getValue().put(lPropName, JSONMapper.toJSON(lReader.invoke(aPojo)));
+                    lElements.getValue().put(lPropName, mapper.toJSON(lReader.invoke(aPojo)));
                 }
             }
             

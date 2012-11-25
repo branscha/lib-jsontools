@@ -13,6 +13,7 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
@@ -35,7 +36,7 @@ extends AbstractMapper
         return Date.class;
     }
 
-    public JSONValue toJSON(Object aPojo) throws MapperException
+    public JSONValue toJSON(JSONMapper mapper, Object aPojo) throws MapperException
     {
     	if(DateMapper.isTimeZoneIgnored())
     		return new JSONString(toRFC3339((Date) aPojo));
@@ -43,7 +44,7 @@ extends AbstractMapper
     		return new JSONString(toRFC3339((Date) aPojo,false));
     }
 
-    public Object toJava(JSONValue aValue, Class aRequestedClass) throws MapperException
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass) throws MapperException
     {
         if (!aValue.isString()) throw new MapperException("DateMapper cannot map class: " + aValue.getClass().getName());
         if(DateMapper.isTimeZoneIgnored())

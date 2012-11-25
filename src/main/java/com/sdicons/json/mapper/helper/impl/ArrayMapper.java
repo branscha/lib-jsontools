@@ -20,10 +20,10 @@ import com.sdicons.json.model.JSONValue;
 public class ArrayMapper
 implements SimpleMapperHelper
 {
-    public JSONValue toJSON(Object aObj)
+    public JSONValue toJSON(JSONMapper mapper, Object aObj)
     throws MapperException
     {
-    	final Class lClass = aObj.getClass();
+    	final Class<?> lClass = aObj.getClass();
         final String lObjClassName = lClass.getName();
 
     	 String lComponentName = "unknown";
@@ -42,64 +42,64 @@ implements SimpleMapperHelper
             {
                 int[] lArr = (int[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(JSONMapper.toJSON(lArr[i]));
+                    lElements.getValue().add(mapper.toJSON(lArr[i]));
             }
             if("C".equals(lComponentName))
             {
                 char[] lArr = (char[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                	lElements.getValue().add(JSONMapper.toJSON(lArr[i]));
+                	lElements.getValue().add(mapper.toJSON(lArr[i]));
             }
             else if("Z".equals(lComponentName))
             {
                 boolean[] lArr = (boolean[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                	lElements.getValue().add(JSONMapper.toJSON(lArr[i]));
+                	lElements.getValue().add(mapper.toJSON(lArr[i]));
             }
             else if("S".equals(lComponentName))
             {
                 short[] lArr = (short[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                	lElements.getValue().add(JSONMapper.toJSON(lArr[i]));
+                	lElements.getValue().add(mapper.toJSON(lArr[i]));
             }
             else if("B".equals(lComponentName))
             {
                 byte[] lArr = (byte[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                	lElements.getValue().add(JSONMapper.toJSON(lArr[i]));
+                	lElements.getValue().add(mapper.toJSON(lArr[i]));
             }
             else if("J".equals(lComponentName))
             {
                 long[] lArr = (long[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                	lElements.getValue().add(JSONMapper.toJSON(lArr[i]));
+                	lElements.getValue().add(mapper.toJSON(lArr[i]));
             }
             else if("F".equals(lComponentName))
             {
                 float[] lArr = (float[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                	lElements.getValue().add(JSONMapper.toJSON(lArr[i]));
+                	lElements.getValue().add(mapper.toJSON(lArr[i]));
             }
             else if("D".equals(lComponentName))
             {
                 double[] lArr = (double[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                	lElements.getValue().add(JSONMapper.toJSON(lArr[i]));
+                	lElements.getValue().add(mapper.toJSON(lArr[i]));
             }
         }
         else
         {
-            Iterator lIter = Arrays.asList((Object[]) aObj).iterator();
+            Iterator<Object> lIter = Arrays.asList((Object[]) aObj).iterator();
             while(lIter.hasNext())
             {
                 Object lArrEl = lIter.next();
-                lElements.getValue().add(JSONMapper.toJSON(lArrEl));
+                lElements.getValue().add(mapper.toJSON(lArrEl));
             }
         }
         return lElements;
     }
 
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return null;
     }
@@ -111,7 +111,7 @@ implements SimpleMapperHelper
                 "D".equals(aClassName) || "C".equals(aClassName));
     }
 
-	public Object toJava(JSONValue aValue, Class aRequestedClass) throws MapperException {
+	public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass) throws MapperException {
 		if(!aValue.isArray()) throw new MapperException("ArrayMapper cannot map: " + aValue.getClass().getName());
 		
         // First we fetch all array elements.
@@ -145,9 +145,9 @@ implements SimpleMapperHelper
                         final String lMsg = "Unknown primitive array type: " + lArrClassName;
                         throw new  MapperException(lMsg);
                     }
-            		lElements.add(JSONMapper.toJava(jsonValue,primitiveClass));
+            		lElements.add(mapper.toJava(jsonValue,primitiveClass));
             	}else{
-            		lElements.add(JSONMapper.toJava(jsonValue,Class.forName(lArrClassName)));	
+            		lElements.add(mapper.toJava(jsonValue,Class.forName(lArrClassName)));	
             	}
             	
 			}

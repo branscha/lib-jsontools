@@ -24,13 +24,13 @@ implements ComplexMapperHelper
         return Map.class;
     }
 
-    public Object toJava(JSONValue aValue, Class aRequestedClass)
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass)
     throws MapperException
     {
-        return this.toJava(aValue, aRequestedClass, new Type[0]);
+        return this.toJava(mapper, aValue, aRequestedClass, new Type[0]);
     }
 
-    public Object toJava(JSONValue aValue, Class aRawClass, Type[] aTypes)
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRawClass, Type[] aTypes)
     throws MapperException
     {
         if (!aValue.isObject()) throw new MapperException("MapMapper cannot map: " + aValue.getClass().getName());
@@ -61,7 +61,7 @@ implements ComplexMapperHelper
             for (String lKey : aObject.getValue().keySet())
             {
                 JSONValue lVal = aObject.getValue().get(lKey);
-                lMapObj.put(lKey, JSONMapper.toJava(lVal));
+                lMapObj.put(lKey, mapper.toJava(lVal));
             }
         }
         else if(aTypes.length == 2)
@@ -74,9 +74,9 @@ implements ComplexMapperHelper
                 {
                     JSONValue lVal = aObject.getValue().get(lKey);
                     if(aTypes[1] instanceof Class)
-                    	lMapObj.put(lKey, JSONMapper.toJava(lVal, (Class) aTypes[1]));
+                    	lMapObj.put(lKey, mapper.toJava(lVal, (Class) aTypes[1]));
                     else
-                    	lMapObj.put(lKey, JSONMapper.toJava(lVal, (ParameterizedType) aTypes[1]));
+                    	lMapObj.put(lKey, mapper.toJava(lVal, (ParameterizedType) aTypes[1]));
                 }
             }
         }
@@ -90,7 +90,7 @@ implements ComplexMapperHelper
         return lMapObj;
     }
 
-    public JSONValue toJSON(Object aPojo)
+    public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
         final JSONObject lObj = new JSONObject();
@@ -99,7 +99,7 @@ implements ComplexMapperHelper
         Map lMap = (Map) aPojo;
         for(Object lKey : lMap.keySet())
         {
-            lObj.getValue().put(lKey.toString(), JSONMapper.toJSON(lMap.get(lKey)));
+            lObj.getValue().put(lKey.toString(), mapper.toJSON(lMap.get(lKey)));
         }
         return lObj;
     }

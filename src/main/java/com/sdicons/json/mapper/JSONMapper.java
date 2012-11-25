@@ -35,9 +35,9 @@ import java.util.LinkedList;
  */
 public class JSONMapper
 {
-    private static HelperRepository<SimpleMapperHelper> repo = new HelperRepository<SimpleMapperHelper>();
+    private HelperRepository<SimpleMapperHelper> repo = new HelperRepository<SimpleMapperHelper>();
 
-    static
+    public JSONMapper()
     {
         repo.addHelper(new ObjectMapper());
 //        repo.addHelper(new ObjectMapperDirect());
@@ -67,7 +67,7 @@ public class JSONMapper
      * @return  The resulting Java object, the POJO representation.
      * @throws MapperException when an error occurs during mapping.
      */
-    public static Object toJava(JSONValue aValue, Class aPojoClass)
+    public Object toJava(JSONValue aValue, Class aPojoClass)
     throws MapperException
     {
         // Null references are not allowed.
@@ -80,7 +80,7 @@ public class JSONMapper
         else if(aValue.isNull()) return null;                
         if(aPojoClass.isArray()){
         	ArrayMapper arrayMapper=new ArrayMapper();
-        	return arrayMapper.toJava(aValue, aPojoClass);
+        	return arrayMapper.toJava(this, aValue, aPojoClass);
         }
         // Use the class helpers for built in types.
         if(aPojoClass == Boolean.TYPE) aPojoClass = Boolean.class;
@@ -100,7 +100,7 @@ public class JSONMapper
             final String lMsg = "Could not find a mapper helper for class: " + aPojoClass.getName();
             throw new MapperException(lMsg);
         }
-        else return lHelperSimple.toJava(aValue, aPojoClass);
+        else return lHelperSimple.toJava(this, aValue, aPojoClass);
     }
 
     /**
@@ -110,7 +110,7 @@ public class JSONMapper
      * @return The resulting Java POJO.
      * @throws MapperException When the JSON text cannot be mapped to POJO.
      */
-    public static Object toJava(JSONValue aValue, ParameterizedType aGenericType)
+    public Object toJava(JSONValue aValue, ParameterizedType aGenericType)
     throws MapperException
     {
         // Null references are not allowed.
@@ -136,8 +136,8 @@ public class JSONMapper
         }
         else
         {
-            if(lMapperHelper instanceof ComplexMapperHelper) return ((ComplexMapperHelper) lMapperHelper).toJava(aValue, lRawClass, lTypes);
-            else return lMapperHelper.toJava(aValue, lRawClass);
+            if(lMapperHelper instanceof ComplexMapperHelper) return ((ComplexMapperHelper) lMapperHelper).toJava(this, aValue, lRawClass, lTypes);
+            else return lMapperHelper.toJava(this, aValue, lRawClass);
         }
     }
 
@@ -148,7 +148,7 @@ public class JSONMapper
      * @return he resulting Java POJO.
      * @throws MapperException When the JSON text cannot be mapped to POJO.
      */
-    public static Object toJava(JSONValue aValue)
+    public Object toJava(JSONValue aValue)
     throws MapperException
     {
         if(aValue.isArray()) return toJava(aValue, LinkedList.class);
@@ -165,14 +165,14 @@ public class JSONMapper
      * @return The JSON representation.
      * @throws MapperException If something goes wrong during mapping.
      */
-    public static JSONValue toJSON(Object aPojo)
+    public JSONValue toJSON(Object aPojo)
     throws MapperException
     {
         if(aPojo == null) return JSONNull.NULL;
         final Class lObjectClass =  aPojo.getClass();
         if(lObjectClass.isArray()){
             final ArrayMapper arrayMapper = new ArrayMapper();            
-        	return arrayMapper.toJSON(aPojo);
+        	return arrayMapper.toJSON(this, aPojo);
         }
         
         final SimpleMapperHelper lHelperSimple = repo.findHelper(aPojo.getClass());
@@ -182,7 +182,7 @@ public class JSONMapper
             final String lMsg = "Could not find a mapper helper for class: " + aPojo.getClass().getName();
             throw new MapperException(lMsg);
         }
-        return lHelperSimple.toJSON(aPojo);
+        return lHelperSimple.toJSON(this, aPojo);
     }
 
     /**
@@ -190,12 +190,12 @@ public class JSONMapper
      *
      * @param aHelper the custom helper you want to add to the mapper.
      */
-    public static void addHelper(SimpleMapperHelper aHelper)
+    public void addHelper(SimpleMapperHelper aHelper)
     {
         repo.addHelper(aHelper);
     }
 
-    public static HelperRepository<SimpleMapperHelper> getRepository()
+    public HelperRepository<SimpleMapperHelper> getRepository()
     {
         return repo;
     }
@@ -207,7 +207,7 @@ public class JSONMapper
      * the @JSONConstruct and @JSONMap annotations can be used as well in the mapped POJO to
      * indicate which constructor has to be used.
      */
-    public static void usePojoAccess()
+    public void usePojoAccess()
     {
         addHelper(new ObjectMapperDirect());
     }
@@ -217,7 +217,7 @@ public class JSONMapper
      * using their JavaBean properties. The mapped JavaBean always needs a
      * default constructor without arguments.
      */
-    public static void useJavaBeanAccess()
+    public void useJavaBeanAccess()
     {
         addHelper(new ObjectMapper());
     }

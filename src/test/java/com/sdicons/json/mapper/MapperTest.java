@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.sdicons.json.helper.JSONConstruct;
@@ -294,6 +295,14 @@ public class MapperTest {
             return "MyPojo{" + "firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + '}';
         }
     }
+    
+    private JSONMapper mapper;
+    
+    @Before
+    public void setup() {
+        mapper = new JSONMapper();
+    }
+    
 
     @Test
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -338,7 +347,7 @@ public class MapperTest {
         lMap.put("duo", new Date());
         lDuupje.setLinkedMap(lMap);
         //
-        JSONValue lObj = JSONMapper.toJSON(lDuupje);
+        JSONValue lObj = mapper.toJSON(lDuupje);
         String toJS = lObj.render(true);
         Assert.assertNotNull(toJS);
         //
@@ -349,7 +358,7 @@ public class MapperTest {
         lObj = jsonParser.nextValue();
         
         // JSON -> Java.
-        MapperTest.TestBean lLitmus = (MapperTest.TestBean) JSONMapper.toJava(lObj, TestBean.class);
+        MapperTest.TestBean lLitmus = (MapperTest.TestBean) mapper.toJava(lObj, TestBean.class);
         Assert.assertNotNull(lLitmus);
 //        Assert.assertEquals("changed me",lLitmus.onlyWritableProperty);
     }
@@ -408,12 +417,12 @@ public class MapperTest {
         
         
         // Map Java -> JSON
-        JSONValue lObj = JSONMapper.toJSON(graph);
+        JSONValue lObj = mapper.toJSON(graph);
         Assert.assertNotNull(lObj);
         Assert.assertNotNull(lObj.render(true));
 
         // JSON -> Java.
-        Object javaObj  = JSONMapper.toJava(lObj, graph.getClass());
+        Object javaObj  = mapper.toJava(lObj, graph.getClass());
         Assert.assertThat(javaObj, is(instanceOf(Graph.class)));
         Graph graph2 = (Graph) javaObj;
         //
@@ -439,11 +448,11 @@ public class MapperTest {
         // Map an array to JSON.
         //
         String[] orig = { "abc", "bcd", "def" };
-        JSONValue json = JSONMapper.toJSON(orig);
+        JSONValue json = mapper.toJSON(orig);
         Assert.assertNotNull(json);
         // Map JSON to an object.
         //
-        Object unmapped = JSONMapper.toJava(json, orig.getClass());
+        Object unmapped = mapper.toJava(json, orig.getClass());
         Assert.assertThat(unmapped, is(instanceOf(String[].class)));
         Assert.assertArrayEquals(orig, (String[]) unmapped);
     }
@@ -495,10 +504,10 @@ public class MapperTest {
         // Map a POJO array  to JSON.
         //
         TestBean4[] bean4s = { new TestBean4("abc"), new TestBean4("bcd"), new TestBean4("def") };
-        JSONValue lObj = JSONMapper.toJSON(bean4s);
+        JSONValue lObj = mapper.toJSON(bean4s);
         // Unmap from JSON to Java.
         //
-        Object javaObj = JSONMapper.toJava(lObj, bean4s.getClass());
+        Object javaObj = mapper.toJava(lObj, bean4s.getClass());
         TestBean4[] beans = (TestBean4[]) javaObj;
         Assert.assertArrayEquals(bean4s, beans);
     }
@@ -509,11 +518,11 @@ public class MapperTest {
         //
         String[][] strings = { { "abc", "bcd", "def" }, { "abc", "bcd", "def" } };
         //
-        JSONValue lObj = JSONMapper.toJSON(strings);
+        JSONValue lObj = mapper.toJSON(strings);
         Assert.assertThat(lObj, is(instanceOf(JSONArray.class)));
         //
         // Map JSON -> Java.
-        Object javaObj = JSONMapper.toJava(lObj, strings.getClass());
+        Object javaObj = mapper.toJava(lObj, strings.getClass());
         Assert.assertThat(javaObj, is(instanceOf(String[][].class)));
         String[][] strings2 = (String[][]) javaObj;
         Assert.assertArrayEquals(strings, strings2);
@@ -552,10 +561,10 @@ public class MapperTest {
         setAndListBean.setStringSet(stringSet);
         setAndListBean.setStringList(stringList);
 
-        JSONValue jsonValue = JSONMapper.toJSON(setAndListBean);
+        JSONValue jsonValue = mapper.toJSON(setAndListBean);
         Assert.assertNotNull(jsonValue.render(true));
         
-        Object object = JSONMapper.toJava(jsonValue, setAndListBean.getClass());
+        Object object = mapper.toJava(jsonValue, setAndListBean.getClass());
         SetAndListBean setAndListBean2 = (SetAndListBean) object;
         
         Iterator<String> iterator = setAndListBean2.getStringList().iterator();
@@ -574,19 +583,19 @@ public class MapperTest {
         // By Default,DateMapper will ignore the timezone.
         // it's convenient for me,and maybe others.
         Date date1 = new Date();
-        JSONValue lObj = JSONMapper.toJSON(date1);
+        JSONValue lObj = mapper.toJSON(date1);
         Assert.assertNotNull(lObj.render(true));
         //
-        Object javaObj = JSONMapper.toJava(lObj, date1.getClass());
+        Object javaObj = mapper.toJava(lObj, date1.getClass());
         Date date2 = (Date) javaObj;
         Assert.assertEquals(date1, date2);
         //
         DateMapper.setTimeZoneIgnored(false);
         date1 = new Date();
-        lObj = JSONMapper.toJSON(date1);
+        lObj = mapper.toJSON(date1);
         Assert.assertNotNull(lObj.render(true));
         //
-        javaObj = JSONMapper.toJava(lObj, date1.getClass());
+        javaObj = mapper.toJava(lObj, date1.getClass());
         date2 = (Date) javaObj;
         Assert.assertEquals(date1, date2);
     }
@@ -594,28 +603,28 @@ public class MapperTest {
     @Test
     public void testAnnotatedMapper() throws MapperException {
         // Map fields, not properties.
-        JSONMapper.usePojoAccess();
+        mapper.usePojoAccess();
         MyDate lMyDate = new MyDate(new Date().getTime(), "CEST");
-        JSONValue lObj = JSONMapper.toJSON(lMyDate);
+        JSONValue lObj = mapper.toJSON(lMyDate);
         Assert.assertNotNull(lObj.render(true));
     }
 
     @Test
     public void mapPojoFields() throws MapperException {
         // Map fields, not properties.
-        JSONMapper.usePojoAccess();
+        mapper.usePojoAccess();
         MyPojo lPojo = new MyPojo();
         lPojo.setNames("Homer", "Simpson");
         
         // Java -> JSON.
-        JSONValue lObj = JSONMapper.toJSON(lPojo);
+        JSONValue lObj = mapper.toJSON(lPojo);
         Assert.assertEquals("{\n" +
                 "   \"firstName\" : \"Homer\",\n" +
                 "   \"lastName\" : \"Simpson\"\n" +
                 "}", lObj.render(true));
         
         // JSON -> Java
-        Object javaObj = JSONMapper.toJava(lObj, MyPojo.class);
+        Object javaObj = mapper.toJava(lObj, MyPojo.class);
         Assert.assertNotNull(javaObj);
         Assert.assertThat(javaObj, is(instanceOf(MyPojo.class)));
         Assert.assertEquals("MyPojo{firstName='Homer', lastName='Simpson'}", javaObj.toString());

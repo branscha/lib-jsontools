@@ -7,5 +7,5 @@ package com.sdicons.json.helper;
 
 public interface Helper
 {
-    public Class getHelpedClass();
+    public Class<?> getHelpedClass();
 }

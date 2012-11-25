@@ -5,6 +5,7 @@
  ******************************************************************************/
 package com.sdicons.json.mapper.helper.impl;
 
+import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
@@ -17,7 +18,7 @@ extends AbstractMapper
         return Enum.class;
     }
 
-    public Object toJava(JSONValue aValue, Class aRequestedClass)
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass)
     throws MapperException
     {
 

@@ -5,6 +5,7 @@
  ******************************************************************************/
 package com.sdicons.json.mapper.helper.impl;
 
+import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.model.JSONDecimal;
 import com.sdicons.json.model.JSONInteger;
@@ -14,12 +15,12 @@ import com.sdicons.json.model.JSONValue;
 public class StringMapper
 extends AbstractMapper
 {
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return String.class;
     }
 
-    public Object toJava(JSONValue aValue, Class aRequestedClass) throws MapperException
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass) throws MapperException
     {
     	//lenient to the data to be converted.
     	if(aValue.isDecimal()) return ((JSONDecimal)aValue).getValue().toString();

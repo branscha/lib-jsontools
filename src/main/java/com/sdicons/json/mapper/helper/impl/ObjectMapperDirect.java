@@ -114,7 +114,7 @@ implements SimpleMapperHelper
         return lJavaFields;
     }
 
-    public Object toJava(JSONValue aValue, Class aRequestedClass)
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass)
     throws MapperException
     {
         if(!aValue.isObject()) throw new MapperException("ObjectMapperDirect cannot map: " + aValue.getClass().getName());
@@ -141,7 +141,7 @@ implements SimpleMapperHelper
 
                     try
                     {
-                        lAttrs[i] = JSONMapper.toJava(lSubEl, lAnnotated.cons.getParameterTypes()[i]);
+                        lAttrs[i] = mapper.toJava(lSubEl, lAnnotated.cons.getParameterTypes()[i]);
                     }
                     catch(MapperException e)
                     {
@@ -179,11 +179,11 @@ implements SimpleMapperHelper
                         final Type lGenType = lFld.getGenericType();
                         if(lGenType instanceof ParameterizedType)
                         {
-                            lFldValue = JSONMapper.toJava(lSubEl, (ParameterizedType) lGenType);                            
+                            lFldValue = mapper.toJava(lSubEl, (ParameterizedType) lGenType);                            
                         }
                         else
                         {
-                            lFldValue = JSONMapper.toJava(lSubEl, lFld.getType());
+                            lFldValue = mapper.toJava(lSubEl, lFld.getType());
                         }
 
                         try
@@ -239,7 +239,7 @@ implements SimpleMapperHelper
         }
     }
 
-    public JSONValue toJSON(Object aPojo)
+    public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
         // We will render the bean properties as the elements of a JSON object.
@@ -256,7 +256,7 @@ implements SimpleMapperHelper
                 if(lWriteReplace != null)
                 {
                     lWriteReplace.setAccessible(true);
-                    return JSONMapper.toJSON(lWriteReplace.invoke(aPojo));
+                    return mapper.toJSON(lWriteReplace.invoke(aPojo));
                 }
             }
             catch(NoSuchMethodException e)
@@ -280,7 +280,7 @@ implements SimpleMapperHelper
             try
             {
                 lFld.setAccessible(true);
-                final JSONValue lFieldVal = JSONMapper.toJSON(lFld.get(aPojo));
+                final JSONValue lFieldVal = mapper.toJSON(lFld.get(aPojo));
                 lElements.getValue().put(lFld.getName(), lFieldVal);
             }
             catch(Exception e)
@@ -307,7 +307,7 @@ implements SimpleMapperHelper
             {
                 for (Object lVal : lVals)
                 {
-                    final JSONValue lFieldVal = JSONMapper.toJSON(lVal);
+                    final JSONValue lFieldVal = mapper.toJSON(lVal);
                     lElements.getValue().put("cons-" + i, lFieldVal);
                     i++;
                 }

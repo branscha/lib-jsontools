@@ -28,13 +28,13 @@ implements ComplexMapperHelper
         return Collection.class;
     }
 
-    public Object toJava(JSONValue aValue, Class aRequestedClass)
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass)
     throws MapperException
     {
-        return this.toJava(aValue, aRequestedClass, new Type[0]);
+        return this.toJava(mapper, aValue, aRequestedClass, new Type[0]);
     }
 
-    public Object toJava(JSONValue aValue, Class aRawClass, Type[] aTypes)
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRawClass, Type[] aTypes)
     throws MapperException
     {
         if (!aValue.isArray()) throw new MapperException("CollectionMapper cannot map: " + aValue.getClass().getName());
@@ -75,7 +75,7 @@ implements ComplexMapperHelper
             // Simple, raw collection.
             for (JSONValue lVal : aObject.getValue())
             {
-                lCollObj.add(JSONMapper.toJava(lVal));
+                lCollObj.add(mapper.toJava(lVal));
             }
         }
         else if(aTypes.length == 1)
@@ -85,9 +85,9 @@ implements ComplexMapperHelper
             {
                 
                 if(aTypes[0] instanceof Class)
-                	lCollObj.add(JSONMapper.toJava(lVal, (Class) aTypes[0]));
+                	lCollObj.add(mapper.toJava(lVal, (Class) aTypes[0]));
                 else
-                	lCollObj.add(JSONMapper.toJava(lVal, (ParameterizedType) aTypes[0]));                	               
+                	lCollObj.add(mapper.toJava(lVal, (ParameterizedType) aTypes[0]));                	               
             }
         }
         else
@@ -100,7 +100,7 @@ implements ComplexMapperHelper
         return lCollObj;
     }
 
-    public JSONValue toJSON(Object aPojo)
+    public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
         JSONArray lArray = new JSONArray();
@@ -109,7 +109,7 @@ implements ComplexMapperHelper
         Collection lColl = (Collection) aPojo;
         for(Object lEl : lColl)
         {
-            lArray.getValue().add(JSONMapper.toJSON(lEl));
+            lArray.getValue().add(mapper.toJSON(lEl));
         }
         return lArray;
     }

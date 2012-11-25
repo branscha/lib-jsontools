@@ -7,6 +7,7 @@ package com.sdicons.json.mapper;
 
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.sdicons.json.model.JSONValue;
@@ -93,6 +94,13 @@ public class UsersBeanMapperTest
             this.transportCode = transportCode;
         }
     }
+    
+    private JSONMapper mapper;
+    
+    @Before
+    public void setup() {
+        mapper = new JSONMapper();
+    }
 
     @Test
     public void testIt() throws MapperException
@@ -108,10 +116,10 @@ public class UsersBeanMapperTest
         lEvil.setParam2(lStr);
 
         // Java -> JSON.
-        JSONValue lObj = JSONMapper.toJSON(lEvil);
+        JSONValue lObj = mapper.toJSON(lEvil);
 
         // JSON -> Java.
-        Transportable lLitmus = (Transportable) JSONMapper.toJava(lObj, Transportable.class);
+        Transportable lLitmus = (Transportable) mapper.toJava(lObj, Transportable.class);
         Assert.assertNotNull(lLitmus);
         Assert.assertEquals(lLitmus.getEventType(), lEvil.getEventType());
         Assert.assertSame(lLitmus.getParentID(), lEvil.getParentID());
