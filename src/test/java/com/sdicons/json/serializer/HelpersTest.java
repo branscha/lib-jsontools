@@ -143,6 +143,7 @@ public class HelpersTest
         Assert.assertTrue(lDate2.getTime() == lDate.getTime());
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void testCollections() throws MarshallException
     {
@@ -207,6 +208,7 @@ public class HelpersTest
         }
     }
 
+    @SuppressWarnings("rawtypes")
     @Test
     public void testMaps() throws MarshallException
     {

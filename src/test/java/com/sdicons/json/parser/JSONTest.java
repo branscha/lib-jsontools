@@ -7,8 +7,6 @@ package com.sdicons.json.parser;
 
 import java.io.StringReader;
 
-import junit.framework.TestCase;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -26,24 +24,15 @@ public class JSONTest
         Assert.assertTrue(lConfig.isArray());
         final JSONArray lConfigArray = (JSONArray) lConfig;
         
-        for (JSONValue lJSONValue : lConfigArray.getValue())
-        {
-            TestCase.assertTrue(lJSONValue.isString());
+        for (JSONValue lJSONValue : lConfigArray.getValue()) {
+            Assert.assertTrue(lJSONValue.isString());
             final JSONString lEntryResource = (JSONString) lJSONValue;
-            
-            try
-            {
-                System.out.println(" --------- " + lEntryResource.getValue());
-                final JSONParser lExampleParser = new JSONParser(JSONTest.class.getResourceAsStream(lEntryResource.getValue()));
-                JSONValue lExampleVal = lExampleParser.nextValue();
-                System.out.println(lExampleVal.render(true));
-                JSONValue.decorate(lExampleVal.strip());
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-                TestCase.fail(e.getMessage());
-            }
+            //
+            final JSONParser lExampleParser = new JSONParser(JSONTest.class.getResourceAsStream(lEntryResource.getValue()));
+            JSONValue lExampleVal = lExampleParser.nextValue();
+            Assert.assertNotNull(lExampleVal.render(true));
+            //
+            JSONValue.decorate(lExampleVal.strip());
         }
     }
 
@@ -56,8 +45,7 @@ public class JSONTest
         
         final JSONParser lParser = new JSONParser(new StringReader(lErrorExample2));
         final JSONValue lConfig = lParser.nextValue();
-        System.out.println(lConfig);
-        TestCase.fail("An exception should be thrown when an error is found.");
+        Assert.fail("An exception should be thrown when an error is found.");
     }
 
 }

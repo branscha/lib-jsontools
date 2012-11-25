@@ -55,58 +55,58 @@ public class RepositoryTest
     public void testBasicHelpers()
     {
         {
-            Class lClass = String.class;
+            Class<?> lClass = String.class;
             MarshallHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
 
         {
-            Class lClass = Boolean.class;
+            Class<?> lClass = Boolean.class;
             MarshallHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Byte.class;
+            Class<?> lClass = Byte.class;
             MarshallHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Short.class;
+            Class<?> lClass = Short.class;
             MarshallHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Integer.class;
+            Class<?> lClass = Integer.class;
             MarshallHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Short.class;
+            Class<?> lClass = Short.class;
             MarshallHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Long.class;
+            Class<?> lClass = Long.class;
             MarshallHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Float.class;
+            Class<?> lClass = Float.class;
             MarshallHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Double.class;
+            Class<?> lClass = Double.class;
             MarshallHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Character.class;
+            Class<?> lClass = Character.class;
             MarshallHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = String.class;
+            Class<?> lClass = String.class;
             MarshallHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
@@ -132,18 +132,20 @@ public class RepositoryTest
         class AHelper
         implements MarshallHelper
         {
+            @SuppressWarnings("rawtypes")
             public void renderValue(Object aObj, JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
             throws MarshallException
             {
             }
 
+            @SuppressWarnings("rawtypes")
             public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
             throws MarshallException
             {
                 return null;
             }
 
-            public Class getHelpedClass()
+            public Class<?> getHelpedClass()
             {
                 return A.class;
             }
@@ -153,18 +155,20 @@ public class RepositoryTest
         class BHelper
         implements MarshallHelper
         {
+            @SuppressWarnings("rawtypes")
             public void renderValue(Object aObj, JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
             throws MarshallException
             {
             }
 
+            @SuppressWarnings("rawtypes")
             public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
             throws MarshallException
             {
                 return null;
             }
 
-            public Class getHelpedClass()
+            public Class<?> getHelpedClass()
             {
                 return B.class;
             }
@@ -173,18 +177,20 @@ public class RepositoryTest
         class CHelper
         implements MarshallHelper
         {
+            @SuppressWarnings("rawtypes")
             public void renderValue(Object aObj, JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
             throws MarshallException
             {
             }
 
+            @SuppressWarnings("rawtypes")
             public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
             throws MarshallException
             {
                 return null;
             }
 
-            public Class getHelpedClass()
+            public Class<?> getHelpedClass()
             {
                 return C.class;
             }

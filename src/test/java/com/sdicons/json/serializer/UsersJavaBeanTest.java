@@ -186,9 +186,8 @@ public class UsersJavaBeanTest
         ((JSONMarshall) marshall).usePojoAccess();
         MyDate lMyDate = new MyDate(new Date().getTime(), "CEST");
         JSONObject lObj = marshall.marshall(lMyDate);
-        System.out.println(lObj.render(true));
-        
-        Object javaObj = marshall.unmarshall(lObj);
+        Assert.assertNotNull(lObj.render(true));
+        Assert.assertNotNull(marshall.unmarshall(lObj));
     }
 
     @Test
@@ -198,9 +197,10 @@ public class UsersJavaBeanTest
         ((JSONMarshall) marshall).usePojoAccess();
         MyPojo lPojo = new MyPojo();
         lPojo.setNames("Homer", "Simpson");
+        //
         JSONObject lObj = marshall.marshall(lPojo);
-        System.out.println(lObj.render(true));
-        
+        Assert.assertNotNull(lObj.render(true));
+        //
         Object javaObj = marshall.unmarshall(lObj);
         System.out.println(javaObj.toString());
     }
