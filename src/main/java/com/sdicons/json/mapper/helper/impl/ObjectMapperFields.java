@@ -5,44 +5,49 @@
  ******************************************************************************/
 package com.sdicons.json.mapper.helper.impl;
 
+import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import com.sdicons.json.helper.JSONConstruct;
+import com.sdicons.json.helper.JSONMap;
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.helper.JSONMap;
-import com.sdicons.json.helper.JSONConstruct;
 import com.sdicons.json.mapper.helper.SimpleMapperHelper;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 
-import java.io.Serializable;
-import java.lang.reflect.*;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-
 public class ObjectMapperFields
 implements SimpleMapperHelper
 {
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Object.class;
     }
 
-    private Map<Class, AnnotatedMethods> annotatedPool = new HashMap<Class, AnnotatedMethods>();
+    private Map<Class<?>, AnnotatedMethods> annotatedPool = new HashMap<Class<?>, AnnotatedMethods>();
 
     private static class AnnotatedMethods
     {
-        public Constructor cons;
+        public Constructor<?> cons;
         public Method serialize;
 
-        public AnnotatedMethods(Constructor aCons, Method aSerialize)
+        public AnnotatedMethods(Constructor<?> aCons, Method aSerialize)
         {
             cons = aCons;
             serialize = aSerialize;
         }
     }
 
-    protected Method getAnnotatedSerializingMethod(Class aClass)
+    protected Method getAnnotatedSerializingMethod(Class<?> aClass)
     {
         // Check if we have an annotated class.
         for(Method lMethod : aClass.getDeclaredMethods())
@@ -56,11 +61,11 @@ implements SimpleMapperHelper
         return null;
     }
 
-    protected Constructor getAnnotatedConstructor(Class aClass)
+    protected Constructor<?> getAnnotatedConstructor(Class<?> aClass)
     {
         //Check if we have a class with an annotated constructor
-        final Constructor[] lConstructors = aClass.getDeclaredConstructors();
-        for(Constructor lCons : lConstructors)
+        final Constructor<?>[] lConstructors = aClass.getDeclaredConstructors();
+        for(Constructor<?> lCons : lConstructors)
             if(lCons.isAnnotationPresent(JSONConstruct.class))
             {
                 // Found the constructor we are
@@ -72,13 +77,13 @@ implements SimpleMapperHelper
     }
 
     // Accessing a shared object should be synced.
-    protected synchronized AnnotatedMethods getAnnotatedMethods(Class aClass)
+    protected synchronized AnnotatedMethods getAnnotatedMethods(Class<?> aClass)
     throws MapperException
     {
         AnnotatedMethods lResult = annotatedPool.get(aClass);
         if(lResult == null)
         {
-            final Constructor lCons = getAnnotatedConstructor(aClass);
+            final Constructor<?> lCons = getAnnotatedConstructor(aClass);
             final Method lMeth = getAnnotatedSerializingMethod(aClass);
 
             if((lMeth == null && lCons != null) || (lMeth != null && lCons == null))
@@ -90,10 +95,10 @@ implements SimpleMapperHelper
         return lResult;
     }
 
-    protected List<Field> getFieldInfo(Class aClass)
+    protected List<Field> getFieldInfo(Class<?> aClass)
     {
         final List<Field> lJavaFields = new LinkedList<Field>();
-        Class lClassWalker = aClass;
+        Class<?> lClassWalker = aClass;
         while (lClassWalker != null)
         {
             final Field[] lClassFields = lClassWalker.getDeclaredFields();
@@ -114,14 +119,14 @@ implements SimpleMapperHelper
         return lJavaFields;
     }
 
-    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass)
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass)
     throws MapperException
     {
         if(!aValue.isObject()) throw new MapperException("ObjectMapperDirect cannot map: " + aValue.getClass().getName());
         JSONObject aObject = (JSONObject) aValue;
 
         try
-        {            
+        {
             // The result can be constructed in two ways, an annotated constructor
             // or the default constructor. At this point we don't know which of the two
             // methods will be used.
@@ -179,7 +184,7 @@ implements SimpleMapperHelper
                         final Type lGenType = lFld.getGenericType();
                         if(lGenType instanceof ParameterizedType)
                         {
-                            lFldValue = mapper.toJava(lSubEl, (ParameterizedType) lGenType);                            
+                            lFldValue = mapper.toJava(lSubEl, (ParameterizedType) lGenType);
                         }
                         else
                         {
@@ -270,11 +275,11 @@ implements SimpleMapperHelper
         }
         ////////////////////////////////////////////////////////////////////////////
 
-        Class lJavaClass = aPojo.getClass();
+        Class<?> lJavaClass = aPojo.getClass();
         final List<Field> lJavaFields = getFieldInfo(lJavaClass);
         // Find info about the annotated methods.
         final AnnotatedMethods lAnnotated = getAnnotatedMethods(lJavaClass);
-        
+
         for(Field lFld : lJavaFields)
         {
             try

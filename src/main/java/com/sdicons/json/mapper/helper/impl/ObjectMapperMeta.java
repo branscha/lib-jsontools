@@ -16,15 +16,15 @@ public class ObjectMapperMeta implements SimpleMapperHelper {
     }
 
     @Override
-    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass) throws MapperException {
-        final String option = (String) mapper.getMappingOption(mapper.OPTION_OBJECTMAPPING, "property");
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException {
+        final String option = (String) mapper.getMappingOption(JSONMapper.OPTION_OBJECTMAPPING, "property");
         if("property".equalsIgnoreCase(option)) return propertyMapper.toJava(mapper, aValue, aRequestedClass);
         else return fieldMapper.toJava(mapper, aValue, aRequestedClass);
     }
 
     @Override
     public JSONValue toJSON(JSONMapper mapper, Object aPojo) throws MapperException {
-        final String option = (String) mapper.getMappingOption(mapper.OPTION_OBJECTMAPPING, "property");
+        final String option = (String) mapper.getMappingOption(JSONMapper.OPTION_OBJECTMAPPING, "property");
         if("property".equalsIgnoreCase(option)) return propertyMapper.toJSON(mapper, aPojo);
         else return fieldMapper.toJSON(mapper, aPojo);
     }

@@ -14,7 +14,7 @@ import com.sdicons.json.model.JSONValue;
 public interface ComplexMapperHelper
 extends SimpleMapperHelper
 {
-    Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass, Type[] aTypes)
+    Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass, Type[] aTypes)
     throws MapperException;
 
     JSONValue toJSON(JSONMapper mapper, Object aPojo)

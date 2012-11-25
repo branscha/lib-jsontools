@@ -8,6 +8,8 @@ package com.sdicons.json.mapper;
 public class MapperException
 extends Exception
 {
+    private static final long serialVersionUID = -31540606669332242L;
+
     public MapperException()
     {
     }

@@ -13,12 +13,12 @@ import com.sdicons.json.model.JSONValue;
 public class EnumMapper
 extends AbstractMapper
 {
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Enum.class;
     }
 
-    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass)
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass)
     throws MapperException
     {
 

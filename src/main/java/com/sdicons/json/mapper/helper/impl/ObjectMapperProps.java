@@ -5,12 +5,6 @@
  ******************************************************************************/
 package com.sdicons.json.mapper.helper.impl;
 
-import com.sdicons.json.mapper.JSONMapper;
-import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.SimpleMapperHelper;
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONValue;
-
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
@@ -19,15 +13,21 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import com.sdicons.json.mapper.JSONMapper;
+import com.sdicons.json.mapper.MapperException;
+import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONValue;
+
 public class ObjectMapperProps
 implements SimpleMapperHelper
 {
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Object.class;
     }
 
-    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass)
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass)
     throws MapperException
     {
         if(!aValue.isObject()) throw new MapperException("ObjectMapper cannot map: " + aValue.getClass().getName());
@@ -53,7 +53,7 @@ implements SimpleMapperHelper
                         final Method lWriter = aLPropDesc.getWriteMethod();
                         if (lWriter == null)
                         {
-                        	//Ignore the case of no setter                        	
+                        	//Ignore the case of no setter
                             // final String lMsg = "Could not find a setter for prop: " + lPropname + " in class: " + aRequestedClass;
                             // System.out.println("WARNING:"+lMsg);
                             break;
@@ -121,12 +121,12 @@ implements SimpleMapperHelper
         String lPropName="";
         try
         {
-            Class lClass = aPojo.getClass();
+            Class<?> lClass = aPojo.getClass();
             PropertyDescriptor[] lPropDesc = Introspector.getBeanInfo(lClass, Introspector.USE_ALL_BEANINFO).getPropertyDescriptors();
             for (PropertyDescriptor aLPropDesc : lPropDesc)
             {
                 final Method lReader = aLPropDesc.getReadMethod();
-                lPropName = aLPropDesc.getName();                
+                lPropName = aLPropDesc.getName();
                 // Only serialize if the property is READABLE
                 // ignore the properties created by a proxy from Hibernate
                 if(lReader!=null&&
@@ -134,17 +134,17 @@ implements SimpleMapperHelper
                 		 lReader.getReturnType().toString().contains("org.hibernate.proxy.LazyInitializer"))){
                 	continue;
                 }
-                // Ignore the getClass() for any objects   
+                // Ignore the getClass() for any objects
                 if(lReader!=null&&lPropName.equals("class")){
                 	continue;
                 }
-                
+
                 if (lReader != null)
                 {
                     lElements.getValue().put(lPropName, mapper.toJSON(lReader.invoke(aPojo)));
                 }
             }
-            
+
             return lElements;
         }
         catch(IntrospectionException e)

@@ -20,7 +20,7 @@ extends AbstractMapper
         return String.class;
     }
 
-    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass) throws MapperException
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
     	//lenient to the data to be converted.
     	if(aValue.isDecimal()) return ((JSONDecimal)aValue).getValue().toString();

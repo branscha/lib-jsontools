@@ -5,32 +5,33 @@
  ******************************************************************************/
 package com.sdicons.json.mapper.helper.impl;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.mapper.helper.ComplexMapperHelper;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 public class MapMapper
 implements ComplexMapperHelper
 {
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Map.class;
     }
 
-    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass)
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass)
     throws MapperException
     {
         return this.toJava(mapper, aValue, aRequestedClass, new Type[0]);
     }
 
-    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRawClass, Type[] aTypes)
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRawClass, Type[] aTypes)
     throws MapperException
     {
         if (!aValue.isObject()) throw new MapperException("MapMapper cannot map: " + aValue.getClass().getName());
@@ -90,6 +91,7 @@ implements ComplexMapperHelper
         return lMapObj;
     }
 
+    @SuppressWarnings("rawtypes")
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {

@@ -5,25 +5,25 @@
  ******************************************************************************/
 package com.sdicons.json.mapper.helper.impl;
 
-import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import java.math.BigDecimal;
+
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.model.JSONInteger;
-import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.model.JSONString;
+import com.sdicons.json.mapper.helper.SimpleMapperHelper;
 import com.sdicons.json.model.JSONDecimal;
-
-import java.math.BigDecimal;
+import com.sdicons.json.model.JSONInteger;
+import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
 
 public class BigDecimalMapper
 implements SimpleMapperHelper
 {
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return BigDecimal.class;
     }
 
-    public Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass) throws MapperException
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
         if(aValue.isString())
         {

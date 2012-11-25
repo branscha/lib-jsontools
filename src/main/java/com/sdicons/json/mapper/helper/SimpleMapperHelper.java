@@ -13,7 +13,7 @@ import com.sdicons.json.model.JSONValue;
 public interface SimpleMapperHelper
 extends Helper
 {
-    Object toJava(JSONMapper mapper, JSONValue aValue, Class aRequestedClass)
+    Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass)
     throws MapperException;
 
     JSONValue toJSON(JSONMapper mapper, Object aPojo)
