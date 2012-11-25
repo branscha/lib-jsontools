@@ -164,7 +164,7 @@ public class UsersJavaBeanTest
         lEvil.setParam2(lStr);
         
         JSONObject lObj = marshall.marshall(lEvil);
-        System.out.println(lObj.render(true));
+        Assert.assertNotNull(lObj.render(true));
         MarshallValue lResult = marshall.unmarshall(lObj);
         Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
         Transportable lLitmus = (Transportable) lResult.getReference();
@@ -202,6 +202,5 @@ public class UsersJavaBeanTest
         Assert.assertNotNull(lObj.render(true));
         //
         Object javaObj = marshall.unmarshall(lObj);
-        System.out.println(javaObj.toString());
     }
 }

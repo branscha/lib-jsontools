@@ -42,7 +42,7 @@ public class SimpleJavaBeanTest
         lTest1.setInt1(new Integer(0));
         lTest1.setInt2(new Integer(0));
         
-        System.out.println(marshall.marshall(lTest1).render(true));
+        Assert.assertNotNull(marshall.marshall(lTest1).render(true));
         MarshallValue lResult = marshall.unmarshall(marshall.marshall(lTest1));
         Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
         MyBean lTest2 = (MyBean) lResult.getReference();

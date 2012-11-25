@@ -41,7 +41,7 @@ public class ValidatorTest
         
         for (final JSONValue lEntry : lConfigArray.getValue()) {
             final JSONString lEntryResource = (JSONString) lEntry;
-            System.out.println(" --------- " + lEntryResource.getValue());
+//            System.out.println(" --------- " + lEntryResource.getValue());
             testCase(lEntryResource.getValue(), lValidatorValidator);
         }
     }
