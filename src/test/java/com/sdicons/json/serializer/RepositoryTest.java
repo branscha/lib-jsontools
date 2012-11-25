@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.sdicons.json.helper.HelperRepository;
 import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.serializer.helper.MarshallHelper;
+import com.sdicons.json.serializer.helper.SerializeHelper;
 import com.sdicons.json.serializer.helper.impl.BooleanHelper;
 import com.sdicons.json.serializer.helper.impl.ByteHelper;
 import com.sdicons.json.serializer.helper.impl.CharacterHelper;
@@ -25,18 +25,16 @@ import com.sdicons.json.serializer.helper.impl.LongHelper;
 import com.sdicons.json.serializer.helper.impl.ObjectHelper;
 import com.sdicons.json.serializer.helper.impl.ShortHelper;
 import com.sdicons.json.serializer.helper.impl.StringHelper;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
-import com.sdicons.json.serializer.marshall.MarshallException;
 
 public class RepositoryTest
 {
-    HelperRepository<MarshallHelper> repo;
+    HelperRepository<SerializeHelper> repo;
 
     @Before
     public void setUp()
     throws Exception
     {
-        repo = new HelperRepository<MarshallHelper>();
+        repo = new HelperRepository<SerializeHelper>();
 
         repo.addHelper(new ObjectHelper());
         repo.addHelper(new StringHelper());
@@ -56,58 +54,58 @@ public class RepositoryTest
     {
         {
             Class<?> lClass = String.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            SerializeHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
 
         {
             Class<?> lClass = Boolean.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            SerializeHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Byte.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            SerializeHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Short.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            SerializeHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Integer.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            SerializeHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Short.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            SerializeHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Long.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            SerializeHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Float.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            SerializeHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Double.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            SerializeHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Character.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            SerializeHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = String.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            SerializeHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
     }
@@ -130,17 +128,17 @@ public class RepositoryTest
         }
 
         class AHelper
-        implements MarshallHelper
+        implements SerializeHelper
         {
             @SuppressWarnings("rawtypes")
-            public void renderValue(Object aObj, JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-            throws MarshallException
+            public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            throws JSONSerializeException
             {
             }
 
             @SuppressWarnings("rawtypes")
-            public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-            throws MarshallException
+            public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            throws JSONSerializeException
             {
                 return null;
             }
@@ -153,17 +151,17 @@ public class RepositoryTest
         }
 
         class BHelper
-        implements MarshallHelper
+        implements SerializeHelper
         {
             @SuppressWarnings("rawtypes")
-            public void renderValue(Object aObj, JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-            throws MarshallException
+            public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            throws JSONSerializeException
             {
             }
 
             @SuppressWarnings("rawtypes")
-            public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-            throws MarshallException
+            public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            throws JSONSerializeException
             {
                 return null;
             }
@@ -175,17 +173,17 @@ public class RepositoryTest
         }
 
         class CHelper
-        implements MarshallHelper
+        implements SerializeHelper
         {
             @SuppressWarnings("rawtypes")
-            public void renderValue(Object aObj, JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-            throws MarshallException
+            public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            throws JSONSerializeException
             {
             }
 
             @SuppressWarnings("rawtypes")
-            public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-            throws MarshallException
+            public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            throws JSONSerializeException
             {
                 return null;
             }
@@ -201,13 +199,13 @@ public class RepositoryTest
         repo.addHelper(new BHelper()); // B first.
         repo.addHelper(new AHelper()); // C and B will be part of rebalancing.
 
-        MarshallHelper lH1 = repo.findHelper(B.class);
+        SerializeHelper lH1 = repo.findHelper(B.class);
         Assert.assertEquals(B.class, lH1.getHelpedClass());
 
-        MarshallHelper lH2 = repo.findHelper(A.class);
+        SerializeHelper lH2 = repo.findHelper(A.class);
         Assert.assertEquals(A.class, lH2.getHelpedClass());
 
-        MarshallHelper lH3 = repo.findHelper(C.class);
+        SerializeHelper lH3 = repo.findHelper(C.class);
         Assert.assertEquals(C.class, lH3.getHelpedClass());
     }
 }

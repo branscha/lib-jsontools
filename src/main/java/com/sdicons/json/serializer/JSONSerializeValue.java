@@ -3,7 +3,7 @@
  * Released under the MIT License: http://opensource.org/licenses/MIT
  * Library "jsontools"
  ******************************************************************************/
-package com.sdicons.json.serializer.marshall;
+package com.sdicons.json.serializer;
 
 /**
  * This interface represents an object that is the result of converting a JSON structure
@@ -11,7 +11,7 @@ package com.sdicons.json.serializer.marshall;
  * in advance whether the result will be a primitive type or a reference type.
  * This interface lets you investigate which kind of value is returned before you use it.
  */
-public interface MarshallValue
+public interface JSONSerializeValue
 {
     final int BOOLEAN=0;
     final int BYTE=1;
@@ -26,74 +26,74 @@ public interface MarshallValue
     /**
      * Get the primitive boolean value.
      * @return The unmarshalled boolean value.
-     * @throws MarshallException If it is not a boolean representation.
+     * @throws JSONSerializeException If it is not a boolean representation.
      */
     boolean getBoolean()
-    throws MarshallException;
+    throws JSONSerializeException;
 
     /**
      * Get the primitive byte value.
      * @return The unmarshalled byte value.
-     * @throws MarshallException  If it is not a byte representation.
+     * @throws JSONSerializeException  If it is not a byte representation.
      */
     byte getByte()
-    throws MarshallException;
+    throws JSONSerializeException;
 
     /**
      * Get the primitive short value.
      * @return The unmarshalled short value.
-     * @throws MarshallException If it is not a short representation.
+     * @throws JSONSerializeException If it is not a short representation.
      */
     short getShort()
-    throws MarshallException;
+    throws JSONSerializeException;
 
     /**
      * Get the primitive char value.
      * @return The unmarshalled char value.
-     * @throws MarshallException If it is not a char representation.
+     * @throws JSONSerializeException If it is not a char representation.
      */
     char getChar()
-    throws MarshallException;
+    throws JSONSerializeException;
 
     /**
      * Get the primitive int value.
      * @return The unmarshalled int value.
-     * @throws MarshallException If it is not an int representation.
+     * @throws JSONSerializeException If it is not an int representation.
      */
     int getInt()
-    throws MarshallException;
+    throws JSONSerializeException;
 
     /**
      * Get the primitive long value.
      * @return The unmarshalled long value.
-     * @throws MarshallException If it is not a long representation.
+     * @throws JSONSerializeException If it is not a long representation.
      */
     long getLong()
-    throws MarshallException;
+    throws JSONSerializeException;
 
     /**
      * Get the primitive float value.
      * @return The unmarshalled float value.
-     * @throws MarshallException If it is not a float representation.
+     * @throws JSONSerializeException If it is not a float representation.
      */
     float getFloat()
-    throws MarshallException;
+    throws JSONSerializeException;
 
     /**
      * Get the primitive double value.
      * @return The unmarshalled primitive value.
-     * @throws MarshallException If it is not a double representation.
+     * @throws JSONSerializeException If it is not a double representation.
      */
     double getDouble()
-    throws MarshallException;
+    throws JSONSerializeException;
 
     /**
      * Get the reference to a Java object.
      * @return The unmarshalled reference to the Java object.
-     * @throws MarshallException If it is not a reference representation.
+     * @throws JSONSerializeException If it is not a reference representation.
      */
     Object getReference()
-    throws MarshallException;
+    throws JSONSerializeException;
 
     /**
      * Get the type of the value so that you can access its value safely.

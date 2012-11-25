@@ -5,8 +5,8 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
-import com.sdicons.json.serializer.marshall.MarshallException;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
+import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.JSONSerializer;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONObject;
 
@@ -15,12 +15,12 @@ import java.util.*;
 public class CharacterHelper
 extends AbstractHelper
 {
-    public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-    throws MarshallException
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    throws JSONSerializeException
     {
-        JSONMarshall.requireStringAttribute(aObjectElement, JSONMarshall.RNDR_ATTR_VALUE);
-        final String lValue = ((JSONString) aObjectElement.get(JSONMarshall.RNDR_ATTR_VALUE)).getValue();
-        if(lValue.length() < 1) throw new MarshallException("Length of value too short: " + lValue);
+        JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
+        final String lValue = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue();
+        if(lValue.length() < 1) throw new JSONSerializeException("Length of value too short: " + lValue);
         return lValue.charAt(0);
     }
 

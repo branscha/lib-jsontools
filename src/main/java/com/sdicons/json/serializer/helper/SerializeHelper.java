@@ -5,8 +5,8 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper;
 
-import com.sdicons.json.serializer.marshall.MarshallException;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
+import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.JSONSerializer;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.helper.Helper;
 
@@ -15,7 +15,7 @@ import java.util.HashMap;
 /** A helper can render an instance of a specific class in a custom way.
  * It is the helpers responsability to render instances of a class to/from JSON.
  */
-public interface MarshallHelper
+public interface SerializeHelper
 extends Helper
 {
     /** Convert an element to JSON.
@@ -25,10 +25,10 @@ extends Helper
      *                       child elements.
      * @param aMarshall      The marshall we can use to recursively render parts of our own object.
      * @param aPool          A pool of objects already encountered. Is used to resolve references.
-     * @throws MarshallException
+     * @throws JSONSerializeException
      */
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-    throws MarshallException;
+    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    throws JSONSerializeException;
 
     /** Convert JSON representation into an instance of a class.
      *
@@ -36,8 +36,8 @@ extends Helper
      * @param aMarshall The marshall we can use to convert sub elements into subobjects to compose our target object.
      * @param aPool A pool of objects already encountered. Is used to resolve references.
      * @return The newly created object.
-     * @throws MarshallException
+     * @throws JSONSerializeException
      */
-    public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-    throws MarshallException;
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    throws JSONSerializeException;
 }

@@ -5,9 +5,9 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
-import com.sdicons.json.serializer.helper.MarshallHelper;
-import com.sdicons.json.serializer.marshall.MarshallException;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
+import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.JSONSerializer;
+import com.sdicons.json.serializer.helper.SerializeHelper;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONArray;
@@ -17,17 +17,17 @@ import java.util.*;
 import java.lang.reflect.*;
 
 public class ArrayHelper
-implements MarshallHelper
+implements SerializeHelper
 {
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-    throws MarshallException
+    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    throws JSONSerializeException
     {
-        JSONMarshall.requireStringAttribute(aObjectElement, JSONMarshall.RNDR_ATTR_CLASS);
-        final JSONString lComponentAttr = (JSONString) aObjectElement.get(JSONMarshall.RNDR_ATTR_CLASS);
+        JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
+        final JSONString lComponentAttr = (JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_CLASS);
         final String lComponentName = lComponentAttr.getValue();
 
         final JSONArray lElements = new JSONArray();
-        aObjectElement.getValue().put(JSONMarshall.RNDR_ATTR_VALUE, lElements);
+        aObjectElement.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, lElements);
 
         if(isPrimitiveArray(lComponentName))
         {
@@ -35,49 +35,49 @@ implements MarshallHelper
             {
                 int[] lArr = (int[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshall(lArr[i]));
+                    lElements.getValue().add(aMarshall.marshal(lArr[i]));
             }
             if("C".equals(lComponentName))
             {
                 char[] lArr = (char[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshall(lArr[i]));
+                    lElements.getValue().add(aMarshall.marshal(lArr[i]));
             }
             else if("Z".equals(lComponentName))
             {
                 boolean[] lArr = (boolean[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshall(lArr[i]));
+                    lElements.getValue().add(aMarshall.marshal(lArr[i]));
             }
             else if("S".equals(lComponentName))
             {
                 short[] lArr = (short[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                   lElements.getValue().add(aMarshall.marshall(lArr[i]));
+                   lElements.getValue().add(aMarshall.marshal(lArr[i]));
             }
             else if("B".equals(lComponentName))
             {
                 byte[] lArr = (byte[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshall(lArr[i]));;
+                    lElements.getValue().add(aMarshall.marshal(lArr[i]));;
             }
             else if("J".equals(lComponentName))
             {
                 long[] lArr = (long[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshall(lArr[i]));
+                    lElements.getValue().add(aMarshall.marshal(lArr[i]));
             }
             else if("F".equals(lComponentName))
             {
                 float[] lArr = (float[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshall(lArr[i]));
+                    lElements.getValue().add(aMarshall.marshal(lArr[i]));
             }
             else if("D".equals(lComponentName))
             {
                 double[] lArr = (double[]) aObj;
                 for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshall(lArr[i]));;
+                    lElements.getValue().add(aMarshall.marshal(lArr[i]));;
             }
         }
         else
@@ -86,23 +86,23 @@ implements MarshallHelper
             while(lIter.hasNext())
             {
                 Object lArrEl = lIter.next();
-                lElements.getValue().add(aMarshall.marshallImpl(lArrEl, aPool));
+                lElements.getValue().add(aMarshall.marshalImpl(lArrEl, aPool));
             }
         }
     }
 
-    public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-    throws MarshallException
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    throws JSONSerializeException
     {
-        JSONMarshall.requireStringAttribute(aObjectElement, JSONMarshall.RNDR_ATTR_CLASS);
-        final String lArrClassName =((JSONString) aObjectElement.get(JSONMarshall.RNDR_ATTR_CLASS)).getValue();
+        JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
+        final String lArrClassName =((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_CLASS)).getValue();
 
         // First we fetch all array elements.
-        final JSONArray lValues = ((JSONArray) aObjectElement.get(JSONMarshall.RNDR_ATTR_VALUE));
+        final JSONArray lValues = ((JSONArray) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE));
         final List<Object> lElements = new LinkedList<Object>();
         for (JSONValue jsonValue : lValues.getValue())
         {
-            lElements.add(aMarshall.unmarshallImpl((JSONObject) jsonValue, aPool));
+            lElements.add(aMarshall.unmarshalImpl((JSONObject) jsonValue, aPool));
         }
         final int lArrSize = lElements.size();
 
@@ -207,7 +207,7 @@ implements MarshallHelper
             else
             {
                 final String lMsg = "Unknown primitive array type: " + lArrClassName;
-                throw new MarshallException(lMsg);
+                throw new JSONSerializeException(lMsg);
             }
         }
         else
@@ -228,7 +228,7 @@ implements MarshallHelper
             catch(ClassNotFoundException e)
             {
                 final String lMsg = "Exception while trying to unmarshall an array of JavaObjects: " + lArrClassName;
-                throw new MarshallException(lMsg);
+                throw new JSONSerializeException(lMsg);
             }
         }
 //         throw new MarshallException("Unknown array type: " + lArrClassName);

@@ -14,10 +14,6 @@ import org.junit.Test;
 import com.sdicons.json.helper.JSONConstruct;
 import com.sdicons.json.helper.JSONSerialize;
 import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
-import com.sdicons.json.serializer.marshall.Marshall;
-import com.sdicons.json.serializer.marshall.MarshallException;
-import com.sdicons.json.serializer.marshall.MarshallValue;
 
 public class UsersJavaBeanTest
 {
@@ -141,17 +137,17 @@ public class UsersJavaBeanTest
         }
     }
 
-    Marshall marshall;
+    JSONSerializer marshall;
 
     @Before
     public void setUp()
     throws Exception
     {
-        marshall = new JSONMarshall();
+        marshall = new JSONSerializer();
     }
 
     @Test
-    public void testIt() throws MarshallException
+    public void testIt() throws JSONSerializeException
     {
         Transportable lEvil = new Transportable();
         Integer lID = 13;
@@ -163,10 +159,10 @@ public class UsersJavaBeanTest
         lEvil.setParam1(lStr);
         lEvil.setParam2(lStr);
 
-        JSONObject lObj = marshall.marshall(lEvil);
+        JSONObject lObj = marshall.marshal(lEvil);
         Assert.assertNotNull(lObj.render(true));
-        MarshallValue lResult = marshall.unmarshall(lObj);
-        Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
+        JSONSerializeValue lResult = marshall.unmarshal(lObj);
+        Assert.assertTrue(JSONSerializeValue.REFERENCE == lResult.getType());
         Transportable lLitmus = (Transportable) lResult.getReference();
 
         // Test if the contents are intact.
@@ -180,27 +176,27 @@ public class UsersJavaBeanTest
     }
 
     @Test
-    public void testAnnotatedSerializer() throws MarshallException
+    public void testAnnotatedSerializer() throws JSONSerializeException
     {
         // Map fields, not properties.
-        ((JSONMarshall) marshall).usePojoAccess();
+        ((JSONSerializer) marshall).usePojoAccess();
         MyDate lMyDate = new MyDate(new Date().getTime(), "CEST");
-        JSONObject lObj = marshall.marshall(lMyDate);
+        JSONObject lObj = marshall.marshal(lMyDate);
         Assert.assertNotNull(lObj.render(true));
-        Assert.assertNotNull(marshall.unmarshall(lObj));
+        Assert.assertNotNull(marshall.unmarshal(lObj));
     }
 
     @Test
-    public void testDirectHelper() throws MarshallException
+    public void testDirectHelper() throws JSONSerializeException
     {
         // Map fields, not properties.
-        ((JSONMarshall) marshall).usePojoAccess();
+        ((JSONSerializer) marshall).usePojoAccess();
         MyPojo lPojo = new MyPojo();
         lPojo.setNames("Homer", "Simpson");
         //
-        JSONObject lObj = marshall.marshall(lPojo);
+        JSONObject lObj = marshall.marshal(lPojo);
         Assert.assertNotNull(lObj.render(true));
         //
-        marshall.unmarshall(lObj);
+        marshall.unmarshal(lObj);
     }
 }

@@ -5,9 +5,9 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
-import com.sdicons.json.serializer.helper.MarshallHelper;
-import com.sdicons.json.serializer.marshall.MarshallException;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
+import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.JSONSerializer;
+import com.sdicons.json.serializer.helper.SerializeHelper;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONObject;
 
@@ -15,7 +15,7 @@ import java.util.*;
 import java.text.*;
 
 public class DateHelper
-implements MarshallHelper
+implements SerializeHelper
 {
     private SimpleDateFormat dateFormat;
 
@@ -25,24 +25,24 @@ implements MarshallHelper
         dateFormat.setLenient(false);
     }
 
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-    throws MarshallException
+    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    throws JSONSerializeException
     {
-        aObjectElement.getValue().put(JSONMarshall.RNDR_ATTR_VALUE, new JSONString(dateFormat.format((Date) aObj)));
+        aObjectElement.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString(dateFormat.format((Date) aObj)));
     }
 
-    public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-    throws MarshallException
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    throws JSONSerializeException
     {
-        JSONMarshall.requireStringAttribute(aObjectElement, JSONMarshall.RNDR_ATTR_VALUE);
+        JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
 
         try
         {
-            return dateFormat.parse(((JSONString) aObjectElement.get(JSONMarshall.RNDR_ATTR_VALUE)).getValue().trim());
+            return dateFormat.parse(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue().trim());
         }
         catch(Exception e)
         {
-            throw new MarshallException(e.getMessage());
+            throw new JSONSerializeException(e.getMessage());
         }
     }
 

@@ -3,17 +3,17 @@
  * Released under the MIT License: http://opensource.org/licenses/MIT
  * Library "jsontools"
  ******************************************************************************/
-package com.sdicons.json.serializer.marshall;
+package com.sdicons.json.serializer;
 
-public class MarshallException
+public class JSONSerializeException
 extends Exception
 {
-    public MarshallException(String aComments)
+    public JSONSerializeException(String aComments)
     {
         super(aComments);
     }
 
-    public MarshallException()
+    public JSONSerializeException()
     {
         super();
     }

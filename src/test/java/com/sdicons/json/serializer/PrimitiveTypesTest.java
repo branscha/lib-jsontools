@@ -9,91 +9,87 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sdicons.json.serializer.marshall.JSONMarshall;
-import com.sdicons.json.serializer.marshall.Marshall;
-import com.sdicons.json.serializer.marshall.MarshallException;
-import com.sdicons.json.serializer.marshall.MarshallValue;
 
 public class PrimitiveTypesTest
 {
-    Marshall marshall;
+    JSONSerializer marshall;
 
     @Before
     public void setUp()
     throws Exception
     {
-        marshall = new JSONMarshall();
+        marshall = new JSONSerializer();
     }
 
     @Test
-    public void testBoolean1() throws MarshallException
+    public void testBoolean1() throws JSONSerializeException
     {
-        MarshallValue lResult = marshall.unmarshall(marshall.marshall(false));
-        Assert.assertTrue(MarshallValue.BOOLEAN == lResult.getType());
+        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal(false));
+        Assert.assertTrue(JSONSerializeValue.BOOLEAN == lResult.getType());
         Assert.assertTrue(!lResult.getBoolean());
     }
 
     @Test
-    public void testBoolean2() throws MarshallException
+    public void testBoolean2() throws JSONSerializeException
     {
-        MarshallValue lResult = marshall.unmarshall(marshall.marshall(true));
-        Assert.assertTrue(MarshallValue.BOOLEAN == lResult.getType());
+        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal(true));
+        Assert.assertTrue(JSONSerializeValue.BOOLEAN == lResult.getType());
         Assert.assertTrue(lResult.getBoolean());
     }
 
     @Test
-    public void testByte() throws MarshallException
+    public void testByte() throws JSONSerializeException
     {
-        MarshallValue lResult = marshall.unmarshall(marshall.marshall((byte) 7));
-        Assert.assertTrue(MarshallValue.BYTE == lResult.getType());
+        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal((byte) 7));
+        Assert.assertTrue(JSONSerializeValue.BYTE == lResult.getType());
         Assert.assertTrue(lResult.getByte() == 7);
     }
 
     @Test
-    public void testShort() throws MarshallException
+    public void testShort() throws JSONSerializeException
     {
-        MarshallValue lResult = marshall.unmarshall(marshall.marshall((short) -13));
-        Assert.assertTrue(MarshallValue.SHORT == lResult.getType());
+        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal((short) -13));
+        Assert.assertTrue(JSONSerializeValue.SHORT == lResult.getType());
         Assert.assertTrue(lResult.getShort() == -13);
     }
 
     @Test
-    public void testChar() throws MarshallException
+    public void testChar() throws JSONSerializeException
     {
-        MarshallValue lResult = marshall.unmarshall(marshall.marshall('q'));
-        Assert.assertTrue(MarshallValue.CHAR == lResult.getType());
+        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal('q'));
+        Assert.assertTrue(JSONSerializeValue.CHAR == lResult.getType());
         Assert.assertTrue(lResult.getChar() == 'q');
     }
 
     @Test
-    public void testInteger() throws MarshallException
+    public void testInteger() throws JSONSerializeException
     {
-        MarshallValue lResult = marshall.unmarshall(marshall.marshall(177));
-        Assert.assertTrue(MarshallValue.INT == lResult.getType());
+        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal(177));
+        Assert.assertTrue(JSONSerializeValue.INT == lResult.getType());
         Assert.assertTrue(lResult.getInt() == 177);
     }
 
     @Test
-    public void testLong() throws MarshallException
+    public void testLong() throws JSONSerializeException
     {
-        MarshallValue lResult = marshall.unmarshall(marshall.marshall((long) 117));
-        Assert.assertTrue(MarshallValue.LONG == lResult.getType());
+        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal((long) 117));
+        Assert.assertTrue(JSONSerializeValue.LONG == lResult.getType());
         Assert.assertTrue(lResult.getLong() == 117);
     }
 
     @Test
-    public void testFloat() throws MarshallException
+    public void testFloat() throws JSONSerializeException
     {
-        MarshallValue lResult = marshall.unmarshall(marshall.marshall((float) 3.14));
-        Assert.assertTrue(MarshallValue.FLOAT == lResult.getType());
+        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal((float) 3.14));
+        Assert.assertTrue(JSONSerializeValue.FLOAT == lResult.getType());
         Assert.assertTrue(lResult.getFloat() == (float) 3.14);
     }
 
     @Test
-    public void testDouble() throws MarshallException
+    public void testDouble() throws JSONSerializeException
     {
-        MarshallValue lResult = marshall.unmarshall(marshall.marshall(3.141567));
-        Assert.assertTrue(MarshallValue.DOUBLE == lResult.getType());
+        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal(3.141567));
+        Assert.assertTrue(JSONSerializeValue.DOUBLE == lResult.getType());
         Assert.assertTrue(lResult.getDouble() == 3.141567);
     }
 }

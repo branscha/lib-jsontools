@@ -7,8 +7,8 @@ package com.sdicons.json.serializer.helper.impl;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
-import com.sdicons.json.serializer.marshall.MarshallException;
+import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.JSONSerializer;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -16,14 +16,14 @@ import java.util.HashMap;
 public class FontHelper
 extends AbstractHelper
 {
-    public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-    throws MarshallException
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    throws JSONSerializeException
     {
-        JSONMarshall.requireStringAttribute(aObjectElement, JSONMarshall.RNDR_ATTR_VALUE);
-        return Font.decode(((JSONString) aObjectElement.get(JSONMarshall.RNDR_ATTR_VALUE)).getValue());
+        JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
+        return Font.decode(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue());
     }
 
-    public void renderValue(Object aObj, JSONObject aParent, JSONMarshall aMarshall, HashMap aPool) throws MarshallException
+    public void renderValue(Object aObj, JSONObject aParent, JSONSerializer aMarshall, HashMap aPool) throws JSONSerializeException
     {
         final Font lFont = (Font) aObj;
         final int lFontStyle = lFont.getStyle();
@@ -37,7 +37,7 @@ extends AbstractHelper
             case 3: lStyle = "BOLDITALIC";break;
             default: lStyle="PLAIN";
         }
-        aParent.getValue().put(JSONMarshall.RNDR_ATTR_VALUE, new JSONString( lFont.getName() + "-"+ lStyle + "-" + lFont.getSize()));
+        aParent.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString( lFont.getName() + "-"+ lStyle + "-" + lFont.getSize()));
     }
 
     public Class getHelpedClass()
