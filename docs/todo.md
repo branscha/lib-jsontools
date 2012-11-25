@@ -1,5 +1,4 @@
 # Project Tasks
 
-* 2012-11-22: In de JSONParser, parseJsonObject(), the error handling when the key is not a string should be improved.
-* 2012-11-22: Copy line numbers from the tokenizer to the JSONValues.
-* 2012-11-22: Remove pos within the line, the tokenizer does not keep track, and we can't know how much whitespace is lost. 
+* 2012-11-23: The JSONMapper is static class, static functions. The repository is global. The option to map beans using getters/setters or fields is implemented by modifying the repository. This has impact on all following mappings! Better would be to pass a map of options Map<String, Object> that is passed along to each mapper for each mapping. The user can pass a number of flags to influence the mappings.
+* 2012-11-24: Review JUnit tests. Remove println's because these don't actually do tests. Rewrite using more thorough tests with Hamcrest.

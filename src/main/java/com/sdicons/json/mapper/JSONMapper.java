@@ -31,7 +31,7 @@ import java.util.LinkedList;
  *
  * The main difference between the serializer and the mapper is that the serializer keeps as much
  * type information and structure information in the JSON data where the mapper uses the type information
- * in the provided Java classes to interprete the JSON data.
+ * in the provided Java classes to interpret the JSON data.
  */
 public class JSONMapper
 {

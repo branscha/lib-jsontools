@@ -21,6 +21,6 @@ extends CustomValidator
 
     public void validate(JSONValue aValue) throws ValidationException
     {
-        System.out.println("**** CUSTOM VALIDATOR *****");
+//        System.out.println("**** CUSTOM VALIDATOR *****");
     }
 }

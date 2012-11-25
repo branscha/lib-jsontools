@@ -5,12 +5,13 @@
  ******************************************************************************/
 package com.sdicons.json.mapper;
 
+
+import org.junit.Assert;
+import org.junit.Test;
+
 import com.sdicons.json.model.JSONValue;
-import junit.framework.Assert;
-import junit.framework.TestCase;
 
 public class UsersBeanMapperTest
-extends TestCase
 {
     public static class Transportable
     {
@@ -93,41 +94,30 @@ extends TestCase
         }
     }
 
-    public UsersBeanMapperTest(String lName)
+    @Test
+    public void testIt() throws MapperException
     {
-        super(lName);
-    }
+        Transportable lEvil = new Transportable();
+        Integer lID = 13;
+        lEvil.setEventType(lID);
+        lEvil.setParentID(lID);
+        lEvil.setSubObjectID(lID);
+        lEvil.setObjectID(lID);
+        String lStr = "Test";
+        lEvil.setParam1(lStr);
+        lEvil.setParam2(lStr);
 
-    public void testIt()
-    {
-        try
-        {
-            com.sdicons.json.mapper.UsersBeanMapperTest.Transportable lEvil = new com.sdicons.json.mapper.UsersBeanMapperTest.Transportable();
-            Integer lID = 13;
-            lEvil.setEventType(lID);
-            lEvil.setParentID(lID);
-            lEvil.setSubObjectID(lID);
-            lEvil.setObjectID(lID);
-            String lStr = "Test";
-            lEvil.setParam1(lStr);
-            lEvil.setParam2(lStr);
+        // Java -> JSON.
+        JSONValue lObj = JSONMapper.toJSON(lEvil);
 
-            JSONValue lObj = JSONMapper.toJSON(lEvil);
-            System.out.println(lObj.render(true));
-
-            Transportable lLitmus = (Transportable) JSONMapper.toJava(lObj, Transportable.class);
-            Assert.assertNotNull(lLitmus);
-            Assert.assertEquals(lLitmus.getEventType(), lEvil.getEventType());
-            Assert.assertSame(lLitmus.getParentID(), lEvil.getParentID());
-            Assert.assertSame(lLitmus.getSubObjectID(), lEvil.getSubObjectID());
-            Assert.assertSame(lLitmus.getObjectID(), lEvil.getObjectID());
-            Assert.assertEquals(lLitmus.getParam1(), lEvil.getParam1());
-            Assert.assertSame(lLitmus.getParam2(), lEvil.getParam2());
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        // JSON -> Java.
+        Transportable lLitmus = (Transportable) JSONMapper.toJava(lObj, Transportable.class);
+        Assert.assertNotNull(lLitmus);
+        Assert.assertEquals(lLitmus.getEventType(), lEvil.getEventType());
+        Assert.assertSame(lLitmus.getParentID(), lEvil.getParentID());
+        Assert.assertSame(lLitmus.getSubObjectID(), lEvil.getSubObjectID());
+        Assert.assertSame(lLitmus.getObjectID(), lEvil.getObjectID());
+        Assert.assertEquals(lLitmus.getParam1(), lEvil.getParam1());
+        Assert.assertSame(lLitmus.getParam2(), lEvil.getParam2());
     }
 }
