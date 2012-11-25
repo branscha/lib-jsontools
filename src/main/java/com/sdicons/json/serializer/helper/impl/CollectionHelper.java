@@ -19,6 +19,12 @@ import com.sdicons.json.serializer.helper.SerializeHelper;
 public class CollectionHelper
 implements SerializeHelper
 {
+    // Error messages.
+    //
+    private static final String COLL001 = "JSONSerializer/CollectionHelper/001: IllegalAccessException while trying to instantiate collection '%s'.";
+    private static final String COLL002 = "JSONSerializer/CollectionHelper/001: InstantiationException while trying to instantiate collection '%s'.";
+    private static final String COLL003 = "JSONSerializer/CollectionHelper/001: ClassNotFoundException while trying to instantiate collection '%s'.";
+
     public CollectionHelper()
     {
     }
@@ -65,18 +71,15 @@ implements SerializeHelper
         }
         catch (IllegalAccessException e)
         {
-            final String lMsg = "IllegalAccessException while trying to instantiate collection: " + lCollectionClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(COLL001, lCollectionClassName), e);
         }
         catch (InstantiationException e)
         {
-            final String lMsg = "InstantiationException while trying to instantiate collection: " + lCollectionClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(COLL002, lCollectionClassName), e);
         }
         catch (ClassNotFoundException e)
         {
-            final String lMsg = "ClassNotFoundException while trying to instantiate collection: " + lCollectionClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(COLL003, lCollectionClassName), e);
         }
     }
 

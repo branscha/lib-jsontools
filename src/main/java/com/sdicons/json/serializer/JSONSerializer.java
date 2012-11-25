@@ -47,6 +47,19 @@ import com.sdicons.json.serializer.helper.impl.StringHelper;
  */
 public class JSONSerializer
 {
+
+    // Error messages.
+    //
+    private static final String SER001 = "JSONSerializer/001: Unknown primitive encountered while unmarshaling class '%s' from line %d, column %d.";
+    private static final String SER002 = "JSONSerializer/002: Unknown reference '%s'.";
+    private static final String SER003 = "JSONSerializer/003: Attribute value '%s' is missing.";
+    private static final String SER004 = "JSONSerializer/004: Tried to unmarshal an unknown class '%s'.";
+    private static final String SER005 = "JSONSerializer/005: Unknown type '%s' encountered.";
+    private static final String SER006 = "JSONSerializer/006: Unknown primitive type '%s' encountered.";
+    private static final String SER007 = "JSONSerializer/007: Error while unmarshalling primitive type '%s' with value '%s'.";
+    private static final String SER008 = "JSONSerializer/008: Attribute '%s' value is missing for object at line %d, col %d.";
+    private static final String SER009 = "JSONSerializer/009: Attribute '%s' is not a string value for object at line %d, col %d.";
+
     private static final String IDPREFIX = "id";
     private long idCounter = 0;
 
@@ -327,8 +340,7 @@ public class JSONSerializer
                 return new JSONSerializeValueImpl(((Double) lUnmarshalled).doubleValue());
             else
             {
-                final String lMsg = "Unknown primitive type encountered: " + lUnmarshalled.getClass().getName() + aElement.getLine() + ":" + aElement.getCol() + ".";
-                throw new JSONSerializeException(lMsg);
+                throw new JSONSerializeException(String.format(SER001, lUnmarshalled.getClass().getName(), aElement.getLine(), aElement.getCol()));
             }
         }
         else
@@ -351,8 +363,7 @@ public class JSONSerializer
            final Object lObjFromPool = aObjectPool.get(lRef);
            if (lObjFromPool == null)
            {
-               final String lMsg = "Unknown reference: " + lRef;
-               throw new JSONSerializeException(lMsg);
+               throw new JSONSerializeException(String.format(SER002, lRef));
            }
            return lObjFromPool;
        }
@@ -375,14 +386,14 @@ public class JSONSerializer
                }
                else if (RNDR_OBJ.equals(lElementKind))
                {
+                   requireStringAttribute(aElement, RNDR_ATTR_CLASS);
+                   final String lBeanClassName = ((JSONString) aElement.get(RNDR_ATTR_CLASS)).getValue();
+
                    try
                    {
-                       requireStringAttribute(aElement, RNDR_ATTR_CLASS);
-                       final String lBeanClassName = ((JSONString) aElement.get(RNDR_ATTR_CLASS)).getValue();
                        if (lBeanClassName == null)
                        {
-                           final String lMsg = ERR_MISSINGATTRVAL + RNDR_ATTR_CLASS;
-                           throw new JSONSerializeException(lMsg);
+                           throw new JSONSerializeException(String.format(SER003, RNDR_ATTR_CLASS));
                        }
 
                        String lId = null;
@@ -403,14 +414,12 @@ public class JSONSerializer
                    }
                    catch (ClassNotFoundException e)
                    {
-                       final String lMsg = "Tried to unmarshall unknown class.";
-                       throw new JSONSerializeException(lMsg);
+                       throw new JSONSerializeException(String.format(SER004, lBeanClassName), e);
                    }
                }
                else
                {
-                   final String lMsg = "Unknown type encountered: " + lElementKind;
-                   throw new JSONSerializeException(lMsg);
+                   throw new JSONSerializeException(String.format(SER005, lElementKind));
                }
            }
        }
@@ -437,8 +446,7 @@ public class JSONSerializer
             else if("double".equals(lType)) return new Double(lValue);
             else
             {
-                final String lMsg = "Unknown primitive type encountered: " + lType;
-                throw new JSONSerializeException(lMsg);
+                throw new JSONSerializeException(String.format(SER006, lType));
             }
         }
         catch(JSONSerializeException passtrough)
@@ -447,8 +455,8 @@ public class JSONSerializer
         }
         catch(Exception e)
         {
-            final String lMsg = "Error while unmarshalling primitive type: " + lType + ", value: " + lValue;
-            throw new JSONSerializeException(lMsg);
+
+            throw new JSONSerializeException(String.format(SER007, lType, lValue), e);
         }
     }
 
@@ -457,14 +465,12 @@ public class JSONSerializer
     {
         if(!aElement.containsKey(anAttribute))
         {
-             final String lMsg = ERR_MISSINGATTRVAL + anAttribute + " for object at location " + aElement.getLine() + ":" + aElement.getCol() + ".";
-             throw new JSONSerializeException(lMsg);
+             throw new JSONSerializeException(String.format(SER008, anAttribute, aElement.getLine(), aElement.getCol()));
         }
 
         if(!(aElement.get(anAttribute) instanceof JSONString))
         {
-            final String lMsg = ERR_MISSINGSTRING + anAttribute + " for object at location " + aElement.getLine() + ":" + aElement.getCol() + ".";
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(SER009, anAttribute, aElement.getLine(), aElement.getCol()));
         }
     }
 

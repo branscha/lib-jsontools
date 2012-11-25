@@ -23,6 +23,11 @@ import com.sdicons.json.serializer.helper.SerializeHelper;
 public class ArrayHelper
 implements SerializeHelper
 {
+    // Error messages
+    //
+    private static final String ARR001 = "JSONSerializer/ArrayHelper/001: Unknown primitive array type '%s'.";
+    private static final String ARR002 = "JSONSerializer/ArrayHelper/002: Exception while trying to parse an array '%s'.";
+
     public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
@@ -210,8 +215,7 @@ implements SerializeHelper
             }
             else
             {
-                final String lMsg = "Unknown primitive array type: " + lArrClassName;
-                throw new JSONSerializeException(lMsg);
+                throw new JSONSerializeException(String.format(ARR001, lArrClassName));
             }
         }
         else
@@ -231,11 +235,9 @@ implements SerializeHelper
             }
             catch(ClassNotFoundException e)
             {
-                final String lMsg = "Exception while trying to unmarshall an array of JavaObjects: " + lArrClassName;
-                throw new JSONSerializeException(lMsg);
+                throw new JSONSerializeException(String.format(ARR002, lArrClassName), e);
             }
         }
-//         throw new MarshallException("Unknown array type: " + lArrClassName);
     }
 
     public Class<?> getHelpedClass()

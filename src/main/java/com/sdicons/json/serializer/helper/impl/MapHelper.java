@@ -19,6 +19,12 @@ import com.sdicons.json.serializer.helper.SerializeHelper;
 public class MapHelper
 implements SerializeHelper
 {
+    // Error messages.
+    //
+    private static final String MAP001 = "JSONSerializer/MapHelper/001: IllegalAccessException while trying to instantiate map of type '%s'.";
+    private static final String MAP002 = "JSONSerializer/MapHelper/002: IllegalAccessException while trying to instantiate map of type '%s'.";
+    private static final String MAP003 = "JSONSerializer/MapHelper/003: IllegalAccessException while trying to instantiate map of type '%s'.";
+
     private static final String ATTR_KEY = "key";
     private static final String ATTR_VALUE = "value";
 
@@ -73,18 +79,15 @@ implements SerializeHelper
         }
         catch (IllegalAccessException e)
         {
-            final String lMsg = "IllegalAccessException while trying to instantiate map: " + lMapClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(MAP001, lMapClassName), e);
         }
         catch (InstantiationException e)
         {
-            final String lMsg = "InstantiationException while trying to instantiate map: " + lMapClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(MAP002, lMapClassName), e);
         }
         catch (ClassNotFoundException e)
         {
-            final String lMsg = "ClassNotFoundException while trying to instantiate map: " + lMapClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(MAP003, lMapClassName), e);
         }
     }
 

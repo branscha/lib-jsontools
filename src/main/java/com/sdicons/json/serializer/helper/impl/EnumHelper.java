@@ -15,6 +15,12 @@ import com.sdicons.json.serializer.JSONSerializer;
 public class EnumHelper
 extends AbstractHelper
 {
+    // Error messages.
+    //
+    private static final String ENUM001 = "JSONSerializer/EnumHelper/001: The class '%s' cannot be instantiated, it cannot be found in the classpath.";
+    private static final String ENUM002 = "JSONSerializer/EnumHelper/002: Tried to handle a non-enum class '%s'.";
+    private static final String ENUM003 = "JSONSerializer/EnumHelper/003: The enum class '%s' *is found* but no matching value for '%s' could be found.";
+
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
@@ -28,28 +34,26 @@ extends AbstractHelper
         }
         catch (ClassNotFoundException e)
         {
-            final String lMsg = "The class cannot be instantiated, it cannot be found in the classpath: " + lEnumClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(ENUM001, lEnumClassName), e);
         }
+
+        JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
+        final String lVal = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue();
 
         if(lEnumClass.isEnum())
         {
             Object[] lEnumVals = lEnumClass.getEnumConstants();
             for(Object lEnumVal: lEnumVals)
             {
-                JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
-                final String lVal = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue();
                 if(lEnumVal.toString().equals(lVal)) return lEnumVal;
             }
         }
         else
         {
-            final String lMsg = "Enum helper tried to handle a non-enum class: " + lEnumClassName;
-            throw new JSONSerializeException(lMsg);
+            throw new JSONSerializeException(String.format(ENUM002, lEnumClassName));
         }
 
-        final String lMsg = "The enum class *is found* but no matching value could be found." + lEnumClassName;
-        throw new JSONSerializeException(lMsg);
+        throw new JSONSerializeException(String.format(ENUM003, lEnumClassName, lVal));
     }
 
     public Class<?> getHelpedClass()
