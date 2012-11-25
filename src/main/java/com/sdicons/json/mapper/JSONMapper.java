@@ -5,21 +5,36 @@
  ******************************************************************************/
 package com.sdicons.json.mapper;
 
-import com.sdicons.json.helper.HelperRepository;
-import com.sdicons.json.mapper.helper.ComplexMapperHelper;
-import com.sdicons.json.mapper.helper.SimpleMapperHelper;
-import com.sdicons.json.mapper.helper.impl.*;
-import com.sdicons.json.model.JSONNull;
-import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.serializer.helper.impl.ColorHelper;
-import com.sdicons.json.serializer.helper.impl.EnumHelper;
-import com.sdicons.json.serializer.helper.impl.FontHelper;
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+
+import com.sdicons.json.helper.HelperRepository;
+import com.sdicons.json.mapper.helper.ComplexMapperHelper;
+import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import com.sdicons.json.mapper.helper.impl.ArrayMapper;
+import com.sdicons.json.mapper.helper.impl.BigDecimalMapper;
+import com.sdicons.json.mapper.helper.impl.BigIntegerMapper;
+import com.sdicons.json.mapper.helper.impl.BooleanMapper;
+import com.sdicons.json.mapper.helper.impl.ByteMapper;
+import com.sdicons.json.mapper.helper.impl.CharacterMapper;
+import com.sdicons.json.mapper.helper.impl.CollectionMapper;
+import com.sdicons.json.mapper.helper.impl.DateMapper;
+import com.sdicons.json.mapper.helper.impl.DoubleMapper;
+import com.sdicons.json.mapper.helper.impl.EnumMapper;
+import com.sdicons.json.mapper.helper.impl.FloatMapper;
+import com.sdicons.json.mapper.helper.impl.IntegerMapper;
+import com.sdicons.json.mapper.helper.impl.LongMapper;
+import com.sdicons.json.mapper.helper.impl.MapMapper;
+import com.sdicons.json.mapper.helper.impl.ObjectMapperMeta;
+import com.sdicons.json.mapper.helper.impl.ShortMapper;
+import com.sdicons.json.mapper.helper.impl.StringMapper;
+import com.sdicons.json.model.JSONNull;
+import com.sdicons.json.model.JSONValue;
 
 /**
  * The mapper class is able to convert a JSON representation to/from a
@@ -35,19 +50,20 @@ import java.util.LinkedList;
  */
 public class JSONMapper
 {
+    // field | property
+    public static final String OPTION_OBJECTMAPPING = "objectMapperType";
+
     private HelperRepository<SimpleMapperHelper> repo = new HelperRepository<SimpleMapperHelper>();
+    private Map<String, Object> context = new HashMap<String, Object>();
 
     public JSONMapper()
     {
-        repo.addHelper(new ObjectMapper());
-//        repo.addHelper(new ObjectMapperDirect());
+        repo.addHelper(new ObjectMapperMeta());
         repo.addHelper(new StringMapper());
         repo.addHelper(new BooleanMapper());
         repo.addHelper(new ByteMapper());
         repo.addHelper(new ShortMapper());
-
         repo.addHelper(new IntegerMapper());
-
         repo.addHelper(new LongMapper());
         repo.addHelper(new FloatMapper());
         repo.addHelper(new DoubleMapper());
@@ -67,7 +83,7 @@ public class JSONMapper
      * @return  The resulting Java object, the POJO representation.
      * @throws MapperException when an error occurs during mapping.
      */
-    public Object toJava(JSONValue aValue, Class aPojoClass)
+    public Object toJava(JSONValue aValue, Class<?> aPojoClass)
     throws MapperException
     {
         // Null references are not allowed.
@@ -77,7 +93,7 @@ public class JSONMapper
             throw new MapperException(lMsg);
         }
         // But null representations are.
-        else if(aValue.isNull()) return null;                
+        else if(aValue.isNull()) return null;
         if(aPojoClass.isArray()){
         	ArrayMapper arrayMapper=new ArrayMapper();
         	return arrayMapper.toJava(this, aValue, aPojoClass);
@@ -123,7 +139,7 @@ public class JSONMapper
         else if(aValue.isNull()) return null;
 
         // First decompose the type in its raw class and the classes of the parameters.
-        final Class lRawClass = (Class) aGenericType.getRawType();
+        final Class<?> lRawClass = (Class<?>) aGenericType.getRawType();
         final Type[] lTypes = aGenericType.getActualTypeArguments();
 
         // Find someone who can map it.
@@ -169,12 +185,12 @@ public class JSONMapper
     throws MapperException
     {
         if(aPojo == null) return JSONNull.NULL;
-        final Class lObjectClass =  aPojo.getClass();
+        final Class<?> lObjectClass =  aPojo.getClass();
         if(lObjectClass.isArray()){
-            final ArrayMapper arrayMapper = new ArrayMapper();            
+            final ArrayMapper arrayMapper = new ArrayMapper();
         	return arrayMapper.toJSON(this, aPojo);
         }
-        
+
         final SimpleMapperHelper lHelperSimple = repo.findHelper(aPojo.getClass());
 
         if(lHelperSimple == null)
@@ -209,7 +225,7 @@ public class JSONMapper
      */
     public void usePojoAccess()
     {
-        addHelper(new ObjectMapperDirect());
+        setMappingOption(OPTION_OBJECTMAPPING, "field");
     }
 
     /**
@@ -219,6 +235,19 @@ public class JSONMapper
      */
     public void useJavaBeanAccess()
     {
-        addHelper(new ObjectMapper());
+        setMappingOption(OPTION_OBJECTMAPPING, "property");
+    }
+
+    public void setMappingOption(String key, Object value) {
+        context.put(key,  value);
+    }
+
+    public Object getMappingOption(String key, Object defaultValue) {
+        if(context.containsKey(key)) return context.get(key);
+        else return defaultValue;
+    }
+
+    public boolean hasMappingOption(String key) {
+        return context.containsKey(key);
     }
 }

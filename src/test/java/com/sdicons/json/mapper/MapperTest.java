@@ -295,14 +295,14 @@ public class MapperTest {
             return "MyPojo{" + "firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + '}';
         }
     }
-    
+
     private JSONMapper mapper;
-    
+
     @Before
     public void setup() {
         mapper = new JSONMapper();
     }
-    
+
 
     @Test
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -356,11 +356,11 @@ public class MapperTest {
         Reader stringReader = new StringReader(fromJS);
         JSONParser jsonParser = new JSONParser(stringReader, fromJS);
         lObj = jsonParser.nextValue();
-        
+
         // JSON -> Java.
         MapperTest.TestBean lLitmus = (MapperTest.TestBean) mapper.toJava(lObj, TestBean.class);
         Assert.assertNotNull(lLitmus);
-//        Assert.assertEquals("changed me",lLitmus.onlyWritableProperty);
+        Assert.assertEquals("changed me",lLitmus.onlyWritableProperty);
     }
 
     public static class Graph {
@@ -414,8 +414,8 @@ public class MapperTest {
         graph.setNodes(nodes);
         graph.setEdges(new ArrayList());
         graph.setCol(collection);
-        
-        
+
+
         // Map Java -> JSON
         JSONValue lObj = mapper.toJSON(graph);
         Assert.assertNotNull(lObj);
@@ -428,7 +428,7 @@ public class MapperTest {
         //
         HashMap<String, ArrayList<Integer>> nodes2 = graph2.getNodes();
         Assert.assertThat(nodes2, hasKey("uniqueNodeId1"));
-        
+
         //
         ArrayList<Integer> nodeInfo2 = nodes2.get("uniqueNodeId1");
         Iterator<Integer> iterator = nodeInfo2.iterator();
@@ -563,17 +563,17 @@ public class MapperTest {
 
         JSONValue jsonValue = mapper.toJSON(setAndListBean);
         Assert.assertNotNull(jsonValue.render(true));
-        
+
         Object object = mapper.toJava(jsonValue, setAndListBean.getClass());
         SetAndListBean setAndListBean2 = (SetAndListBean) object;
-        
+
         Iterator<String> iterator = setAndListBean2.getStringList().iterator();
 
         Assert.assertNotNull(iterator.next());
         Assert.assertNotNull(iterator.next());
 
         iterator = setAndListBean2.getStringSet().iterator();
-        
+
         Assert.assertNotNull(iterator.next());
         Assert.assertNotNull(iterator.next());
     }
@@ -615,14 +615,14 @@ public class MapperTest {
         mapper.usePojoAccess();
         MyPojo lPojo = new MyPojo();
         lPojo.setNames("Homer", "Simpson");
-        
+
         // Java -> JSON.
         JSONValue lObj = mapper.toJSON(lPojo);
         Assert.assertEquals("{\n" +
                 "   \"firstName\" : \"Homer\",\n" +
                 "   \"lastName\" : \"Simpson\"\n" +
                 "}", lObj.render(true));
-        
+
         // JSON -> Java
         Object javaObj = mapper.toJava(lObj, MyPojo.class);
         Assert.assertNotNull(javaObj);
