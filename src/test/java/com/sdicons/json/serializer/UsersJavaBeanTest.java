@@ -162,13 +162,13 @@ public class UsersJavaBeanTest
         String lStr = "Test";
         lEvil.setParam1(lStr);
         lEvil.setParam2(lStr);
-        
+
         JSONObject lObj = marshall.marshall(lEvil);
         Assert.assertNotNull(lObj.render(true));
         MarshallValue lResult = marshall.unmarshall(lObj);
         Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
         Transportable lLitmus = (Transportable) lResult.getReference();
-        
+
         // Test if the contents are intact.
         Assert.assertNotNull(lLitmus);
         Assert.assertEquals(lLitmus.getEventType(), lID);
@@ -201,6 +201,6 @@ public class UsersJavaBeanTest
         JSONObject lObj = marshall.marshall(lPojo);
         Assert.assertNotNull(lObj.render(true));
         //
-        Object javaObj = marshall.unmarshall(lObj);
+        marshall.unmarshall(lObj);
     }
 }

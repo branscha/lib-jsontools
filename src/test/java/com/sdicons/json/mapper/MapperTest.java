@@ -65,7 +65,6 @@ public class MapperTest {
         private Boolean false2;
         private Boolean false3;
         private String onlyReadableProperty = "read me";
-        @SuppressWarnings("unused")
         private String onlyWritableProperty;
         private LinkedList<String> linkedList;
         private ArrayList<Date> arrayList;

@@ -79,7 +79,7 @@ public class HelperRepository<T extends Helper>
          * @return A Helper or null if no applicable helper could be found. We first try to
          * find an exact match, and if it cannot be done, we try to find a mapper for the closest parent class.
          */
-        T findHelper(Class aClass)
+        T findHelper(Class<?> aClass)
         {
             // If we have an exact match, we return the helper.
             // This is the perfect case.
@@ -120,12 +120,13 @@ public class HelperRepository<T extends Helper>
     private static class RootHelper
     implements Helper
     {
-        public Class getHelpedClass()
+        public Class<?> getHelpedClass()
         {
             return Object.class;
         }
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public HelperRepository()
     {
         root = new HelperTreeNode(new RootHelper());
@@ -135,6 +136,7 @@ public class HelperRepository<T extends Helper>
      * Add a helper to the repository.
      * @param aHelper   The helper to add.
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public void addHelper(T aHelper)
     {
         root.insertNode(new HelperTreeNode(aHelper));
@@ -147,7 +149,7 @@ public class HelperRepository<T extends Helper>
      *         serialize the properties of a JavaBean. This property helper is always returned as a last possibility.
      *         So this method always returns a helper.
      */
-    public T findHelper(Class aClass)
+    public T findHelper(Class<?> aClass)
     {
         return root.findHelper(aClass);
     }

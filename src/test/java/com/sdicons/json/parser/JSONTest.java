@@ -23,7 +23,7 @@ public class JSONTest
         final JSONValue lConfig = lParser.nextValue();
         Assert.assertTrue(lConfig.isArray());
         final JSONArray lConfigArray = (JSONArray) lConfig;
-        
+
         for (JSONValue lJSONValue : lConfigArray.getValue()) {
             Assert.assertTrue(lJSONValue.isString());
             final JSONString lEntryResource = (JSONString) lJSONValue;
@@ -42,9 +42,9 @@ public class JSONTest
         // final String lErrorExample = "{ \"fld1\" : \"val1\" ["; // This
         // string contains an error.
         final String lErrorExample2 = "[1, 2, 3 {";
-        
+
         final JSONParser lParser = new JSONParser(new StringReader(lErrorExample2));
-        final JSONValue lConfig = lParser.nextValue();
+        lParser.nextValue();
         Assert.fail("An exception should be thrown when an error is found.");
     }
 
