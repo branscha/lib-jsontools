@@ -42,7 +42,7 @@ import com.sdicons.json.model.JSONValue;
  * easily be used in e.g. Javascript context. As a consequence, not all Java constructs
  * are preserved during the conversion to/from JSON. The mapper is the best choice in an application
  * where the clean JSON format is central. If the emphasis is on exact Java serialization where types are
- * preserved, take a look at the Serializer tool.
+ * preserved, take a look at the serializer tool.
  *
  * The main difference between the serializer and the mapper is that the serializer keeps as much
  * type information and structure information in the JSON data where the mapper uses the type information

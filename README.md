@@ -9,5 +9,4 @@ If you are looking for a simple tool to parse/render JSON, the lib-jsonutil migh
 
 ## Future
 
-* The license will change to the free MIT license.
-* I would like to make the tools independent of ANTLR, using the parser routines from the lib-jsonutil.
+* Nothing in the pipeline.

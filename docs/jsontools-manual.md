@@ -34,15 +34,10 @@ This project wants to provide the tools to manipulate and use the format in a Ja
 
 The JSON Tools library is the result of many suggestions, contributions and reviews from the users. Without the feedback the library would not be as versatile and stable as it is today. Thank you for all the feedback that makes the library better.
 
-## 1.3. Dependencies
-
-The parser uses [ANTLR  2.7.7](http://www.antlr.org/), so the ANTLR runtime is needed for this. It might work with other versions, I simply did not test it. I am aware that ANTLR v3 is available, but it is still in beta. We will stick to the stable release. The project is based on the maven2 build system.
-
-The JSON Tools libraries are written using the new language features from JDK 1.5.  Enumerations and generics are used because these make the code nicer to read.  There are no dependencies to the new libraries. On the other hand, there is no guarantee we will keep it this way in future releases. If you want to use the libraries for an earlier version of the JDK, the [retrotranslator tool](http://retrotranslator.sourceforge.net) might be an option.
 
 ## 1.4. License
 
-The library is released under the [LGPL](http://www.gnu.org/licenses/lgpl.html). You are free to use it for commercial or non-commercial applications as long as you leave the copyright intact and add a reference to the project. You can find a copy of the license header in the appendix. Let me know what you like and what you don't like about the library so that I can improve it.
+The library is released under the free MIT license.
 
 ## 1.5. JSON Extensions
 
@@ -92,13 +87,15 @@ The JSON from the mapper can be easily interpreted in another language. An examp
 
 	import com.sdicons.json.mapper.*;
 	...
-	JSONValue lObj = JSONMapper.toJSON(myPojo);
+	JSONMapper mapper = new JSONMapper();
+	JSONValue obj = mapper.toJSON(myPojo);
 
 Converting back to Java is done like this:
 
 	import com.sdicons.json.mapper.*;
 	...
-	MyBean bean = (MyBean) JSONMapper.toJava(lObj, MyBean.class);
+	JSONMapper mapper = new JSONMapper();
+	MyBean bean = (MyBean) mapper.toJava(obj, MyBean.class);
 
 Note that the mapper needs some help to convert JSON into Java. As we stated in the goals of the mapper, we cannot store meta information in the JSON text. As a result the mapper cannot know how the JSON text should be mapped. Therefore we pass a class to the mapper (line 3) so that the mapper can exploit this information. In fact, there are two kinds of information the mapper can work with (1) classes as in the example and (2) types e.g. List<Integer>. The rationale for this might be illustrated by the following example. Consider a JSON text 
 
@@ -112,7 +109,7 @@ This list could be interpreted as a list of Strings, but also as a list of Dates
 The mapper uses a repository of helpers. Each helper is specialized in mapping instances of a certain class or interface. The mappers are organized in the repository in a hierarchical way, ordered according to the class hierarchy. When mapping an object, the mapper will try to find the most specific helper available. The default hierarchy looks like this:
 
 	// Calling this method:
-	System.out.println(JSONMapper.getRepository().prettyPrint());
+	System.out.println(mapper.getRepository().prettyPrint());
 	
 	// Results in this output:
 	java.lang.Object
