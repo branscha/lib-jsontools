@@ -8,6 +8,8 @@ package com.sdicons.json.serializer;
 public class JSONSerializeException
 extends Exception
 {
+    private static final long serialVersionUID = 4487547060835012577L;
+
     public JSONSerializeException(String aComments)
     {
         super(aComments);

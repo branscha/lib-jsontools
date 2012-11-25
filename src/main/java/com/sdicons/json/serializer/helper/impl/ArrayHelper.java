@@ -5,21 +5,25 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.serializer.JSONSerializeException;
 import com.sdicons.json.serializer.JSONSerializer;
 import com.sdicons.json.serializer.helper.SerializeHelper;
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONString;
-import com.sdicons.json.model.JSONArray;
-import com.sdicons.json.model.JSONValue;
-
-import java.util.*;
-import java.lang.reflect.*;
 
 public class ArrayHelper
 implements SerializeHelper
 {
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
@@ -82,7 +86,7 @@ implements SerializeHelper
         }
         else
         {
-            Iterator lIter = Arrays.asList((Object[]) aObj).iterator();
+            Iterator<?> lIter = Arrays.asList((Object[]) aObj).iterator();
             while(lIter.hasNext())
             {
                 Object lArrEl = lIter.next();
@@ -91,7 +95,7 @@ implements SerializeHelper
         }
     }
 
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
@@ -111,7 +115,7 @@ implements SerializeHelper
             if("I".equals(lArrClassName))
             {
                 int[] lArr = new int[lArrSize];
-                Iterator lIter = lElements.iterator();
+                Iterator<?> lIter = lElements.iterator();
                 int i = 0;
                 while(lIter.hasNext())
                 {
@@ -123,7 +127,7 @@ implements SerializeHelper
             if("C".equals(lArrClassName))
             {
                 char[] lArr = new char[lArrSize];
-                Iterator lIter = lElements.iterator();
+                Iterator<?> lIter = lElements.iterator();
                 int i = 0;
                 while(lIter.hasNext())
                 {
@@ -135,7 +139,7 @@ implements SerializeHelper
             else if("Z".equals(lArrClassName))
             {
                 boolean[] lArr = new boolean[lArrSize];
-                Iterator lIter = lElements.iterator();
+                Iterator<?> lIter = lElements.iterator();
                 int i = 0;
                 while(lIter.hasNext())
                 {
@@ -147,7 +151,7 @@ implements SerializeHelper
             else if("S".equals(lArrClassName))
             {
                 short[] lArr = new short[lArrSize];
-                Iterator lIter = lElements.iterator();
+                Iterator<?> lIter = lElements.iterator();
                 int i = 0;
                 while(lIter.hasNext())
                 {
@@ -159,7 +163,7 @@ implements SerializeHelper
             else if("B".equals(lArrClassName))
             {
                 byte[] lArr = new byte[lArrSize];
-                Iterator lIter = lElements.iterator();
+                Iterator<?> lIter = lElements.iterator();
                 int i = 0;
                 while(lIter.hasNext())
                 {
@@ -171,7 +175,7 @@ implements SerializeHelper
             else if("J".equals(lArrClassName))
             {
                 long[] lArr = new long[lArrSize];
-                Iterator lIter = lElements.iterator();
+                Iterator<?> lIter = lElements.iterator();
                 int i = 0;
                 while(lIter.hasNext())
                 {
@@ -183,7 +187,7 @@ implements SerializeHelper
             else if("F".equals(lArrClassName))
             {
                 float[] lArr = new float[lArrSize];
-                Iterator lIter = lElements.iterator();
+                Iterator<?> lIter = lElements.iterator();
                 int i = 0;
                 while(lIter.hasNext())
                 {
@@ -195,7 +199,7 @@ implements SerializeHelper
             else if("D".equals(lArrClassName))
             {
                 double[] lArr = new double[lArrSize];
-                Iterator lIter = lElements.iterator();
+                Iterator<?> lIter = lElements.iterator();
                 int i = 0;
                 while(lIter.hasNext())
                 {
@@ -214,9 +218,9 @@ implements SerializeHelper
         {
             try
             {
-                Class lComponentClass = Class.forName(lArrClassName);
+                Class<?> lComponentClass = Class.forName(lArrClassName);
                 Object lArr = Array.newInstance(lComponentClass, lArrSize);
-                Iterator lIter = lElements.iterator();
+                Iterator<?> lIter = lElements.iterator();
                 int i = 0;
                 while(lIter.hasNext())
                 {
@@ -234,7 +238,7 @@ implements SerializeHelper
 //         throw new MarshallException("Unknown array type: " + lArrClassName);
     }
 
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return null;
     }

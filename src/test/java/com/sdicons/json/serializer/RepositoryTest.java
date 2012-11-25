@@ -22,7 +22,7 @@ import com.sdicons.json.serializer.helper.impl.DoubleHelper;
 import com.sdicons.json.serializer.helper.impl.FloatHelper;
 import com.sdicons.json.serializer.helper.impl.IntegerHelper;
 import com.sdicons.json.serializer.helper.impl.LongHelper;
-import com.sdicons.json.serializer.helper.impl.ObjectHelper;
+import com.sdicons.json.serializer.helper.impl.ObjectHelperProps;
 import com.sdicons.json.serializer.helper.impl.ShortHelper;
 import com.sdicons.json.serializer.helper.impl.StringHelper;
 
@@ -36,7 +36,7 @@ public class RepositoryTest
     {
         repo = new HelperRepository<SerializeHelper>();
 
-        repo.addHelper(new ObjectHelper());
+        repo.addHelper(new ObjectHelperProps());
         repo.addHelper(new StringHelper());
         repo.addHelper(new BooleanHelper());
         repo.addHelper(new ByteHelper());

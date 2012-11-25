@@ -5,15 +5,15 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper;
 
-import com.sdicons.json.serializer.JSONSerializeException;
-import com.sdicons.json.serializer.JSONSerializer;
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.helper.Helper;
-
 import java.util.HashMap;
 
+import com.sdicons.json.helper.Helper;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.JSONSerializer;
+
 /** A helper can render an instance of a specific class in a custom way.
- * It is the helpers responsability to render instances of a class to/from JSON.
+ * It is the helpers responsibility to render instances of a class to/from JSON.
  */
 public interface SerializeHelper
 extends Helper
@@ -23,21 +23,21 @@ extends Helper
      * @param aObj Instance that should be rendered to JSON.
      * @param aObjectElement The parent element where we have to put the rendered information. A helper is allowed to add
      *                       child elements.
-     * @param aMarshall      The marshall we can use to recursively render parts of our own object.
+     * @param serializer      The marshal we can use to recursively render parts of our own object.
      * @param aPool          A pool of objects already encountered. Is used to resolve references.
      * @throws JSONSerializeException
      */
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws JSONSerializeException;
 
     /** Convert JSON representation into an instance of a class.
      *
      * @param aObjectElement The source element we have to convert into an object.
-     * @param aMarshall The marshall we can use to convert sub elements into subobjects to compose our target object.
+     * @param serializer The marshal we can use to convert sub elements into sub objects to compose our target object.
      * @param aPool A pool of objects already encountered. Is used to resolve references.
      * @return The newly created object.
      * @throws JSONSerializeException
      */
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws JSONSerializeException;
 }

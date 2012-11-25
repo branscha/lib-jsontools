@@ -5,6 +5,9 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
+import java.util.Collection;
+import java.util.HashMap;
+
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
@@ -13,9 +16,6 @@ import com.sdicons.json.serializer.JSONSerializeException;
 import com.sdicons.json.serializer.JSONSerializer;
 import com.sdicons.json.serializer.helper.SerializeHelper;
 
-import java.util.Collection;
-import java.util.HashMap;
-
 public class CollectionHelper
 implements SerializeHelper
 {
@@ -23,7 +23,7 @@ implements SerializeHelper
     {
     }
 
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         // We create a new JSON array where we will collect the elements of the
@@ -33,14 +33,15 @@ implements SerializeHelper
 
         // We iterate through the elements of the collection, render these as
         // JSON values and put these values in the array created above.
-        final Collection lCollection = (Collection) aObj;
+        final Collection<?> lCollection = (Collection<?>) aObj;
         for(Object lColEl : lCollection)
         {
             lArray.getValue().add(aMarshall.marshalImpl(lColEl, aPool));
         }
     }
 
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    @SuppressWarnings("unchecked")
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         final JSONArray lArray = (JSONArray) aObjectElement.getValue().get(JSONSerializer.RNDR_ATTR_VALUE);
@@ -50,10 +51,10 @@ implements SerializeHelper
 
         try
         {
-            Class lCollectionClass = Class.forName(lCollectionClassName);
-            Collection lCollection;
+            Class<?> lCollectionClass = Class.forName(lCollectionClassName);
+            Collection<Object> lCollection;
 
-            lCollection = (Collection) lCollectionClass.newInstance();
+            lCollection = (Collection<Object>) lCollectionClass.newInstance();
 //            if (lId != null) aPool.put(lId, lCollection);
 
             for(JSONValue lVal : lArray.getValue())
@@ -79,7 +80,7 @@ implements SerializeHelper
         }
     }
 
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Collection.class;
     }

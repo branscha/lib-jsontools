@@ -5,17 +5,16 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.serializer.JSONSerializeException;
 import com.sdicons.json.serializer.JSONSerializer;
 import com.sdicons.json.serializer.helper.SerializeHelper;
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONArray;
-import com.sdicons.json.model.JSONString;
-import com.sdicons.json.model.JSONValue;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 public class MapHelper
 implements SerializeHelper
@@ -23,7 +22,7 @@ implements SerializeHelper
     private static final String ATTR_KEY = "key";
     private static final String ATTR_VALUE = "value";
 
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         // We create a new JSON array where we will collect the elements of the
@@ -33,8 +32,8 @@ implements SerializeHelper
 
         // We iterate through the keys of the map, render these as
         // JSON values and put these values in the array created above.
-        final Map lMap = (Map) aObj;
-        final Iterator lIter = lMap.keySet().iterator();
+        final Map<?,?> lMap = (Map<?,?>) aObj;
+//        final Iterator<?> lIter = lMap.keySet().iterator();
         for(Object lKey : lMap.keySet())
         {
             // Get hold of each key-value pair.
@@ -48,7 +47,8 @@ implements SerializeHelper
         }
     }
 
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    @SuppressWarnings("unchecked")
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         final JSONArray lArray = (JSONArray) aObjectElement.getValue().get(JSONSerializer.RNDR_ATTR_VALUE);
@@ -58,10 +58,10 @@ implements SerializeHelper
 
         try
         {
-            Class lMapClass = Class.forName(lMapClassName);
-            Map lMap;
+            Class<?> lMapClass = Class.forName(lMapClassName);
+            Map<Object, Object> lMap;
 
-            lMap = (Map) lMapClass.newInstance();
+            lMap = (Map<Object, Object>) lMapClass.newInstance();
 
             for(JSONValue lKeyValue : lArray.getValue())
             {
@@ -88,7 +88,7 @@ implements SerializeHelper
         }
     }
 
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Map.class;
     }

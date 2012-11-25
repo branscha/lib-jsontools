@@ -5,14 +5,15 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.JSONSerializeException;
 import com.sdicons.json.serializer.JSONSerializer;
 import com.sdicons.json.serializer.helper.SerializeHelper;
-import com.sdicons.json.model.JSONString;
-import com.sdicons.json.model.JSONObject;
-
-import java.util.*;
-import java.text.*;
 
 public class DateHelper
 implements SerializeHelper
@@ -25,13 +26,13 @@ implements SerializeHelper
         dateFormat.setLenient(false);
     }
 
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         aObjectElement.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString(dateFormat.format((Date) aObj)));
     }
 
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
@@ -46,7 +47,7 @@ implements SerializeHelper
         }
     }
 
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Date.class;
     }

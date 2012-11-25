@@ -5,20 +5,23 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.JSONSerializeException;
 import com.sdicons.json.serializer.JSONSerializer;
 import com.sdicons.json.serializer.helper.SerializeHelper;
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONString;
 
-import java.util.*;
-import java.beans.*;
-import java.lang.reflect.*;
-
-public class ObjectHelper
+public class ObjectHelperProps
 implements SerializeHelper
 {
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         // We will render the bean properties as the elements of a JSON object.
@@ -27,7 +30,7 @@ implements SerializeHelper
 
         try
         {
-            Class lClass = aObj.getClass();
+            Class<?> lClass = aObj.getClass();
             PropertyDescriptor[] lPropDesc = Introspector.getBeanInfo(lClass, Introspector.USE_ALL_BEANINFO).getPropertyDescriptors();
             for (PropertyDescriptor aLPropDesc : lPropDesc)
             {
@@ -59,7 +62,7 @@ implements SerializeHelper
         }
     }
 
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
@@ -75,7 +78,7 @@ implements SerializeHelper
 
         try
         {
-            Class lBeanClass = Class.forName(lBeanClassName);
+            Class<?> lBeanClass = Class.forName(lBeanClassName);
             Object lBean;
 
             lBean = lBeanClass.newInstance();
@@ -144,7 +147,7 @@ implements SerializeHelper
         }
     }
 
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Object.class;
     }

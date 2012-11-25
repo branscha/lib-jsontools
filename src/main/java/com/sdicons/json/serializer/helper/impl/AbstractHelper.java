@@ -5,13 +5,13 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
+import java.util.HashMap;
+
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.JSONSerializeException;
 import com.sdicons.json.serializer.JSONSerializer;
 import com.sdicons.json.serializer.helper.SerializeHelper;
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONString;
-
-import java.util.*;
 
 public abstract class AbstractHelper
 implements SerializeHelper
@@ -21,7 +21,7 @@ implements SerializeHelper
         return this.getHelpedClass() == ((SerializeHelper) obj).getHelpedClass();
     }
 
-    public void renderValue(Object aObj, JSONObject aParent, JSONSerializer aMarshall, HashMap aPool)
+    public void renderValue(Object aObj, JSONObject aParent, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         aParent.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString(aObj.toString()));

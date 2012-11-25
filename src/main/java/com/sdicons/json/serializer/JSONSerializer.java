@@ -6,6 +6,7 @@
 package com.sdicons.json.serializer;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.sdicons.json.helper.HelperRepository;
 import com.sdicons.json.model.JSONObject;
@@ -27,8 +28,7 @@ import com.sdicons.json.serializer.helper.impl.FontHelper;
 import com.sdicons.json.serializer.helper.impl.IntegerHelper;
 import com.sdicons.json.serializer.helper.impl.LongHelper;
 import com.sdicons.json.serializer.helper.impl.MapHelper;
-import com.sdicons.json.serializer.helper.impl.ObjectHelper;
-import com.sdicons.json.serializer.helper.impl.ObjectHelperDirect;
+import com.sdicons.json.serializer.helper.impl.ObjectHelperMeta;
 import com.sdicons.json.serializer.helper.impl.ShortHelper;
 import com.sdicons.json.serializer.helper.impl.StringHelper;
 
@@ -76,11 +76,14 @@ public class JSONSerializer
     public static final String ERR_MISSINGATTRVAL = "Attribute value is missing: ";
     public static final String ERR_MISSINGSTRING = "Attribute is not a string value: ";
 
+    // field | property
+    public static final String OPTION_OBJECTSERIALIZE = "objectSerializeType";
+
     private HelperRepository<SerializeHelper> repo = new HelperRepository<SerializeHelper>();
+    private Map<String, Object> options = new HashMap<String, Object>();
 
     {
-        repo.addHelper(new ObjectHelper());
-//        repo.addHelper(new ObjectHelperDirect());
+        repo.addHelper(new ObjectHelperMeta());
         repo.addHelper(new StringHelper());
         repo.addHelper(new BooleanHelper());
         repo.addHelper(new ByteHelper());
@@ -193,15 +196,15 @@ public class JSONSerializer
      * Convert a Java object to JSON.
      * @param aObj
      * @return The JSON representation of the Java object.
-     * @throws JSONSerializeException An error occured while converting the Java object to JSON.
+     * @throws JSONSerializeException An error occurred while converting the Java object to JSON.
      */
     public JSONObject marshal(Object aObj)
     throws JSONSerializeException
     {
-        return marshalImpl(aObj, new HashMap());
+        return marshalImpl(aObj, new HashMap<Object, Object>());
     }
 
-    public JSONObject marshalImpl(Object aObj, HashMap aPool)
+    public JSONObject marshalImpl(Object aObj, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         // Handle null references quickly.
@@ -213,10 +216,10 @@ public class JSONSerializer
         }
         else
         {
-            final Class lObjectClass = aObj.getClass();
+            final Class<?> lObjectClass = aObj.getClass();
             final String lObjectClassName = lObjectClass.getName();
             // A reference to the object will be used for storage as a key in the
-            // hashtable for identity reasons. Two objects are different if they
+            // hash table for identity reasons. Two objects are different if they
             // are different in memory, even if they are equal().
             // Serialization should not change the original layout of the objects.
             final Reference lRef = new Reference(aObj);
@@ -243,10 +246,10 @@ public class JSONSerializer
         }
     }
 
-    private JSONObject marshalImplArray(Object aObj, HashMap aPool)
+    private JSONObject marshalImplArray(Object aObj, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
-        final Class lClass = aObj.getClass();
+        final Class<?> lClass = aObj.getClass();
         final String lObjClassName = lClass.getName();
 
         // Construct the component class name.
@@ -268,7 +271,7 @@ public class JSONSerializer
         return lArrElement;
     }
 
-    private JSONObject marshalImplObj(Object aObj, String aObjId, Class aObjClass, String aObjClassName, HashMap aPool)
+    private JSONObject marshalImplObj(Object aObj, String aObjId, Class<?> aObjClass, String aObjClassName, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         final JSONObject lObjElement = new JSONObject();
@@ -301,7 +304,7 @@ public class JSONSerializer
     {
         requireStringAttribute(aElement, RNDR_ATTR_KIND);
         final String lElementKind = ((JSONString) aElement.get(RNDR_ATTR_KIND)).getValue();
-        final Object lUnmarshalled = unmarshalImpl(aElement, new HashMap());
+        final Object lUnmarshalled = unmarshalImpl(aElement, new HashMap<Object, Object>());
 
         // Put primitive types in corresponding instance vars.
         if (RNDR_PRIM.equals(lElementKind))
@@ -335,7 +338,7 @@ public class JSONSerializer
     }
 
    // Internal implementation. Always uses return objects, never primitives.
-    public Object unmarshalImpl(JSONObject aElement, HashMap aObjectPool)
+    public Object unmarshalImpl(JSONObject aElement, HashMap<Object, Object> aObjectPool)
     throws JSONSerializeException
    {
        requireStringAttribute(aElement, RNDR_ATTR_KIND);
@@ -392,7 +395,7 @@ public class JSONSerializer
                        {
                        }
 
-                       final Class lBeanClass = Class.forName(lBeanClassName);
+                       final Class<?> lBeanClass = Class.forName(lBeanClassName);
                        SerializeHelper lHelper = repo.findHelper(lBeanClass);
                        Object lResult =  lHelper.parseValue(aElement, this, aObjectPool);
                        if(lId != null) aObjectPool.put(lId, lResult);
@@ -484,7 +487,7 @@ public class JSONSerializer
      */
     public void usePojoAccess()
     {
-        addHelper(new ObjectHelperDirect());
+        setSerializeOption(OPTION_OBJECTSERIALIZE, "field");
     }
 
     /**
@@ -494,6 +497,19 @@ public class JSONSerializer
      */
     public void useJavaBeanAccess()
     {
-        addHelper(new ObjectHelper());
+        setSerializeOption(OPTION_OBJECTSERIALIZE, "property");
+    }
+
+    public void setSerializeOption(String key, Object value) {
+        options.put(key,  value);
+    }
+
+    public Object getSerializeOption(String key, Object defaultValue) {
+        if(options.containsKey(key)) return options.get(key);
+        else return defaultValue;
+    }
+
+    public boolean hasSerializeOption(String key) {
+        return options.containsKey(key);
     }
 }

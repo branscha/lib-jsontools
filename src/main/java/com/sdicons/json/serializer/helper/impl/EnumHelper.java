@@ -5,23 +5,23 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
+import java.util.HashMap;
+
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.JSONSerializeException;
 import com.sdicons.json.serializer.JSONSerializer;
 
-import java.util.HashMap;
-
 public class EnumHelper
 extends AbstractHelper
 {
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
         final String lEnumClassName = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_CLASS)).getValue();
 
-        final Class lEnumClass;
+        final Class<?> lEnumClass;
         try
         {
             lEnumClass = Class.forName(lEnumClassName);
@@ -52,7 +52,7 @@ extends AbstractHelper
         throw new JSONSerializeException(lMsg);
     }
 
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Enum.class;
     }
