@@ -8,11 +8,13 @@ package com.sdicons.json.validator;
 import com.sdicons.json.model.JSONValue;
 
 /**
- * The exception is thrown when a validation fails. 
+ * The exception is thrown when a validation fails.
  */
 public class ValidationException
 extends Exception
 {
+    private static final long serialVersionUID = 6567006977842147331L;
+
     private JSONValue culprit;
     private String validationRule;
 

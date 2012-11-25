@@ -6,8 +6,8 @@
 package com.sdicons.json.model;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Represents a JSON array (list), an ordered list of values ...
@@ -113,7 +113,7 @@ extends JSONComplex
      */
     public Object strip()
     {
-        List lResult = new LinkedList();
+        List<Object> lResult = new LinkedList<Object>();
         for(JSONValue lVal: array)
         {
             lResult.add(lVal.strip());

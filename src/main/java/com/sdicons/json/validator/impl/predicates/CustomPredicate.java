@@ -5,16 +5,16 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+
 import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.Validator;
 import com.sdicons.json.validator.impl.ValidatorUtil;
-
-import java.util.HashMap;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 public class CustomPredicate
 extends Predicate
@@ -30,7 +30,7 @@ extends Predicate
 
         try
         {
-            Class lCustomClass = Class.forName(lClassname);
+            Class<?> lCustomClass = Class.forName(lClassname);
             if(!CustomValidator.class.isAssignableFrom(lCustomClass))
             {
                 // Problem, not derived from CustomValidator.
@@ -38,7 +38,7 @@ extends Predicate
             }
             else
             {
-                Constructor lConstructor = lCustomClass.getConstructor(String.class,JSONObject.class,HashMap.class);
+                Constructor<?> lConstructor = lCustomClass.getConstructor(String.class, JSONObject.class,HashMap.class);
                 validator = (Validator) lConstructor.newInstance(aName, aRule, aRuleset);
             }
         }

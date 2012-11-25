@@ -5,14 +5,18 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
-import com.sdicons.json.model.*;
-import com.sdicons.json.validator.ValidationException;
-import com.sdicons.json.validator.Validator;
-import com.sdicons.json.validator.impl.ValidatorUtil;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONBoolean;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
+import com.sdicons.json.validator.ValidationException;
+import com.sdicons.json.validator.Validator;
+import com.sdicons.json.validator.impl.ValidatorUtil;
 
 public class Properties
 extends Predicate
@@ -21,13 +25,13 @@ extends Predicate
     {
         private String key;
         private Validator rule;
-        private boolean optional;
+//        private boolean optional;
 
         public PropRule(String key, Validator rule, boolean optional)
         {
             this.key = key;
             this.rule = rule;
-            this.optional = optional;
+//            this.optional = optional;
         }
 
         public String getKey()
@@ -35,30 +39,34 @@ extends Predicate
             return key;
         }
 
-        public void setKey(String key)
-        {
-            this.key = key;
-        }
+//        @SuppressWarnings("unused")
+//        public void setKey(String key)
+//        {
+//            this.key = key;
+//        }
 
         public Validator getRule()
         {
             return rule;
         }
 
-        public void setRule(Validator rule)
-        {
-            this.rule = rule;
-        }
+//        @SuppressWarnings("unused")
+//        public void setRule(Validator rule)
+//        {
+//            this.rule = rule;
+//        }
 
-        public boolean isOptional()
-        {
-            return optional;
-        }
-
-        public void setOptional(boolean optional)
-        {
-            this.optional = optional;
-        }
+//        @SuppressWarnings("unused")
+//        public boolean isOptional()
+//        {
+//            return optional;
+//        }
+//
+//        @SuppressWarnings("unused")
+//        public void setOptional(boolean optional)
+//        {
+//            this.optional = optional;
+//        }
     }
 
     private List<PropRule> required = new LinkedList<PropRule>();

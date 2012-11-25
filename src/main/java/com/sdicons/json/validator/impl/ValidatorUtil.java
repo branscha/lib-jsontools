@@ -5,16 +5,38 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl;
 
+import java.util.HashMap;
+
 import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.Validator;
-import com.sdicons.json.validator.impl.predicates.*;
-import com.sdicons.json.validator.impl.predicates.Object;
+import com.sdicons.json.validator.impl.predicates.And;
+import com.sdicons.json.validator.impl.predicates.Array;
+import com.sdicons.json.validator.impl.predicates.Bool;
+import com.sdicons.json.validator.impl.predicates.Complex;
+import com.sdicons.json.validator.impl.predicates.Content;
+import com.sdicons.json.validator.impl.predicates.CustomPredicate;
+import com.sdicons.json.validator.impl.predicates.Decimal;
 import com.sdicons.json.validator.impl.predicates.Enumeration;
-
-import java.util.HashMap;
+import com.sdicons.json.validator.impl.predicates.False;
+import com.sdicons.json.validator.impl.predicates.Int;
+import com.sdicons.json.validator.impl.predicates.Length;
+import com.sdicons.json.validator.impl.predicates.Let;
+import com.sdicons.json.validator.impl.predicates.Not;
+import com.sdicons.json.validator.impl.predicates.Nr;
+import com.sdicons.json.validator.impl.predicates.Null;
+import com.sdicons.json.validator.impl.predicates.Object;
+import com.sdicons.json.validator.impl.predicates.Or;
+import com.sdicons.json.validator.impl.predicates.Properties;
+import com.sdicons.json.validator.impl.predicates.Range;
+import com.sdicons.json.validator.impl.predicates.Ref;
+import com.sdicons.json.validator.impl.predicates.Regexp;
+import com.sdicons.json.validator.impl.predicates.Simple;
+import com.sdicons.json.validator.impl.predicates.Str;
+import com.sdicons.json.validator.impl.predicates.Switch;
+import com.sdicons.json.validator.impl.predicates.True;
 
 public class ValidatorUtil
 {
@@ -36,7 +58,7 @@ public class ValidatorUtil
     public static final String ANONYMOUS_RULE = "[anonymous rule]";
 
 
-    public static void requiresAttribute(JSONObject aTarget, String aAttrib, Class aValueType)
+    public static void requiresAttribute(JSONObject aTarget, String aAttrib, Class<?> aValueType)
     throws ValidationException
     {
         if(!aTarget.containsKey(aAttrib))

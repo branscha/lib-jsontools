@@ -5,11 +5,11 @@
  ******************************************************************************/
 package com.sdicons.json.model;
 
-import com.sdicons.json.parser.impl.ParserUtil;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+
+import com.sdicons.json.parser.impl.ParserUtil;
 
 /**
  * Representation of a JSON object, a collection (unordered) of name/value pairs.
@@ -132,7 +132,7 @@ extends JSONComplex
      */
     public Object strip()
     {
-        HashMap lResult = new HashMap();
+        HashMap<Object, Object> lResult = new HashMap<Object, Object>();
         for(String lKey : map.keySet())
         {
             lResult.put(lKey, map.get(lKey).strip());

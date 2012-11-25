@@ -241,10 +241,10 @@ public abstract class JSONValue
         {
             return new JSONString((String) anObject);
         }
-        else if(anObject instanceof List)
+        else if(anObject instanceof List<?>)
         {
             final JSONArray lArray = new JSONArray();
-            for(Object lElement : ((List) anObject))
+            for(Object lElement : ((List<?>) anObject))
             {
                 lArray.getValue().add(decorate(lElement));
             }
@@ -253,11 +253,11 @@ public abstract class JSONValue
         else if(anObject instanceof Map)
         {
             final JSONObject lObj = new JSONObject();
-            for(Object lKey: ((Map)anObject).keySet())
+            for(Object lKey: ((Map<?,?>)anObject).keySet())
             {
                 if(lKey instanceof String)
                 {
-                    lObj.getValue().put((String) lKey, decorate(((Map)anObject).get(lKey)));
+                    lObj.getValue().put((String) lKey, decorate(((Map<?,?>)anObject).get(lKey)));
                 }
                 else throw new IllegalArgumentException("HashMap contains a key that is not a String: " + lKey);
             }
