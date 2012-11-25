@@ -3,17 +3,19 @@
  * Released under the MIT License: http://opensource.org/licenses/MIT
  * Library "jsontools"
  ******************************************************************************/
-package com.sdicons.json.serializer.marshall;
+package com.sdicons.json.serializer;
 
-public class MarshallException
+public class JSONSerializeException
 extends Exception
 {
-    public MarshallException(String aComments)
+    private static final long serialVersionUID = 4487547060835012577L;
+
+    public JSONSerializeException(String aComments)
     {
         super(aComments);
     }
 
-    public MarshallException()
+    public JSONSerializeException()
     {
         super();
     }

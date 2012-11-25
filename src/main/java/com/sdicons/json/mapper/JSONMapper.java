@@ -54,7 +54,7 @@ public class JSONMapper
     public static final String OPTION_OBJECTMAPPING = "objectMapperType";
 
     private HelperRepository<SimpleMapperHelper> repo = new HelperRepository<SimpleMapperHelper>();
-    private Map<String, Object> context = new HashMap<String, Object>();
+    private Map<String, Object> options = new HashMap<String, Object>();
 
     public JSONMapper()
     {
@@ -239,15 +239,15 @@ public class JSONMapper
     }
 
     public void setMappingOption(String key, Object value) {
-        context.put(key,  value);
+        options.put(key,  value);
     }
 
     public Object getMappingOption(String key, Object defaultValue) {
-        if(context.containsKey(key)) return context.get(key);
+        if(options.containsKey(key)) return options.get(key);
         else return defaultValue;
     }
 
     public boolean hasMappingOption(String key) {
-        return context.containsKey(key);
+        return options.containsKey(key);
     }
 }

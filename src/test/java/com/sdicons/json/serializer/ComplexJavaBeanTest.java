@@ -10,34 +10,30 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sdicons.json.serializer.marshall.JSONMarshall;
-import com.sdicons.json.serializer.marshall.Marshall;
-import com.sdicons.json.serializer.marshall.MarshallException;
-import com.sdicons.json.serializer.marshall.MarshallValue;
 
 public class ComplexJavaBeanTest
 {
 
 
-    Marshall marshall;
+    JSONSerializer marshall;
 
     @Before
     public void setUp()
     throws Exception
     {
-        marshall = new JSONMarshall();
+        marshall = new JSONSerializer();
     }
 
     @Test
-    public void testSelfReference() throws MarshallException
+    public void testSelfReference() throws JSONSerializeException
     {
         MyBean lTest1 = new MyBean();
         lTest1.setId(113);
         lTest1.setName("SELF-POINTING");
         lTest1.setPtr(lTest1);
-        
-        MarshallValue lResult = marshall.unmarshall(marshall.marshall(lTest1));
-        Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
+
+        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal(lTest1));
+        Assert.assertTrue(JSONSerializeValue.REFERENCE == lResult.getType());
         MyBean lTest2 = (MyBean) lResult.getReference();
         Assert.assertNotNull(lTest2);
         Assert.assertEquals(lTest2.getName(), "SELF-POINTING");
@@ -46,7 +42,7 @@ public class ComplexJavaBeanTest
     }
 
     @Test
-    public void testCycle() throws MarshallException
+    public void testCycle() throws JSONSerializeException
     {
         MyBean[] lTest1 = new MyBean[10];
         for (int i = 0; i < 10; i++) {
@@ -54,15 +50,15 @@ public class ComplexJavaBeanTest
             lTest1[i].setName("CYCLE-" + i);
             lTest1[i].setId(i);
         }
-        
+
         lTest1[0].setPtr(lTest1[9]);
         for (int i = 1; i < 10; i++)
             lTest1[i].setPtr(lTest1[i - 1]);
-        
-        MarshallValue lResult = marshall.unmarshall(marshall.marshall(lTest1));
-        Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
+
+        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal(lTest1));
+        Assert.assertTrue(JSONSerializeValue.REFERENCE == lResult.getType());
         MyBean[] lTest2 = (MyBean[]) lResult.getReference();
-        
+
         Assert.assertTrue(lTest2[0].getPtr() == lTest2[9]);
         for (int i = 1; i < 10; i++)
             Assert.assertTrue(lTest2[i].getPtr() == lTest2[i - 1]);

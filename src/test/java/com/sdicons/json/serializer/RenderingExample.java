@@ -5,11 +5,9 @@
  ******************************************************************************/
 package com.sdicons.json.serializer;
 
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.serializer.marshall.Marshall;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
-
 import java.util.Date;
+
+import com.sdicons.json.model.JSONObject;
 
 public class RenderingExample
 {
@@ -19,30 +17,30 @@ public class RenderingExample
         {
 
             {
-                Marshall lRenderer = new JSONMarshall();
-                JSONObject lElement = lRenderer.marshall(1);
+                JSONSerializer lRenderer = new JSONSerializer();
+                JSONObject lElement = lRenderer.marshal(1);
                 System.out.println(lElement.render(true));
             }
 
             {
-                Marshall lRenderer = new JSONMarshall();
-                JSONObject lElement = lRenderer.marshall(new int[]{0,1,2,3,4,5,6,7,8,9});
+                JSONSerializer lRenderer = new JSONSerializer();
+                JSONObject lElement = lRenderer.marshal(new int[]{0,1,2,3,4,5,6,7,8,9});
                  System.out.println(lElement.render(true));
             }
 
             {
-                Marshall lRenderer = new JSONMarshall();
+                JSONSerializer lRenderer = new JSONSerializer();
                 MyBean lMyBean = new MyBean();
                 lMyBean.setId(1003);
                 lMyBean.setName("This is a test...");
                 lMyBean.setPtr(lMyBean);
-                JSONObject lElement = lRenderer.marshall(lMyBean);
+                JSONObject lElement = lRenderer.marshal(lMyBean);
                  System.out.println(lElement.render(true));
             }
 
             {
-                Marshall lRenderer = new JSONMarshall();
-                JSONObject lElement = lRenderer.marshall(new Date());
+                JSONSerializer lRenderer = new JSONSerializer();
+                JSONObject lElement = lRenderer.marshal(new Date());
                 System.out.println(lElement.render(true));
             }
         }

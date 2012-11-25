@@ -5,24 +5,24 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
-import com.sdicons.json.serializer.marshall.MarshallException;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
-import com.sdicons.json.model.JSONString;
-import com.sdicons.json.model.JSONObject;
+import java.util.HashMap;
 
-import java.util.*;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
+import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.JSONSerializer;
 
 public class LongHelper
 extends AbstractHelper
 {
-    public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-    throws MarshallException
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    throws JSONSerializeException
     {
-        JSONMarshall.requireStringAttribute(aObjectElement, JSONMarshall.RNDR_ATTR_VALUE);
-        return new Long(((JSONString) aObjectElement.get(JSONMarshall.RNDR_ATTR_VALUE)).getValue());
+        JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
+        return new Long(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue());
     }
 
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Long.class;
     }

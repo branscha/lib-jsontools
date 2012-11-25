@@ -3,10 +3,10 @@
  * Released under the MIT License: http://opensource.org/licenses/MIT
  * Library "jsontools"
  ******************************************************************************/
-package com.sdicons.json.serializer.marshall;
+package com.sdicons.json.serializer;
 
-public class MarshallValueImpl
-implements MarshallValue
+public class JSONSerializeValueImpl
+implements JSONSerializeValue
 {
 
     private boolean resultBoolean;
@@ -21,7 +21,7 @@ implements MarshallValue
 
     private int resultType;
 
-    private MarshallValueImpl()
+    private JSONSerializeValueImpl()
     {
         resultBoolean = false;
         resultByte = 0;
@@ -34,63 +34,63 @@ implements MarshallValue
         resultReference = null;
     }
 
-    public MarshallValueImpl(boolean aBool)
+    public JSONSerializeValueImpl(boolean aBool)
     {
         this();
         resultType = BOOLEAN;
         resultBoolean = aBool;
     }
 
-    public MarshallValueImpl(byte aByte)
+    public JSONSerializeValueImpl(byte aByte)
     {
         this();
         resultType = BYTE;
         resultByte = aByte;
     }
 
-    public MarshallValueImpl(char aChar)
+    public JSONSerializeValueImpl(char aChar)
     {
         this();
         resultType = CHAR;
         resultChar = aChar;
     }
 
-    public MarshallValueImpl(double aDouble)
+    public JSONSerializeValueImpl(double aDouble)
     {
         this();
         resultType = DOUBLE;
         resultDouble = aDouble;
     }
 
-    public MarshallValueImpl(float aFloat)
+    public JSONSerializeValueImpl(float aFloat)
     {
         this();
         resultType = FLOAT;
         resultFloat = aFloat;
     }
 
-    public MarshallValueImpl(int aInt)
+    public JSONSerializeValueImpl(int aInt)
     {
         this();
         resultType = INT;
         resultInt = aInt;
     }
 
-    public MarshallValueImpl(long aLong)
+    public JSONSerializeValueImpl(long aLong)
     {
         this();
         resultType = LONG;
         resultLong = aLong;
     }
 
-    public MarshallValueImpl(short aShort)
+    public JSONSerializeValueImpl(short aShort)
     {
         this();
         resultType = SHORT;
         resultShort = aShort;
     }
 
-    public MarshallValueImpl(Object aReference)
+    public JSONSerializeValueImpl(Object aReference)
     {
         this();
         resultType = REFERENCE;
@@ -103,7 +103,7 @@ implements MarshallValue
     }
 
     public boolean getBoolean()
-    throws MarshallException
+    throws JSONSerializeException
     {
         if(resultType == BOOLEAN)
         {
@@ -112,12 +112,12 @@ implements MarshallValue
         else
         {
             final String lMsg = "No boolean result available.";
-            throw new MarshallException(lMsg);
+            throw new JSONSerializeException(lMsg);
         }
     }
 
     public byte getByte()
-    throws MarshallException
+    throws JSONSerializeException
     {
         if(resultType == BYTE)
         {
@@ -126,12 +126,12 @@ implements MarshallValue
         else
         {
             final String lMsg = "No byte result available.";
-            throw new MarshallException(lMsg);
+            throw new JSONSerializeException(lMsg);
         }
     }
 
     public short getShort()
-    throws MarshallException
+    throws JSONSerializeException
     {
         if(resultType == SHORT)
         {
@@ -140,12 +140,12 @@ implements MarshallValue
         else
         {
             final String lMsg = "No short result available.";
-            throw new MarshallException(lMsg);
+            throw new JSONSerializeException(lMsg);
         }
     }
 
     public char getChar()
-    throws MarshallException
+    throws JSONSerializeException
     {
         if(resultType == CHAR)
         {
@@ -154,12 +154,12 @@ implements MarshallValue
         else
         {
             final String lMsg = "No char result available.";
-            throw new MarshallException(lMsg);
+            throw new JSONSerializeException(lMsg);
         }
     }
 
     public int getInt()
-    throws MarshallException
+    throws JSONSerializeException
     {
         if(resultType == INT)
         {
@@ -168,12 +168,12 @@ implements MarshallValue
         else
         {
             String lMsg = "No int result available.";
-            throw new MarshallException(lMsg);
+            throw new JSONSerializeException(lMsg);
         }
     }
 
     public long getLong()
-    throws MarshallException
+    throws JSONSerializeException
     {
         if(resultType == LONG)
         {
@@ -182,12 +182,12 @@ implements MarshallValue
         else
         {
             final String lMsg = "No long result available.";
-            throw new MarshallException(lMsg);
+            throw new JSONSerializeException(lMsg);
         }
     }
 
     public float getFloat()
-    throws MarshallException
+    throws JSONSerializeException
     {
         if(resultType == FLOAT)
         {
@@ -196,12 +196,12 @@ implements MarshallValue
         else
         {
             final String lMsg = "No float result available.";
-            throw new MarshallException(lMsg);
+            throw new JSONSerializeException(lMsg);
         }
     }
 
     public double getDouble()
-    throws MarshallException
+    throws JSONSerializeException
     {
         if(resultType == DOUBLE)
         {
@@ -210,12 +210,12 @@ implements MarshallValue
         else
         {
             final String lMsg = "No double result available.";
-            throw new MarshallException(lMsg);
+            throw new JSONSerializeException(lMsg);
         }
     }
 
     public Object getReference()
-    throws MarshallException
+    throws JSONSerializeException
     {
         if(resultType == REFERENCE)
         {
@@ -224,7 +224,7 @@ implements MarshallValue
         else
         {
             final String lMsg = "No reference result available.";
-            throw new MarshallException(lMsg);
+            throw new JSONSerializeException(lMsg);
         }
     }
 }

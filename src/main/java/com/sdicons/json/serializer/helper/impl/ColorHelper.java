@@ -5,31 +5,31 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
+import java.awt.Color;
+import java.util.HashMap;
+
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
-import com.sdicons.json.serializer.marshall.MarshallException;
-
-import java.awt.*;
-import java.util.HashMap;
+import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.JSONSerializer;
 
 public class ColorHelper
 extends AbstractHelper
 {
-    public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-    throws MarshallException
+    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    throws JSONSerializeException
     {
-        JSONMarshall.requireStringAttribute(aObjectElement, JSONMarshall.RNDR_ATTR_VALUE);
-        return Color.decode(((JSONString) aObjectElement.get(JSONMarshall.RNDR_ATTR_VALUE)).getValue());
+        JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
+        return Color.decode(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue());
     }
 
-    public void renderValue(Object aObj, JSONObject aParent, JSONMarshall aMarshall, HashMap aPool) throws MarshallException
+    public void renderValue(Object aObj, JSONObject aParent, JSONSerializer aMarshall, HashMap<Object, Object> aPool) throws JSONSerializeException
     {
         final Color lColor = (Color) aObj;
-        aParent.getValue().put(JSONMarshall.RNDR_ATTR_VALUE, new JSONString("" + lColor.getRGB()));
+        aParent.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString("" + lColor.getRGB()));
     }
 
-    public Class getHelpedClass()
+    public Class<?> getHelpedClass()
     {
         return Color.class;
     }

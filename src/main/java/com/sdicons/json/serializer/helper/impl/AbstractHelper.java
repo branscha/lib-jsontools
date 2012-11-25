@@ -5,25 +5,25 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
-import com.sdicons.json.serializer.helper.MarshallHelper;
-import com.sdicons.json.serializer.marshall.MarshallException;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
+import java.util.HashMap;
+
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-
-import java.util.*;
+import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.JSONSerializer;
+import com.sdicons.json.serializer.helper.SerializeHelper;
 
 public abstract class AbstractHelper
-implements MarshallHelper
+implements SerializeHelper
 {
     public boolean equals(Object obj)
     {
-        return this.getHelpedClass() == ((MarshallHelper) obj).getHelpedClass();
+        return this.getHelpedClass() == ((SerializeHelper) obj).getHelpedClass();
     }
 
-    public void renderValue(Object aObj, JSONObject aParent, JSONMarshall aMarshall, HashMap aPool)
-    throws MarshallException
+    public void renderValue(Object aObj, JSONObject aParent, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    throws JSONSerializeException
     {
-        aParent.getValue().put(JSONMarshall.RNDR_ATTR_VALUE, new JSONString(aObj.toString()));
+        aParent.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString(aObj.toString()));
     }
 }
