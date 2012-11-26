@@ -14,12 +14,12 @@ import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
-import com.sdicons.json.serializer.helper.SerializeHelper;
+import com.sdicons.json.serializer.helper.SerializerHelper;
 
 public class ObjectHelperProps
-implements SerializeHelper
+implements SerializerHelper
 {
     // Error messages.
     //
@@ -33,7 +33,7 @@ implements SerializeHelper
     private static final String OBJ008 = "JSONSerializer/ObjectHelperProps/008: JSON->Java. InvocationTargetException while trying to fill bean '%s'.";
 
     public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         // We will render the bean properties as the elements of a JSON object.
         final JSONObject lElements = new JSONObject();
@@ -57,23 +57,23 @@ implements SerializeHelper
                     }
                     catch(IllegalAccessException e)
                     {
-                        throw new JSONSerializeException(String.format(OBJ002, lPropName, lClass.getName()), e);
+                        throw new SerializerException(String.format(OBJ002, lPropName, lClass.getName()), e);
                     }
                     catch(InvocationTargetException e)
                     {
-                        throw new JSONSerializeException(String.format(OBJ002, lPropName, lClass.getName()), e);
+                        throw new SerializerException(String.format(OBJ002, lPropName, lClass.getName()), e);
                     }
                 }
             }
         }
         catch(IntrospectionException e)
         {
-            throw new JSONSerializeException(String.format(OBJ001, lClass.getName()), e);
+            throw new SerializerException(String.format(OBJ001, lClass.getName()), e);
         }
     }
 
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
         String lBeanClassName = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_CLASS)).getValue();
@@ -113,7 +113,7 @@ implements SerializeHelper
                         Method lWriter = aLPropDesc.getWriteMethod();
                         if(lWriter == null)
                         {
-                            throw new JSONSerializeException(String.format(OBJ003, lPropname, lBeanClassName));
+                            throw new SerializerException(String.format(OBJ003, lPropname, lBeanClassName));
                         }
                         lWriter.invoke(lBean, lProp);
                         break;
@@ -122,7 +122,7 @@ implements SerializeHelper
 
                 if(!lFoundWriter)
                 {
-                    throw new JSONSerializeException(String.format(OBJ003, lPropname, lBeanClassName));
+                    throw new SerializerException(String.format(OBJ003, lPropname, lBeanClassName));
                 }
             }
 
@@ -130,23 +130,23 @@ implements SerializeHelper
         }
         catch (ClassNotFoundException e)
         {
-            throw new JSONSerializeException(String.format(OBJ004, lBeanClassName), e);
+            throw new SerializerException(String.format(OBJ004, lBeanClassName), e);
         }
         catch (IllegalAccessException e)
         {
-            throw new JSONSerializeException(String.format(OBJ005, lBeanClassName), e);
+            throw new SerializerException(String.format(OBJ005, lBeanClassName), e);
         }
         catch (InstantiationException e)
         {
-            throw new JSONSerializeException(String.format(OBJ006, lBeanClassName), e);
+            throw new SerializerException(String.format(OBJ006, lBeanClassName), e);
         }
         catch (IntrospectionException e)
         {
-            throw new JSONSerializeException(String.format(OBJ007, lBeanClassName), e);
+            throw new SerializerException(String.format(OBJ007, lBeanClassName), e);
         }
         catch (InvocationTargetException e)
         {
-            throw new JSONSerializeException(String.format(OBJ008, lBeanClassName), e);
+            throw new SerializerException(String.format(OBJ008, lBeanClassName), e);
         }
     }
 

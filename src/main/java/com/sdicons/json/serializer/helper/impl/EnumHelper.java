@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
 
 public class EnumHelper
@@ -22,7 +22,7 @@ extends AbstractHelper
     private static final String ENUM003 = "JSONSerializer/EnumHelper/003: JSON->Java. The enum class '%s' is found but no matching value for '%s' could be found.";
 
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
         final String lEnumClassName = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_CLASS)).getValue();
@@ -34,7 +34,7 @@ extends AbstractHelper
         }
         catch (ClassNotFoundException e)
         {
-            throw new JSONSerializeException(String.format(ENUM001, lEnumClassName), e);
+            throw new SerializerException(String.format(ENUM001, lEnumClassName), e);
         }
 
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
@@ -50,10 +50,10 @@ extends AbstractHelper
         }
         else
         {
-            throw new JSONSerializeException(String.format(ENUM002, lEnumClassName));
+            throw new SerializerException(String.format(ENUM002, lEnumClassName));
         }
 
-        throw new JSONSerializeException(String.format(ENUM003, lEnumClassName, lVal));
+        throw new SerializerException(String.format(ENUM003, lEnumClassName, lVal));
     }
 
     public Class<?> getHelpedClass()

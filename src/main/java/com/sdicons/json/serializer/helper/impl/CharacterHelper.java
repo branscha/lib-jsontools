@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
 
 public class CharacterHelper
@@ -20,11 +20,11 @@ extends AbstractHelper
     private static final String CHAR001 = "JSONSerializer/CharacterHelper/001: JSON->Java. Length of the character value should be > 0";
 
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
         final String lValue = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue();
-        if(lValue.length() < 1) throw new JSONSerializeException(CHAR001);
+        if(lValue.length() < 1) throw new SerializerException(CHAR001);
         return lValue.charAt(0);
     }
 

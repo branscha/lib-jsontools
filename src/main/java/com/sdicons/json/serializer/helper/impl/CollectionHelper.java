@@ -12,12 +12,12 @@ import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
-import com.sdicons.json.serializer.helper.SerializeHelper;
+import com.sdicons.json.serializer.helper.SerializerHelper;
 
 public class CollectionHelper
-implements SerializeHelper
+implements SerializerHelper
 {
     // Error messages.
     //
@@ -30,7 +30,7 @@ implements SerializeHelper
     }
 
     public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         // We create a new JSON array where we will collect the elements of the
         // collection. We attach this new array as the parent object value.
@@ -48,7 +48,7 @@ implements SerializeHelper
 
     @SuppressWarnings("unchecked")
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         final JSONArray lArray = (JSONArray) aObjectElement.getValue().get(JSONSerializer.RNDR_ATTR_VALUE);
 
@@ -71,15 +71,15 @@ implements SerializeHelper
         }
         catch (IllegalAccessException e)
         {
-            throw new JSONSerializeException(String.format(COLL001, lCollectionClassName), e);
+            throw new SerializerException(String.format(COLL001, lCollectionClassName), e);
         }
         catch (InstantiationException e)
         {
-            throw new JSONSerializeException(String.format(COLL002, lCollectionClassName), e);
+            throw new SerializerException(String.format(COLL002, lCollectionClassName), e);
         }
         catch (ClassNotFoundException e)
         {
-            throw new JSONSerializeException(String.format(COLL003, lCollectionClassName), e);
+            throw new SerializerException(String.format(COLL003, lCollectionClassName), e);
         }
     }
 

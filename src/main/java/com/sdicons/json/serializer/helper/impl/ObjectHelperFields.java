@@ -19,12 +19,12 @@ import com.sdicons.json.helper.JSONConstruct;
 import com.sdicons.json.helper.JSONSerialize;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
-import com.sdicons.json.serializer.helper.SerializeHelper;
+import com.sdicons.json.serializer.helper.SerializerHelper;
 
 public class ObjectHelperFields
-implements SerializeHelper
+implements SerializerHelper
 {
     // Error messages.
     //
@@ -58,7 +58,7 @@ implements SerializeHelper
 
     // Accessing a shared object should be synced.
     protected synchronized AnnotatedMethods getAnnotatedMethods(Class<?> aClass)
-    throws JSONSerializeException
+    throws SerializerException
     {
         AnnotatedMethods lResult = annotatedPool.get(aClass);
         if(lResult == null)
@@ -67,7 +67,7 @@ implements SerializeHelper
             final Method lMeth = getAnnotatedSerializingMethod(aClass);
 
             if((lMeth == null && lCons != null) || (lMeth != null && lCons == null))
-                throw new JSONSerializeException(String.format(OBJ001, aClass.getClass().getName()));
+                throw new SerializerException(String.format(OBJ001, aClass.getClass().getName()));
 
             lResult = new AnnotatedMethods(lCons, lMeth);
             annotatedPool.put(aClass, lResult);
@@ -129,7 +129,7 @@ implements SerializeHelper
     }
 
     public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         // First we have to cope with the special case of "writeReplace" objects.
         // It is described in the official specifications of the serializable interface.
@@ -153,7 +153,7 @@ implements SerializeHelper
             }
             catch(Exception e)
             {
-                throw new JSONSerializeException(String.format(OBJ002, aObj.getClass().getName()), e);
+                throw new SerializerException(String.format(OBJ002, aObj.getClass().getName()), e);
             }
         }
         ////////////////////////////////////////////////////////////////////////////
@@ -178,7 +178,7 @@ implements SerializeHelper
             }
             catch(Exception e)
             {
-                throw new JSONSerializeException(String.format(OBJ003, lAnnotated.serialize.getName(), lClass.getName()), e);
+                throw new SerializerException(String.format(OBJ003, lAnnotated.serialize.getName(), lClass.getName()), e);
             }
 
             int i = 0;
@@ -190,9 +190,9 @@ implements SerializeHelper
                     i++;
                 }
             }
-            catch(JSONSerializeException e)
+            catch(SerializerException e)
             {
-                throw new JSONSerializeException(String.format(OBJ004, i, lAnnotated.serialize.getName(), lClass.getName()), e);
+                throw new SerializerException(String.format(OBJ004, i, lAnnotated.serialize.getName(), lClass.getName()), e);
             }
         }
 
@@ -203,19 +203,19 @@ implements SerializeHelper
                 lFld.setAccessible(true);
                 lElements.getValue().put(lFld.getName(), aMarshall.marshalImpl(lFld.get(aObj), aPool));
             }
-            catch(JSONSerializeException e)
+            catch(SerializerException e)
             {
-                throw new JSONSerializeException(String.format(OBJ005, lFld.getName(), lClass.getName()), e);
+                throw new SerializerException(String.format(OBJ005, lFld.getName(), lClass.getName()), e);
             }
             catch(Exception e)
             {
-                throw new JSONSerializeException(String.format(OBJ006, lFld.getName(), lClass.getName()), e);
+                throw new SerializerException(String.format(OBJ006, lFld.getName(), lClass.getName()), e);
             }
         }
     }
 
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
         final String lBeanClassName = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_CLASS)).getValue();
@@ -252,9 +252,9 @@ implements SerializeHelper
                     {
                         lAttrs[i] = aMarshall.unmarshalImpl(lSubEl, aPool);
                     }
-                    catch(JSONSerializeException e)
+                    catch(SerializerException e)
                     {
-                        throw new JSONSerializeException(String.format(OBJ007, lBeanClass.getName(), i, lSubEl.getClass().getName()), e);
+                        throw new SerializerException(String.format(OBJ007, lBeanClass.getName(), i, lSubEl.getClass().getName()), e);
                     }
                 }
 
@@ -265,7 +265,7 @@ implements SerializeHelper
                 }
                 catch(Exception e)
                 {
-                    throw new JSONSerializeException(String.format(OBJ008, lBeanClass.getName()), e);
+                    throw new SerializerException(String.format(OBJ008, lBeanClass.getName()), e);
                 }
             }
             else
@@ -294,7 +294,7 @@ implements SerializeHelper
                         }
                         catch (Exception e)
                         {
-                            throw new JSONSerializeException(String.format(OBJ009, lFld.getName(), lBeanClass.getName(), lFldValue.getClass().getName()), e);
+                            throw new SerializerException(String.format(OBJ009, lFld.getName(), lBeanClass.getName(), lFldValue.getClass().getName()), e);
                         }
                     }
                 }
@@ -322,7 +322,7 @@ implements SerializeHelper
                 }
                 catch (Exception e)
                 {
-                    throw new JSONSerializeException(String.format(OBJ010, lBean.getClass().getName()), e);
+                    throw new SerializerException(String.format(OBJ010, lBean.getClass().getName()), e);
                 }
             }
             ////////////////////////////////////////////////////////////////////////////
@@ -331,15 +331,15 @@ implements SerializeHelper
         }
         catch (ClassNotFoundException e)
         {
-            throw new JSONSerializeException(String.format(OBJ011, lBeanClassName), e);
+            throw new SerializerException(String.format(OBJ011, lBeanClassName), e);
         }
         catch (IllegalAccessException e)
         {
-            throw new JSONSerializeException(String.format(OBJ012, lBeanClassName), e);
+            throw new SerializerException(String.format(OBJ012, lBeanClassName), e);
         }
         catch (InstantiationException e)
         {
-            throw new JSONSerializeException(String.format(OBJ013, lBeanClassName), e);
+            throw new SerializerException(String.format(OBJ013, lBeanClassName), e);
         }
     }
 

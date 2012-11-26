@@ -5,22 +5,22 @@
  ******************************************************************************/
 package com.sdicons.json.serializer;
 
-public class JSONSerializeException extends Exception {
+public class SerializerException extends Exception {
     private static final long serialVersionUID = 4487547060835012577L;
 
-    public JSONSerializeException(String aComments) {
+    public SerializerException(String aComments) {
         super(aComments);
     }
 
-    public JSONSerializeException() {
+    public SerializerException() {
         super();
     }
 
-    public JSONSerializeException(String message, Throwable cause) {
+    public SerializerException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public JSONSerializeException(Throwable cause) {
+    public SerializerException(Throwable cause) {
         super(cause);
     }
 }

@@ -147,7 +147,7 @@ public class UsersJavaBeanTest
     }
 
     @Test
-    public void testIt() throws JSONSerializeException
+    public void testIt() throws SerializerException
     {
         Transportable lEvil = new Transportable();
         Integer lID = 13;
@@ -161,8 +161,8 @@ public class UsersJavaBeanTest
 
         JSONObject lObj = marshall.marshal(lEvil);
         Assert.assertNotNull(lObj.render(true));
-        JSONSerializeValue lResult = marshall.unmarshal(lObj);
-        Assert.assertTrue(JSONSerializeValue.REFERENCE == lResult.getType());
+        SerializerValue lResult = marshall.unmarshal(lObj);
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Transportable lLitmus = (Transportable) lResult.getReference();
 
         // Test if the contents are intact.
@@ -176,7 +176,7 @@ public class UsersJavaBeanTest
     }
 
     @Test
-    public void testAnnotatedSerializer() throws JSONSerializeException
+    public void testAnnotatedSerializer() throws SerializerException
     {
         // Map fields, not properties.
         ((JSONSerializer) marshall).usePojoAccess();
@@ -187,7 +187,7 @@ public class UsersJavaBeanTest
     }
 
     @Test
-    public void testDirectHelper() throws JSONSerializeException
+    public void testDirectHelper() throws SerializerException
     {
         // Map fields, not properties.
         ((JSONSerializer) marshall).usePojoAccess();

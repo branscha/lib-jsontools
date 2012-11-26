@@ -5,8 +5,8 @@
  ******************************************************************************/
 package com.sdicons.json.serializer;
 
-public class JSONSerializeValueImpl
-implements JSONSerializeValue
+public class SerializerValueImpl
+implements SerializerValue
 {
 
     private boolean resultBoolean;
@@ -21,7 +21,7 @@ implements JSONSerializeValue
 
     private int resultType;
 
-    private JSONSerializeValueImpl()
+    private SerializerValueImpl()
     {
         resultBoolean = false;
         resultByte = 0;
@@ -34,63 +34,63 @@ implements JSONSerializeValue
         resultReference = null;
     }
 
-    public JSONSerializeValueImpl(boolean aBool)
+    public SerializerValueImpl(boolean aBool)
     {
         this();
         resultType = BOOLEAN;
         resultBoolean = aBool;
     }
 
-    public JSONSerializeValueImpl(byte aByte)
+    public SerializerValueImpl(byte aByte)
     {
         this();
         resultType = BYTE;
         resultByte = aByte;
     }
 
-    public JSONSerializeValueImpl(char aChar)
+    public SerializerValueImpl(char aChar)
     {
         this();
         resultType = CHAR;
         resultChar = aChar;
     }
 
-    public JSONSerializeValueImpl(double aDouble)
+    public SerializerValueImpl(double aDouble)
     {
         this();
         resultType = DOUBLE;
         resultDouble = aDouble;
     }
 
-    public JSONSerializeValueImpl(float aFloat)
+    public SerializerValueImpl(float aFloat)
     {
         this();
         resultType = FLOAT;
         resultFloat = aFloat;
     }
 
-    public JSONSerializeValueImpl(int aInt)
+    public SerializerValueImpl(int aInt)
     {
         this();
         resultType = INT;
         resultInt = aInt;
     }
 
-    public JSONSerializeValueImpl(long aLong)
+    public SerializerValueImpl(long aLong)
     {
         this();
         resultType = LONG;
         resultLong = aLong;
     }
 
-    public JSONSerializeValueImpl(short aShort)
+    public SerializerValueImpl(short aShort)
     {
         this();
         resultType = SHORT;
         resultShort = aShort;
     }
 
-    public JSONSerializeValueImpl(Object aReference)
+    public SerializerValueImpl(Object aReference)
     {
         this();
         resultType = REFERENCE;
@@ -103,7 +103,7 @@ implements JSONSerializeValue
     }
 
     public boolean getBoolean()
-    throws JSONSerializeException
+    throws SerializerException
     {
         if(resultType == BOOLEAN)
         {
@@ -112,12 +112,12 @@ implements JSONSerializeValue
         else
         {
             final String lMsg = "No boolean result available.";
-            throw new JSONSerializeException(lMsg);
+            throw new SerializerException(lMsg);
         }
     }
 
     public byte getByte()
-    throws JSONSerializeException
+    throws SerializerException
     {
         if(resultType == BYTE)
         {
@@ -126,12 +126,12 @@ implements JSONSerializeValue
         else
         {
             final String lMsg = "No byte result available.";
-            throw new JSONSerializeException(lMsg);
+            throw new SerializerException(lMsg);
         }
     }
 
     public short getShort()
-    throws JSONSerializeException
+    throws SerializerException
     {
         if(resultType == SHORT)
         {
@@ -140,12 +140,12 @@ implements JSONSerializeValue
         else
         {
             final String lMsg = "No short result available.";
-            throw new JSONSerializeException(lMsg);
+            throw new SerializerException(lMsg);
         }
     }
 
     public char getChar()
-    throws JSONSerializeException
+    throws SerializerException
     {
         if(resultType == CHAR)
         {
@@ -154,12 +154,12 @@ implements JSONSerializeValue
         else
         {
             final String lMsg = "No char result available.";
-            throw new JSONSerializeException(lMsg);
+            throw new SerializerException(lMsg);
         }
     }
 
     public int getInt()
-    throws JSONSerializeException
+    throws SerializerException
     {
         if(resultType == INT)
         {
@@ -168,12 +168,12 @@ implements JSONSerializeValue
         else
         {
             String lMsg = "No int result available.";
-            throw new JSONSerializeException(lMsg);
+            throw new SerializerException(lMsg);
         }
     }
 
     public long getLong()
-    throws JSONSerializeException
+    throws SerializerException
     {
         if(resultType == LONG)
         {
@@ -182,12 +182,12 @@ implements JSONSerializeValue
         else
         {
             final String lMsg = "No long result available.";
-            throw new JSONSerializeException(lMsg);
+            throw new SerializerException(lMsg);
         }
     }
 
     public float getFloat()
-    throws JSONSerializeException
+    throws SerializerException
     {
         if(resultType == FLOAT)
         {
@@ -196,12 +196,12 @@ implements JSONSerializeValue
         else
         {
             final String lMsg = "No float result available.";
-            throw new JSONSerializeException(lMsg);
+            throw new SerializerException(lMsg);
         }
     }
 
     public double getDouble()
-    throws JSONSerializeException
+    throws SerializerException
     {
         if(resultType == DOUBLE)
         {
@@ -210,12 +210,12 @@ implements JSONSerializeValue
         else
         {
             final String lMsg = "No double result available.";
-            throw new JSONSerializeException(lMsg);
+            throw new SerializerException(lMsg);
         }
     }
 
     public Object getReference()
-    throws JSONSerializeException
+    throws SerializerException
     {
         if(resultType == REFERENCE)
         {
@@ -224,7 +224,7 @@ implements JSONSerializeValue
         else
         {
             final String lMsg = "No reference result available.";
-            throw new JSONSerializeException(lMsg);
+            throw new SerializerException(lMsg);
         }
     }
 }
