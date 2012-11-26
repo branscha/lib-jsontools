@@ -12,24 +12,24 @@ import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
-import com.sdicons.json.serializer.helper.SerializeHelper;
+import com.sdicons.json.serializer.helper.SerializerHelper;
 
 public class MapHelper
-implements SerializeHelper
+implements SerializerHelper
 {
     // Error messages.
     //
-    private static final String MAP001 = "JSONSerializer/MapHelper/001: IllegalAccessException while trying to instantiate map of type '%s'.";
-    private static final String MAP002 = "JSONSerializer/MapHelper/002: IllegalAccessException while trying to instantiate map of type '%s'.";
-    private static final String MAP003 = "JSONSerializer/MapHelper/003: IllegalAccessException while trying to instantiate map of type '%s'.";
+    private static final String MAP001 = "JSONSerializer/MapHelper/001: JSON->Java. IllegalAccessException while trying to instantiate map of type '%s'.";
+    private static final String MAP002 = "JSONSerializer/MapHelper/002: JSON->Java. IllegalAccessException while trying to instantiate map of type '%s'.";
+    private static final String MAP003 = "JSONSerializer/MapHelper/003: JSON->Java. IllegalAccessException while trying to instantiate map of type '%s'.";
 
     private static final String ATTR_KEY = "key";
     private static final String ATTR_VALUE = "value";
 
     public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         // We create a new JSON array where we will collect the elements of the
         // map. We attach this new array as the parent object value.
@@ -55,7 +55,7 @@ implements SerializeHelper
 
     @SuppressWarnings("unchecked")
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         final JSONArray lArray = (JSONArray) aObjectElement.getValue().get(JSONSerializer.RNDR_ATTR_VALUE);
 
@@ -79,15 +79,15 @@ implements SerializeHelper
         }
         catch (IllegalAccessException e)
         {
-            throw new JSONSerializeException(String.format(MAP001, lMapClassName), e);
+            throw new SerializerException(String.format(MAP001, lMapClassName), e);
         }
         catch (InstantiationException e)
         {
-            throw new JSONSerializeException(String.format(MAP002, lMapClassName), e);
+            throw new SerializerException(String.format(MAP002, lMapClassName), e);
         }
         catch (ClassNotFoundException e)
         {
-            throw new JSONSerializeException(String.format(MAP003, lMapClassName), e);
+            throw new SerializerException(String.format(MAP003, lMapClassName), e);
         }
     }
 

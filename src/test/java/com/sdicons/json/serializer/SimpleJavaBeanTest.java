@@ -22,15 +22,15 @@ public class SimpleJavaBeanTest
    }
 
     @Test
-    public void testNull() throws JSONSerializeException
+    public void testNull() throws SerializerException
     {
-        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal(null));
-        Assert.assertTrue(JSONSerializeValue.REFERENCE == lResult.getType());
+        SerializerValue lResult = marshall.unmarshal(marshall.marshal(null));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Assert.assertTrue(lResult.getReference() == null);
     }
 
     @Test
-    public void testJavaBean() throws JSONSerializeException
+    public void testJavaBean() throws SerializerException
     {
         MyBean lTest1 = new MyBean();
         lTest1.setId(100);
@@ -39,8 +39,8 @@ public class SimpleJavaBeanTest
         lTest1.setInt2(new Integer(0));
 
         Assert.assertNotNull(marshall.marshal(lTest1).render(true));
-        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal(lTest1));
-        Assert.assertTrue(JSONSerializeValue.REFERENCE == lResult.getType());
+        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lTest1));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         MyBean lTest2 = (MyBean) lResult.getReference();
 
         // Test if the contents are intact.
@@ -54,7 +54,7 @@ public class SimpleJavaBeanTest
     }
 
     @Test
-    public void testJavaBeanArray() throws JSONSerializeException
+    public void testJavaBeanArray() throws SerializerException
     {
         MyBean lTest1 = new MyBean();
         lTest1.setId(100);
@@ -64,8 +64,8 @@ public class SimpleJavaBeanTest
         lTest2.setId(200);
         lTest2.setName("S.D.I.-Consulting");
 
-        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal(new MyBean[] { lTest1, lTest2 }));
-        Assert.assertTrue(JSONSerializeValue.REFERENCE == lResult.getType());
+        SerializerValue lResult = marshall.unmarshal(marshall.marshal(new MyBean[] { lTest1, lTest2 }));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         MyBean[] lArr = (MyBean[]) lResult.getReference();
 
         Assert.assertNotNull(lArr);
@@ -79,7 +79,7 @@ public class SimpleJavaBeanTest
     }
 
     @Test
-    public void testJavaBeanArray2() throws JSONSerializeException
+    public void testJavaBeanArray2() throws SerializerException
     {
         MyBean lTest1 = new MyBean();
         lTest1.setId(100);
@@ -89,8 +89,8 @@ public class SimpleJavaBeanTest
         lTest2.setId(200);
         lTest2.setName("S.D.I.-Consulting");
 
-        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal(new MyBean[][] { { lTest1 }, { lTest2 } }));
-        Assert.assertTrue(JSONSerializeValue.REFERENCE == lResult.getType());
+        SerializerValue lResult = marshall.unmarshal(marshall.marshal(new MyBean[][] { { lTest1 }, { lTest2 } }));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         MyBean[][] lArr = (MyBean[][]) lResult.getReference();
 
         Assert.assertNotNull(lArr);

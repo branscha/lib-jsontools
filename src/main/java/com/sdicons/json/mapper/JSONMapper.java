@@ -50,12 +50,18 @@ import com.sdicons.json.model.JSONValue;
  */
 public class JSONMapper
 {
-    private static final String MAPPER001 = "JSONMapper/001: Mapper does not support null values.";
-    private static final String MAPPER002 = "JSONMapper/002: Could not find a mapper helper for parameterized type '%s'.";
-    private static final String MAPPER003 = "JSONMapper/003: Could not find a mapper helper for class '%s'.";
+    private static final String MAPPER001 = "JSONMapper/001: JSON->Java. Mapper does not support null values.";
+    private static final String MAPPER002 = "JSONMapper/002: JSON->Java. Could not find a mapper helper for parameterized type '%s'.";
+    private static final String MAPPER003 = "JSONMapper/003: JSON<->Java. Could not find a mapper helper for class '%s'.";
 
     // field | property
-    public static final String OPTION_OBJECTMAPPING = "objectMapperType";
+    public static final String OPT_OBJMAPPING = "com.sdicons.json.mapper.helper.impl.ObjectMapperMeta";
+    public static final String OBJMAPPING_FIELD = "field";
+    public static final String OBJMAPPING_PROPERTY = "property";
+    //
+    public static final String OPT_DATEFORMAT = "com.sdicons.json.mapper.helper.impl.DateMapper";
+    public static final String DATEFORMAT_DEFAULT = "yyyy-MM-dd HH:mm:ss";
+
 
     private HelperRepository<SimpleMapperHelper> repo = new HelperRepository<SimpleMapperHelper>();
     private Map<String, Object> options = new HashMap<String, Object>();
@@ -224,7 +230,7 @@ public class JSONMapper
      */
     public void usePojoAccess()
     {
-        setMappingOption(OPTION_OBJECTMAPPING, "field");
+        setMappingOption(OPT_OBJMAPPING, JSONMapper.OBJMAPPING_FIELD);
     }
 
     /**
@@ -234,7 +240,7 @@ public class JSONMapper
      */
     public void useJavaBeanAccess()
     {
-        setMappingOption(OPTION_OBJECTMAPPING, "property");
+        setMappingOption(OPT_OBJMAPPING, JSONMapper.OBJMAPPING_PROPERTY);
     }
 
     public void setMappingOption(String key, Object value) {

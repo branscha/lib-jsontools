@@ -9,14 +9,14 @@ import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
 
 public class StringHelper
 extends AbstractHelper
 {
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
         return ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue();

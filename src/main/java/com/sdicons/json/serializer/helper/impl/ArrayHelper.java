@@ -16,20 +16,20 @@ import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
-import com.sdicons.json.serializer.helper.SerializeHelper;
+import com.sdicons.json.serializer.helper.SerializerHelper;
 
 public class ArrayHelper
-implements SerializeHelper
+implements SerializerHelper
 {
     // Error messages
     //
-    private static final String ARR001 = "JSONSerializer/ArrayHelper/001: Unknown primitive array type '%s'.";
-    private static final String ARR002 = "JSONSerializer/ArrayHelper/002: Exception while trying to parse an array '%s'.";
+    private static final String ARR001 = "JSONSerializer/ArrayHelper/001: JSON->Java. Unknown primitive array type '%s'.";
+    private static final String ARR002 = "JSONSerializer/ArrayHelper/002: JSON->Java. Exception while trying to parse an array '%s'.";
 
     public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
         final JSONString lComponentAttr = (JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_CLASS);
@@ -101,7 +101,7 @@ implements SerializeHelper
     }
 
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
         final String lArrClassName =((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_CLASS)).getValue();
@@ -215,7 +215,7 @@ implements SerializeHelper
             }
             else
             {
-                throw new JSONSerializeException(String.format(ARR001, lArrClassName));
+                throw new SerializerException(String.format(ARR001, lArrClassName));
             }
         }
         else
@@ -235,7 +235,7 @@ implements SerializeHelper
             }
             catch(ClassNotFoundException e)
             {
-                throw new JSONSerializeException(String.format(ARR002, lArrClassName), e);
+                throw new SerializerException(String.format(ARR002, lArrClassName), e);
             }
         }
     }

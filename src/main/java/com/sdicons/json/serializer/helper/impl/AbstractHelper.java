@@ -9,20 +9,20 @@ import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
-import com.sdicons.json.serializer.helper.SerializeHelper;
+import com.sdicons.json.serializer.helper.SerializerHelper;
 
 public abstract class AbstractHelper
-implements SerializeHelper
+implements SerializerHelper
 {
     public boolean equals(Object obj)
     {
-        return this.getHelpedClass() == ((SerializeHelper) obj).getHelpedClass();
+        return this.getHelpedClass() == ((SerializerHelper) obj).getHelpedClass();
     }
 
     public void renderValue(Object aObj, JSONObject aParent, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         aParent.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString(aObj.toString()));
     }

@@ -10,20 +10,20 @@ import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
 
 public class ColorHelper
 extends AbstractHelper
 {
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
         return Color.decode(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue());
     }
 
-    public void renderValue(Object aObj, JSONObject aParent, JSONSerializer aMarshall, HashMap<Object, Object> aPool) throws JSONSerializeException
+    public void renderValue(Object aObj, JSONObject aParent, JSONSerializer aMarshall, HashMap<Object, Object> aPool) throws SerializerException
     {
         final Color lColor = (Color) aObj;
         aParent.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString("" + lColor.getRGB()));

@@ -28,18 +28,18 @@ import com.sdicons.json.model.JSONValue;
 public class ObjectMapperFields
 implements SimpleMapperHelper
 {
-    private static final String OBJ001 = "JSONMapper/ObjectMapperFields/001: Found inconsistency in class: '%1$s'. If annotated methods are used, it should contain both @JSONConstruct and @JSONMap together.";
-    private static final String OBJ002 = "JSONMapper/ObjectMapperFields/002: Cannot map class '%s'.";
-    private static final String OBJ003 = "JSONMapper/ObjectMapperFields/003: Error while deserializing. Error while calling the @JSONConstruct constructor in class: '%1$s' on parameter nr: %2$d with a value of class: '%3$s'.";
-    private static final String OBJ004 = "JSONMapper/ObjectMapperFields/004: Error while deserializing. Tried to instantiate an object (using annotated constructor) of class: '%1$s'.";
-    private static final String OBJ005 = "JSONMapper/ObjectMapperFields/005: Error while deserializing. Type error while trying to set the field: '%1$s' in class: '%2$s' with a value of class: '%3$s'.";
-    private static final String OBJ006 = "JSONMapper/ObjectMapperFields/006: Error while creating java object. Tried to invoke 'readResolve' on instance of class: '%1$s'.";
-    private static final String OBJ007 = "JSONMapper/ObjectMapperFields/007: IllegalAccessException while trying to instantiate class '%s'.";
-    private static final String OBJ008 = "JSONMapper/ObjectMapperFields/008: InstantiationException while trying to instantiate class '%s'.";
-    private static final String OBJ009 = "JSONMapper/ObjectMapperFields/009: Error while trying to invoke 'writeReplace' on instance of class: '%1$s'.";
-    private static final String OBJ010 = "JSONMapper/ObjectMapperFields/010: Error while serializing. Error while reading field: '%1$s' from instance of class: '%2$s'.";
-    private static final String OBJ011 = "JSONMapper/ObjectMapperFields/011: Error while serializing. Error while invoking the @JSONMap method called '%1$s(...)' on an instance of class: '%2$s'.";
-    private static final String OBJ012 = "JSONMapper/ObjectMapperFields/012: Error while serializing. Error while serializing element nr %1$d from the @JSONMap method: '%2$s(...)' on instance of class: '%3$s'.";
+    private static final String OBJ001 = "JSONMapper/ObjectMapperFields/001: JSON<->Java. Found inconsistency in class: '%1$s'. If annotated methods are used, it should contain both @JSONConstruct and @JSONMap together.";
+    private static final String OBJ002 = "JSONMapper/ObjectMapperFields/002: JSON->Java. Cannot map JSON class '%s' to a JavaBean.";
+    private static final String OBJ003 = "JSONMapper/ObjectMapperFields/003: JSON->Java. Error while calling the @JSONConstruct constructor in class: '%s' on parameter nr: %d with a value of class: '%s'.";
+    private static final String OBJ004 = "JSONMapper/ObjectMapperFields/004: JSON->Java. Failed to instantiate an object (using annotated constructor) of class: '%s'.";
+    private static final String OBJ005 = "JSONMapper/ObjectMapperFields/005: JSON->Java. Type error while setting the field: '%s' in class '%s' with a value of class: '%s'.";
+    private static final String OBJ006 = "JSONMapper/ObjectMapperFields/006: JSON->Java. Error while creating java object. Failed to invoke 'readResolve' on instance of class: '%s'.";
+    private static final String OBJ007 = "JSONMapper/ObjectMapperFields/007: JSON->Java. IllegalAccessException while trying to instantiate class '%s'.";
+    private static final String OBJ008 = "JSONMapper/ObjectMapperFields/008: JSON->Java. InstantiationException while trying to instantiate class '%s'.";
+    private static final String OBJ009 = "JSONMapper/ObjectMapperFields/009: Java->JSON. Error while trying to invoke 'writeReplace' on instance of class: '%s'.";
+    private static final String OBJ010 = "JSONMapper/ObjectMapperFields/010: Java->JSON. Error while reading field: '%s' from instance of class '%s'.";
+    private static final String OBJ011 = "JSONMapper/ObjectMapperFields/011: Java->JSON. Error while invoking the @JSONMap method called '%s(...)' on an instance of class '%s'.";
+    private static final String OBJ012 = "JSONMapper/ObjectMapperFields/012: Java->JSON. Error while serializing element nr %d from the @JSONMap method: '%s(...)' on instance of class: '%s'.";
 
     public Class<?> getHelpedClass()
     {

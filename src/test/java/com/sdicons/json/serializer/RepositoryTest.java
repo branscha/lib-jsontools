@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.sdicons.json.helper.HelperRepository;
 import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.serializer.helper.SerializeHelper;
+import com.sdicons.json.serializer.helper.SerializerHelper;
 import com.sdicons.json.serializer.helper.impl.BooleanHelper;
 import com.sdicons.json.serializer.helper.impl.ByteHelper;
 import com.sdicons.json.serializer.helper.impl.CharacterHelper;
@@ -28,13 +28,13 @@ import com.sdicons.json.serializer.helper.impl.StringHelper;
 
 public class RepositoryTest
 {
-    HelperRepository<SerializeHelper> repo;
+    HelperRepository<SerializerHelper> repo;
 
     @Before
     public void setUp()
     throws Exception
     {
-        repo = new HelperRepository<SerializeHelper>();
+        repo = new HelperRepository<SerializerHelper>();
 
         repo.addHelper(new ObjectHelperProps());
         repo.addHelper(new StringHelper());
@@ -54,58 +54,58 @@ public class RepositoryTest
     {
         {
             Class<?> lClass = String.class;
-            SerializeHelper lHelper = repo.findHelper(lClass);
+            SerializerHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
 
         {
             Class<?> lClass = Boolean.class;
-            SerializeHelper lHelper = repo.findHelper(lClass);
+            SerializerHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Byte.class;
-            SerializeHelper lHelper = repo.findHelper(lClass);
+            SerializerHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Short.class;
-            SerializeHelper lHelper = repo.findHelper(lClass);
+            SerializerHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Integer.class;
-            SerializeHelper lHelper = repo.findHelper(lClass);
+            SerializerHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Short.class;
-            SerializeHelper lHelper = repo.findHelper(lClass);
+            SerializerHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Long.class;
-            SerializeHelper lHelper = repo.findHelper(lClass);
+            SerializerHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Float.class;
-            SerializeHelper lHelper = repo.findHelper(lClass);
+            SerializerHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Double.class;
-            SerializeHelper lHelper = repo.findHelper(lClass);
+            SerializerHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Character.class;
-            SerializeHelper lHelper = repo.findHelper(lClass);
+            SerializerHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = String.class;
-            SerializeHelper lHelper = repo.findHelper(lClass);
+            SerializerHelper lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
     }
@@ -128,17 +128,17 @@ public class RepositoryTest
         }
 
         class AHelper
-        implements SerializeHelper
+        implements SerializerHelper
         {
             @SuppressWarnings("rawtypes")
             public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
-            throws JSONSerializeException
+            throws SerializerException
             {
             }
 
             @SuppressWarnings("rawtypes")
             public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
-            throws JSONSerializeException
+            throws SerializerException
             {
                 return null;
             }
@@ -151,17 +151,17 @@ public class RepositoryTest
         }
 
         class BHelper
-        implements SerializeHelper
+        implements SerializerHelper
         {
             @SuppressWarnings("rawtypes")
             public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
-            throws JSONSerializeException
+            throws SerializerException
             {
             }
 
             @SuppressWarnings("rawtypes")
             public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
-            throws JSONSerializeException
+            throws SerializerException
             {
                 return null;
             }
@@ -173,17 +173,17 @@ public class RepositoryTest
         }
 
         class CHelper
-        implements SerializeHelper
+        implements SerializerHelper
         {
             @SuppressWarnings("rawtypes")
             public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
-            throws JSONSerializeException
+            throws SerializerException
             {
             }
 
             @SuppressWarnings("rawtypes")
             public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
-            throws JSONSerializeException
+            throws SerializerException
             {
                 return null;
             }
@@ -199,13 +199,13 @@ public class RepositoryTest
         repo.addHelper(new BHelper()); // B first.
         repo.addHelper(new AHelper()); // C and B will be part of rebalancing.
 
-        SerializeHelper lH1 = repo.findHelper(B.class);
+        SerializerHelper lH1 = repo.findHelper(B.class);
         Assert.assertEquals(B.class, lH1.getHelpedClass());
 
-        SerializeHelper lH2 = repo.findHelper(A.class);
+        SerializerHelper lH2 = repo.findHelper(A.class);
         Assert.assertEquals(A.class, lH2.getHelpedClass());
 
-        SerializeHelper lH3 = repo.findHelper(C.class);
+        SerializerHelper lH3 = repo.findHelper(C.class);
         Assert.assertEquals(C.class, lH3.getHelpedClass());
     }
 }

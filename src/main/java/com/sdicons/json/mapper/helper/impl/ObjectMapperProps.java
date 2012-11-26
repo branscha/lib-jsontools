@@ -22,15 +22,15 @@ import com.sdicons.json.model.JSONValue;
 public class ObjectMapperProps
 implements SimpleMapperHelper
 {
-    private static final String OBJ001 = "JSONMapper/ObjectMapperProps/001: ObjectMapper cannot map class '%s'.";
-    private static final String OBJ002 = "JSONMapper/ObjectMapperProps/002: Could not find a setter for property '%s' in class '%s'.";
-    private static final String OBJ003 = "JSONMapper/ObjectMapperProps/003: IllegalAccessException while trying to instantiate class '%s'.";
-    private static final String OBJ004 = "JSONMapper/ObjectMapperProps/004: InstantiationException while trying to instantiate class '%s'.";
-    private static final String OBJ005 = "JSONMapper/ObjectMapperProps/005: IntrospectionException while trying to fill class '%s'.";
-    private static final String OBJ006 = "JSONMapper/ObjectMapperProps/006: InvocationTargetException while trying to fill class '%s'.";
-    private static final String OBJ007 = "JSONMapper/ObjectMapperProps/007: Error while introspecting JavaBean with class '%s'.";
-    private static final String OBJ008 = "JSONMapper/ObjectMapperProps/008: Illegal access while trying to fetch a bean property named '%s' on bean '%s'.";
-    private static final String OBJ009 = "JSONMapper/ObjectMapperProps/009: Illegal access while trying to fetch a bean property '%s' on bean '%s'.";
+    private static final String OBJ001 = "JSONMapper/ObjectMapperProps/001: JSON->Java. ObjectMapper cannot map JSON class '%s' to a JavaBean.";
+    private static final String OBJ002 = "JSONMapper/ObjectMapperProps/002: JSON->Java. Could not find a setter for property '%s' in class '%s'.";
+    private static final String OBJ003 = "JSONMapper/ObjectMapperProps/003: JSON->Java. IllegalAccessException while trying to instantiate class '%s'.";
+    private static final String OBJ004 = "JSONMapper/ObjectMapperProps/004: JSON->Java. InstantiationException while trying to instantiate class '%s'.";
+    private static final String OBJ005 = "JSONMapper/ObjectMapperProps/005: JSON->Java. IntrospectionException while trying to fill class '%s'.";
+    private static final String OBJ006 = "JSONMapper/ObjectMapperProps/006: JSON->Java. InvocationTargetException while trying to fill class '%s'.";
+    private static final String OBJ007 = "JSONMapper/ObjectMapperProps/007: Java->JSON. Error while introspecting JavaBean with class '%s'.";
+    private static final String OBJ008 = "JSONMapper/ObjectMapperProps/008: Java->JSON. Illegal access while trying to fetch a bean property named '%s' on bean '%s'.";
+    private static final String OBJ009 = "JSONMapper/ObjectMapperProps/009: Java->JSON. Illegal access while trying to fetch a bean property '%s' on bean '%s'.";
 
     public Class<?> getHelpedClass()
     {

@@ -20,7 +20,7 @@ import com.sdicons.json.model.JSONValue;
 public class ArrayMapper
 implements SimpleMapperHelper
 {
-    private static final String ARR001 = "JSONMapper/ArrayMapper/001: JSON->Java. Don't know how to map class'%s'.";
+    private static final String ARR001 = "JSONMapper/ArrayMapper/001: JSON->Java. Don't know how to map JSON class'%s' to Java.";
     private static final String ARR002 = "JSONMapper/ArrayMapper/002: JSON->Java. Unknown primitive array type '%s'.";
     private static final String ARR003 = "JSONMapper/ArrayMapper/003: JSON->Java. Class '%s' could not be found.";
     private static final String ARR004 = "JSONMapper/ArrayMapper/004: JSON->Java. Unknown primitive array type '%s'.";
@@ -118,7 +118,7 @@ implements SimpleMapperHelper
     }
 
 	public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException {
-	    
+
 		if(!aValue.isArray()) throw new MapperException(String.format(ARR001, aValue.getClass().getName()));
 
         // First we fetch all array elements.

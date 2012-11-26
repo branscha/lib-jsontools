@@ -19,8 +19,9 @@ import com.sdicons.json.model.JSONValue;
 public class MapMapper
 implements ComplexMapperHelper
 {
-    private static final String MAP001 = "JSONMapper/MapMapper/001: Cannot map class '%s .";
-    private static final String MAP002 = "JSONMapper/MapMapper/002: Currently only supports String keys.";
+    private static final String MAP001 = "JSONMapper/MapMapper/001: JSON->Java. Cannot map JSON class '%s' to a Java Map.";
+    private static final String MAP002 = "JSONMapper/MapMapper/002: JSON->Java. Currently only supports String keys.";
+    private static final String MAP003 = "JSONMapper/MapMapper/003: Java->JSON. Cannot map Java class '%s' to JSONObject.";
 
     public Class<?> getHelpedClass()
     {
@@ -99,7 +100,7 @@ implements ComplexMapperHelper
     throws MapperException
     {
         final JSONObject lObj = new JSONObject();
-        if(! Map.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(MAP001, aPojo.getClass().getName()));
+        if(! Map.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(MAP003, aPojo.getClass().getName()));
 
         Map lMap = (Map) aPojo;
         for(Object lKey : lMap.keySet())

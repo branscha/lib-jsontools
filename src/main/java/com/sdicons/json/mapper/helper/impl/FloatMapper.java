@@ -18,8 +18,9 @@ import com.sdicons.json.model.JSONValue;
 public class FloatMapper
 implements SimpleMapperHelper
 {
-    private static final String FM001 = "JSONMapper/FloatMapper/001: Cannot map value '%s'.";
-    private static final String FM002 = "JSONMapper/FloatMapper/002: Cannot map class '%s'.";
+    private static final String FM001 = "JSONMapper/FloatMapper/001: JSON->Java. Cannot map value '%s' to a Float.";
+    private static final String FM002 = "JSONMapper/FloatMapper/002: JSON->Java. Cannot map JSON class '%s' to Java Float.";
+    private static final String FM003 = "JSONMapper/FloatMapper/003: Java->JSON. Cannot map Java class '%s' to JSONDecimal.";
 
     public Class<?> getHelpedClass()
     {
@@ -47,7 +48,7 @@ implements SimpleMapperHelper
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!Float.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(FM002, aPojo.getClass().getName()));
+        if(!Float.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(FM003, aPojo.getClass().getName()));
         return new JSONDecimal(new BigDecimal(aPojo.toString()));
     }
 }

@@ -33,7 +33,6 @@ import org.junit.Test;
 
 import com.sdicons.json.helper.JSONConstruct;
 import com.sdicons.json.helper.JSONMap;
-import com.sdicons.json.mapper.helper.impl.DateMapper;
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.parser.JSONParser;
@@ -587,16 +586,8 @@ public class MapperTest {
         //
         Object javaObj = mapper.toJava(lObj, date1.getClass());
         Date date2 = (Date) javaObj;
-        Assert.assertEquals(date1, date2);
-        //
-        DateMapper.setTimeZoneIgnored(false);
-        date1 = new Date();
-        lObj = mapper.toJSON(date1);
-        Assert.assertNotNull(lObj.render(true));
-        //
-        javaObj = mapper.toJava(lObj, date1.getClass());
-        date2 = (Date) javaObj;
-        Assert.assertEquals(date1, date2);
+        // Compare without millis, just the date and time to seconds level.
+        Assert.assertEquals((date1.getTime() / 1000 )* 1000, (date2.getTime() / 1000) * 1000);
     }
 
     @Test

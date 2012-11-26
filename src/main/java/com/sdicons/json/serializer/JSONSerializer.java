@@ -11,7 +11,7 @@ import java.util.Map;
 import com.sdicons.json.helper.HelperRepository;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.helper.SerializeHelper;
+import com.sdicons.json.serializer.helper.SerializerHelper;
 import com.sdicons.json.serializer.helper.impl.ArrayHelper;
 import com.sdicons.json.serializer.helper.impl.BigDecimalHelper;
 import com.sdicons.json.serializer.helper.impl.BigIntegerHelper;
@@ -92,7 +92,7 @@ public class JSONSerializer
     // field | property
     public static final String OPTION_OBJECTSERIALIZE = "objectSerializeType";
 
-    private HelperRepository<SerializeHelper> repo = new HelperRepository<SerializeHelper>();
+    private HelperRepository<SerializerHelper> repo = new HelperRepository<SerializerHelper>();
     private Map<String, Object> options = new HashMap<String, Object>();
 
     {
@@ -209,16 +209,16 @@ public class JSONSerializer
      * Convert a Java object to JSON.
      * @param aObj
      * @return The JSON representation of the Java object.
-     * @throws JSONSerializeException An error occurred while converting the Java object to JSON.
+     * @throws SerializerException An error occurred while converting the Java object to JSON.
      */
     public JSONObject marshal(Object aObj)
-    throws JSONSerializeException
+    throws SerializerException
     {
         return marshalImpl(aObj, new HashMap<Object, Object>());
     }
 
     public JSONObject marshalImpl(Object aObj, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         // Handle null references quickly.
         if(aObj == null)
@@ -260,7 +260,7 @@ public class JSONSerializer
     }
 
     private JSONObject marshalImplArray(Object aObj, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         final Class<?> lClass = aObj.getClass();
         final String lObjClassName = lClass.getName();
@@ -285,14 +285,14 @@ public class JSONSerializer
     }
 
     private JSONObject marshalImplObj(Object aObj, String aObjId, Class<?> aObjClass, String aObjClassName, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         final JSONObject lObjElement = new JSONObject();
         lObjElement.getValue().put(RNDR_ATTR_KIND, new JSONString(RNDR_OBJ));
         lObjElement.getValue().put(RNDR_ATTR_ID, new JSONString(aObjId));
         lObjElement.getValue().put(RNDR_ATTR_CLASS, new JSONString(aObjClassName));
 
-        final SerializeHelper lHelper = repo.findHelper(aObjClass);
+        final SerializerHelper lHelper = repo.findHelper(aObjClass);
         lHelper.renderValue(aObj, lObjElement, this, aPool);
         return lObjElement;
     }
@@ -309,11 +309,11 @@ public class JSONSerializer
      * @param aElement
      * @return The Java representation of the JSON. This value can represent a Java primitive value or
      *         it can represent a Java reference.
-     * @throws JSONSerializeException An error occured while trying to convert the JSON representation into a
+     * @throws SerializerException An error occured while trying to convert the JSON representation into a
      *         Java representation.
      */
-    public JSONSerializeValue unmarshal(JSONObject aElement)
-    throws JSONSerializeException
+    public SerializerValue unmarshal(JSONObject aElement)
+    throws SerializerException
     {
         requireStringAttribute(aElement, RNDR_ATTR_KIND);
         final String lElementKind = ((JSONString) aElement.get(RNDR_ATTR_KIND)).getValue();
@@ -323,35 +323,35 @@ public class JSONSerializer
         if (RNDR_PRIM.equals(lElementKind))
         {
             if (lUnmarshalled instanceof Boolean)
-                return new JSONSerializeValueImpl(((Boolean) lUnmarshalled).booleanValue());
+                return new SerializerValueImpl(((Boolean) lUnmarshalled).booleanValue());
             else if (lUnmarshalled instanceof Byte)
-                return new JSONSerializeValueImpl(((Byte) lUnmarshalled).byteValue());
+                return new SerializerValueImpl(((Byte) lUnmarshalled).byteValue());
             else if (lUnmarshalled instanceof Short)
-                return new JSONSerializeValueImpl(((Short) lUnmarshalled).shortValue());
+                return new SerializerValueImpl(((Short) lUnmarshalled).shortValue());
             else if (lUnmarshalled instanceof Character)
-                return new JSONSerializeValueImpl(((Character) lUnmarshalled).charValue());
+                return new SerializerValueImpl(((Character) lUnmarshalled).charValue());
             else if (lUnmarshalled instanceof Integer)
-                return new JSONSerializeValueImpl(((Integer) lUnmarshalled).intValue());
+                return new SerializerValueImpl(((Integer) lUnmarshalled).intValue());
             else if (lUnmarshalled instanceof Long)
-                return new JSONSerializeValueImpl(((Long) lUnmarshalled).longValue());
+                return new SerializerValueImpl(((Long) lUnmarshalled).longValue());
             else if (lUnmarshalled instanceof Float)
-                return new JSONSerializeValueImpl(((Float) lUnmarshalled).floatValue());
+                return new SerializerValueImpl(((Float) lUnmarshalled).floatValue());
             else if (lUnmarshalled instanceof Double)
-                return new JSONSerializeValueImpl(((Double) lUnmarshalled).doubleValue());
+                return new SerializerValueImpl(((Double) lUnmarshalled).doubleValue());
             else
             {
-                throw new JSONSerializeException(String.format(SER001, lUnmarshalled.getClass().getName(), aElement.getLine(), aElement.getCol()));
+                throw new SerializerException(String.format(SER001, lUnmarshalled.getClass().getName(), aElement.getLine(), aElement.getCol()));
             }
         }
         else
         {
-            return new JSONSerializeValueImpl(lUnmarshalled);
+            return new SerializerValueImpl(lUnmarshalled);
         }
     }
 
    // Internal implementation. Always uses return objects, never primitives.
     public Object unmarshalImpl(JSONObject aElement, HashMap<Object, Object> aObjectPool)
-    throws JSONSerializeException
+    throws SerializerException
    {
        requireStringAttribute(aElement, RNDR_ATTR_KIND);
        final String lElementKind = ((JSONString) aElement.get(RNDR_ATTR_KIND)).getValue();
@@ -363,7 +363,7 @@ public class JSONSerializer
            final Object lObjFromPool = aObjectPool.get(lRef);
            if (lObjFromPool == null)
            {
-               throw new JSONSerializeException(String.format(SER002, lRef));
+               throw new SerializerException(String.format(SER002, lRef));
            }
            return lObjFromPool;
        }
@@ -393,7 +393,7 @@ public class JSONSerializer
                    {
                        if (lBeanClassName == null)
                        {
-                           throw new JSONSerializeException(String.format(SER003, RNDR_ATTR_CLASS));
+                           throw new SerializerException(String.format(SER003, RNDR_ATTR_CLASS));
                        }
 
                        String lId = null;
@@ -407,26 +407,26 @@ public class JSONSerializer
                        }
 
                        final Class<?> lBeanClass = Class.forName(lBeanClassName);
-                       SerializeHelper lHelper = repo.findHelper(lBeanClass);
+                       SerializerHelper lHelper = repo.findHelper(lBeanClass);
                        Object lResult =  lHelper.parseValue(aElement, this, aObjectPool);
                        if(lId != null) aObjectPool.put(lId, lResult);
                        return lResult;
                    }
                    catch (ClassNotFoundException e)
                    {
-                       throw new JSONSerializeException(String.format(SER004, lBeanClassName), e);
+                       throw new SerializerException(String.format(SER004, lBeanClassName), e);
                    }
                }
                else
                {
-                   throw new JSONSerializeException(String.format(SER005, lElementKind));
+                   throw new SerializerException(String.format(SER005, lElementKind));
                }
            }
        }
    }
 
     private Object unmarshalImplPrimitive(JSONObject aElement)
-    throws JSONSerializeException
+    throws SerializerException
     {
         requireStringAttribute(aElement, RNDR_ATTR_TYPE);
         requireStringAttribute(aElement, RNDR_ATTR_VALUE);
@@ -446,31 +446,31 @@ public class JSONSerializer
             else if("double".equals(lType)) return new Double(lValue);
             else
             {
-                throw new JSONSerializeException(String.format(SER006, lType));
+                throw new SerializerException(String.format(SER006, lType));
             }
         }
-        catch(JSONSerializeException passtrough)
+        catch(SerializerException passtrough)
         {
             throw passtrough;
         }
         catch(Exception e)
         {
 
-            throw new JSONSerializeException(String.format(SER007, lType, lValue), e);
+            throw new SerializerException(String.format(SER007, lType, lValue), e);
         }
     }
 
     public static void requireStringAttribute(JSONObject aElement, String anAttribute)
-    throws JSONSerializeException
+    throws SerializerException
     {
         if(!aElement.containsKey(anAttribute))
         {
-             throw new JSONSerializeException(String.format(SER008, anAttribute, aElement.getLine(), aElement.getCol()));
+             throw new SerializerException(String.format(SER008, anAttribute, aElement.getLine(), aElement.getCol()));
         }
 
         if(!(aElement.get(anAttribute) instanceof JSONString))
         {
-            throw new JSONSerializeException(String.format(SER009, anAttribute, aElement.getLine(), aElement.getCol()));
+            throw new SerializerException(String.format(SER009, anAttribute, aElement.getLine(), aElement.getCol()));
         }
     }
 
@@ -479,7 +479,7 @@ public class JSONSerializer
      *
      * @param aHelper the custom helper you want to add to the serializer.
      */
-    public void addHelper(SerializeHelper aHelper)
+    public void addHelper(SerializerHelper aHelper)
     {
         repo.addHelper(aHelper);
     }

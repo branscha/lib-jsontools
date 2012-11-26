@@ -25,15 +25,15 @@ public class ComplexJavaBeanTest
     }
 
     @Test
-    public void testSelfReference() throws JSONSerializeException
+    public void testSelfReference() throws SerializerException
     {
         MyBean lTest1 = new MyBean();
         lTest1.setId(113);
         lTest1.setName("SELF-POINTING");
         lTest1.setPtr(lTest1);
 
-        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal(lTest1));
-        Assert.assertTrue(JSONSerializeValue.REFERENCE == lResult.getType());
+        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lTest1));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         MyBean lTest2 = (MyBean) lResult.getReference();
         Assert.assertNotNull(lTest2);
         Assert.assertEquals(lTest2.getName(), "SELF-POINTING");
@@ -42,7 +42,7 @@ public class ComplexJavaBeanTest
     }
 
     @Test
-    public void testCycle() throws JSONSerializeException
+    public void testCycle() throws SerializerException
     {
         MyBean[] lTest1 = new MyBean[10];
         for (int i = 0; i < 10; i++) {
@@ -55,8 +55,8 @@ public class ComplexJavaBeanTest
         for (int i = 1; i < 10; i++)
             lTest1[i].setPtr(lTest1[i - 1]);
 
-        JSONSerializeValue lResult = marshall.unmarshal(marshall.marshal(lTest1));
-        Assert.assertTrue(JSONSerializeValue.REFERENCE == lResult.getType());
+        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lTest1));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         MyBean[] lTest2 = (MyBean[]) lResult.getReference();
 
         Assert.assertTrue(lTest2[0].getPtr() == lTest2[9]);

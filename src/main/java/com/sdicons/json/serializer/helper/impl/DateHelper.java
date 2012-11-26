@@ -11,17 +11,17 @@ import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.JSONSerializeException;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
-import com.sdicons.json.serializer.helper.SerializeHelper;
+import com.sdicons.json.serializer.helper.SerializerHelper;
 
 public class DateHelper
-implements SerializeHelper
+implements SerializerHelper
 {
 
     // Error messages.
     //
-    private static final String DAT001 = "JSONSerializer/DateHelper/001: Could not parse the date '%s'.";
+    private static final String DAT001 = "JSONSerializer/DateHelper/001: JSON->Java. Could not parse the value '%s' to a Date.";
 
     private SimpleDateFormat dateFormat;
 
@@ -32,13 +32,13 @@ implements SerializeHelper
     }
 
     public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         aObjectElement.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString(dateFormat.format((Date) aObj)));
     }
 
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
-    throws JSONSerializeException
+    throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
         String dateRepr = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue().trim();
@@ -49,7 +49,7 @@ implements SerializeHelper
         }
         catch(Exception e)
         {
-            throw new JSONSerializeException(String.format(DAT001, dateRepr), e);
+            throw new SerializerException(String.format(DAT001, dateRepr), e);
         }
     }
 

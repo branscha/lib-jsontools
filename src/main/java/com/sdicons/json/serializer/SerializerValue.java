@@ -11,7 +11,7 @@ package com.sdicons.json.serializer;
  * in advance whether the result will be a primitive type or a reference type.
  * This interface lets you investigate which kind of value is returned before you use it.
  */
-public interface JSONSerializeValue
+public interface SerializerValue
 {
     final int BOOLEAN=0;
     final int BYTE=1;
@@ -26,74 +26,74 @@ public interface JSONSerializeValue
     /**
      * Get the primitive boolean value.
      * @return The unmarshalled boolean value.
-     * @throws JSONSerializeException If it is not a boolean representation.
+     * @throws SerializerException If it is not a boolean representation.
      */
     boolean getBoolean()
-    throws JSONSerializeException;
+    throws SerializerException;
 
     /**
      * Get the primitive byte value.
      * @return The unmarshalled byte value.
-     * @throws JSONSerializeException  If it is not a byte representation.
+     * @throws SerializerException  If it is not a byte representation.
      */
     byte getByte()
-    throws JSONSerializeException;
+    throws SerializerException;
 
     /**
      * Get the primitive short value.
      * @return The unmarshalled short value.
-     * @throws JSONSerializeException If it is not a short representation.
+     * @throws SerializerException If it is not a short representation.
      */
     short getShort()
-    throws JSONSerializeException;
+    throws SerializerException;
 
     /**
      * Get the primitive char value.
      * @return The unmarshalled char value.
-     * @throws JSONSerializeException If it is not a char representation.
+     * @throws SerializerException If it is not a char representation.
      */
     char getChar()
-    throws JSONSerializeException;
+    throws SerializerException;
 
     /**
      * Get the primitive int value.
      * @return The unmarshalled int value.
-     * @throws JSONSerializeException If it is not an int representation.
+     * @throws SerializerException If it is not an int representation.
      */
     int getInt()
-    throws JSONSerializeException;
+    throws SerializerException;
 
     /**
      * Get the primitive long value.
      * @return The unmarshalled long value.
-     * @throws JSONSerializeException If it is not a long representation.
+     * @throws SerializerException If it is not a long representation.
      */
     long getLong()
-    throws JSONSerializeException;
+    throws SerializerException;
 
     /**
      * Get the primitive float value.
      * @return The unmarshalled float value.
-     * @throws JSONSerializeException If it is not a float representation.
+     * @throws SerializerException If it is not a float representation.
      */
     float getFloat()
-    throws JSONSerializeException;
+    throws SerializerException;
 
     /**
      * Get the primitive double value.
      * @return The unmarshalled primitive value.
-     * @throws JSONSerializeException If it is not a double representation.
+     * @throws SerializerException If it is not a double representation.
      */
     double getDouble()
-    throws JSONSerializeException;
+    throws SerializerException;
 
     /**
      * Get the reference to a Java object.
      * @return The unmarshalled reference to the Java object.
-     * @throws JSONSerializeException If it is not a reference representation.
+     * @throws SerializerException If it is not a reference representation.
      */
     Object getReference()
-    throws JSONSerializeException;
+    throws SerializerException;
 
     /**
      * Get the type of the value so that you can access its value safely.
