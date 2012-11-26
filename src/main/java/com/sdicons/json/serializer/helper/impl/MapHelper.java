@@ -21,9 +21,9 @@ implements SerializeHelper
 {
     // Error messages.
     //
-    private static final String MAP001 = "JSONSerializer/MapHelper/001: IllegalAccessException while trying to instantiate map of type '%s'.";
-    private static final String MAP002 = "JSONSerializer/MapHelper/002: IllegalAccessException while trying to instantiate map of type '%s'.";
-    private static final String MAP003 = "JSONSerializer/MapHelper/003: IllegalAccessException while trying to instantiate map of type '%s'.";
+    private static final String MAP001 = "JSONSerializer/MapHelper/001: JSON->Java. IllegalAccessException while trying to instantiate map of type '%s'.";
+    private static final String MAP002 = "JSONSerializer/MapHelper/002: JSON->Java. IllegalAccessException while trying to instantiate map of type '%s'.";
+    private static final String MAP003 = "JSONSerializer/MapHelper/003: JSON->Java. IllegalAccessException while trying to instantiate map of type '%s'.";
 
     private static final String ATTR_KEY = "key";
     private static final String ATTR_VALUE = "value";

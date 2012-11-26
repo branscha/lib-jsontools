@@ -25,8 +25,8 @@ implements SerializeHelper
 {
     // Error messages
     //
-    private static final String ARR001 = "JSONSerializer/ArrayHelper/001: Unknown primitive array type '%s'.";
-    private static final String ARR002 = "JSONSerializer/ArrayHelper/002: Exception while trying to parse an array '%s'.";
+    private static final String ARR001 = "JSONSerializer/ArrayHelper/001: JSON->Java. Unknown primitive array type '%s'.";
+    private static final String ARR002 = "JSONSerializer/ArrayHelper/002: JSON->Java. Exception while trying to parse an array '%s'.";
 
     public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException

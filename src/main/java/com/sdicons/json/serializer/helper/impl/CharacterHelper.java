@@ -17,7 +17,7 @@ extends AbstractHelper
 {
     // Error messages
     //
-    private static final String CHAR001 = "JSONSerializer/CharacterHelper/001: Length of the character value should be > 0";
+    private static final String CHAR001 = "JSONSerializer/CharacterHelper/001: JSON->Java. Length of the character value should be > 0";
 
     public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws JSONSerializeException

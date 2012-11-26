@@ -21,9 +21,9 @@ implements SerializeHelper
 {
     // Error messages.
     //
-    private static final String COLL001 = "JSONSerializer/CollectionHelper/001: IllegalAccessException while trying to instantiate collection '%s'.";
-    private static final String COLL002 = "JSONSerializer/CollectionHelper/001: InstantiationException while trying to instantiate collection '%s'.";
-    private static final String COLL003 = "JSONSerializer/CollectionHelper/001: ClassNotFoundException while trying to instantiate collection '%s'.";
+    private static final String COLL001 = "JSONSerializer/CollectionHelper/001: JSON->Java. IllegalAccessException while trying to instantiate collection '%s'.";
+    private static final String COLL002 = "JSONSerializer/CollectionHelper/001: JSON->Java. InstantiationException while trying to instantiate collection '%s'.";
+    private static final String COLL003 = "JSONSerializer/CollectionHelper/001: JSON->Java. ClassNotFoundException while trying to instantiate collection '%s'.";
 
     public CollectionHelper()
     {
