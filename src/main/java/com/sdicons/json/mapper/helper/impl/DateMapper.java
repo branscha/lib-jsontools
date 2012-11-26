@@ -21,7 +21,11 @@ import com.sdicons.json.model.JSONValue;
 public class DateMapper
 extends AbstractMapper
 {
-	private static boolean timeZoneIgnored=true;
+    private static final String DM001 = "JSONMapper/DateMapper/001: Cannot map class '%s'.";
+    private static final String DM002 = "JSONMapper/DateMapper/002: Time stamp string can't be empty.";
+    private static final String DM003 = "JSONMapper/DateMapper/003: Invalid date string '%s'.";
+    
+    private static boolean timeZoneIgnored=true;
 
     public static boolean isTimeZoneIgnored() {
 		return timeZoneIgnored;
@@ -46,7 +50,7 @@ extends AbstractMapper
 
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
-        if (!aValue.isString()) throw new MapperException("DateMapper cannot map class: " + aValue.getClass().getName());
+        if (!aValue.isString()) throw new MapperException(String.format(DM001, aValue.getClass().getName()));
         if(DateMapper.isTimeZoneIgnored())
         	return fromISO8601(((JSONString) aValue).getValue().trim());
         else
@@ -75,7 +79,7 @@ extends AbstractMapper
     }
 	public static Date fromISO8601(String timestampString,boolean timezoneIgnored) throws MapperException{
 		if(timestampString==null||timestampString.trim().length()<1){
-			throw new MapperException("time stamp string can't be empty.");
+			throw new MapperException(DM002);
 		}
 		timestampString=timestampString.trim();
 
@@ -113,7 +117,7 @@ extends AbstractMapper
 	        	calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 	        }
 		}else{
-			throw new MapperException("invalid date string:"+dateString);
+			throw new MapperException(String.format(DM003, dateString));
 		}
 
     	int hour=0;

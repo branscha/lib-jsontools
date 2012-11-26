@@ -23,6 +23,8 @@ import com.sdicons.json.model.JSONValue;
 public class CollectionMapper
 implements ComplexMapperHelper
 {
+    private static final String COLL001 = "JSONMapper/CollectionMapper/001: Cannot map class '%s'.";
+
     public Class<?> getHelpedClass()
     {
         return Collection.class;
@@ -38,9 +40,9 @@ implements ComplexMapperHelper
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRawClass, Type[] aTypes)
     throws MapperException
     {
-        if (!aValue.isArray()) throw new MapperException("CollectionMapper cannot map: " + aValue.getClass().getName());
+        if (!aValue.isArray()) throw new MapperException(String.format(COLL001, aValue.getClass().getName()));
         if (!Collection.class.isAssignableFrom(aRawClass))
-            throw new MapperException("CollectionMapper cannot map: " + aValue.getClass().getName());
+            throw new MapperException(String.format(COLL001,aValue.getClass().getName()));
         JSONArray aObject = (JSONArray) aValue;
 
         Collection<Object> lCollObj;
@@ -97,7 +99,7 @@ implements ComplexMapperHelper
         {
             // Not possible, a collection cannot have more than two types for
             // its contents.
-            throw new MapperException("CollectionMapper cannot map: " + aValue.getClass().getName());
+            throw new MapperException(String.format(COLL001, aValue.getClass().getName()));
         }
 
         return lCollObj;
@@ -108,7 +110,7 @@ implements ComplexMapperHelper
     throws MapperException
     {
         JSONArray lArray = new JSONArray();
-        if(! Collection.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("CollectionMapper cannot map: " + aPojo.getClass().getName());
+        if(! Collection.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(COLL001, aPojo.getClass().getName()));
 
         Collection<Object> lColl = (Collection<Object>) aPojo;
         for(Object lEl : lColl)

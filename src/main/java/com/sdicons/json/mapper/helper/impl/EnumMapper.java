@@ -13,6 +13,10 @@ import com.sdicons.json.model.JSONValue;
 public class EnumMapper
 extends AbstractMapper
 {
+    private static final String EM001 = "JSONMapper/EnumMapper/001: Cannot map class '%s'.";
+    private static final String EM002 = "JSONMapper/EnumMapper/002: Failed to handle a non-enum class '%s'.";
+    private static final String EN003 = "JSONMapper/EnumMapper/003: The enum class '%s' is found but no matching value could be found for '%s'.";
+
     public Class<?> getHelpedClass()
     {
         return Enum.class;
@@ -22,7 +26,7 @@ extends AbstractMapper
     throws MapperException
     {
 
-        if (!aValue.isString()) throw new MapperException("EnumMapper cannot map class: " + aValue.getClass().getName());
+        if (!aValue.isString()) throw new MapperException(String.format(EM001, aValue.getClass().getName()));
 
         if(aRequestedClass.isEnum())
         {
@@ -34,11 +38,9 @@ extends AbstractMapper
         }
         else
         {
-            final String lMsg = "Enum mapper tried to handle a non-enum class: " + aRequestedClass;
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(EM002, aRequestedClass.getName()));
         }
 
-        final String lMsg = "The enum class *is found* but no matching value could be found. Enum Class: " + aRequestedClass + ", unknown value: " + ((JSONString)aValue).getValue();
-        throw new MapperException(lMsg);
+        throw new MapperException(String.format(EN003, aRequestedClass.getName(), ((JSONString)aValue).getValue()));
     }
 }

@@ -13,6 +13,9 @@ import com.sdicons.json.model.JSONValue;
 public class CharacterMapper
 extends AbstractMapper
 {
+    private static final String CHM002 = "JSONMapper/CharacterMapper/001: Cannot map value '%s'.";
+    private static final String CHM001 = "JSONMapper/CharacterMapper/002: Cannot map class: '%s'.";
+
     public Class<?> getHelpedClass()
     {
         return Character.class;
@@ -20,9 +23,10 @@ extends AbstractMapper
 
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
-        if (!aValue.isString()) throw new MapperException("CharacterMapper cannot map class: " + aValue.getClass().getName());
+        if (!aValue.isString()) throw new MapperException(String.format(CHM001, aValue.getClass().getName()));
         final String lRepr = ((JSONString) aValue).getValue();
-        if(lRepr.length() != 1) throw new MapperException("CharacterMapper cannot map value: " + lRepr);
+        
+        if(lRepr.length() != 1) throw new MapperException(String.format(CHM002, lRepr));
         return lRepr.charAt(0);
     }
 }

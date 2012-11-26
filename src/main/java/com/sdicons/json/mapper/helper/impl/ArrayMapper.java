@@ -20,11 +20,11 @@ import com.sdicons.json.model.JSONValue;
 public class ArrayMapper
 implements SimpleMapperHelper
 {
-    private static final String ARR001 = "JSONMapper/ArrayMapper/001: Don't know how to map class'%s'.";
-    private static final String ARR002 = "JSONMapper/ArrayMapper/002: Unknown primitive array type '%'.";
-    private static final String ARR003 = "JSONMapper/ArrayMapper/003: Class '%s' could not be found.";
-    private static final String ARR004 = "JSONMapper/ArrayMapper/004: Unknown primitive array type '%s'.";
-    private static final String ARR005 = "JSONMapper/ArrayMapper/005: Exception while trying to unmarshal an array of type '%s'.";
+    private static final String ARR001 = "JSONMapper/ArrayMapper/001: JSON->Java. Don't know how to map class'%s'.";
+    private static final String ARR002 = "JSONMapper/ArrayMapper/002: JSON->Java. Unknown primitive array type '%s'.";
+    private static final String ARR003 = "JSONMapper/ArrayMapper/003: JSON->Java. Class '%s' could not be found.";
+    private static final String ARR004 = "JSONMapper/ArrayMapper/004: JSON->Java. Unknown primitive array type '%s'.";
+    private static final String ARR005 = "JSONMapper/ArrayMapper/005: JSON->Java. Exception while trying to unmarshal an array of type '%s'.";
 
     public JSONValue toJSON(JSONMapper mapper, Object aObj)
     throws MapperException
@@ -159,7 +159,7 @@ implements SimpleMapperHelper
 			}
             catch (ClassNotFoundException e)
             {
-				throw new MapperException(String.format(ARR003, lArrClassName));
+				throw new MapperException(String.format(ARR003, lArrClassName), e);
 			}
         }
         final int lArrSize = lElements.size();
@@ -284,7 +284,7 @@ implements SimpleMapperHelper
             }
             catch(ClassNotFoundException e)
             {
-                throw new  MapperException(String.format(ARR005, lArrClassName));
+                throw new  MapperException(String.format(ARR005, lArrClassName), e);
             }
         }
 	}

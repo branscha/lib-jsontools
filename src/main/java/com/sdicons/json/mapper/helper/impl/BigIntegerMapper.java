@@ -35,7 +35,7 @@ implements SimpleMapperHelper
             }
             catch (NumberFormatException e)
             {
-                throw new MapperException(String.format(BIM001, ((JSONString)aValue).getValue()));
+                throw new MapperException(String.format(BIM001, ((JSONString)aValue).getValue()), e);
             }
         }
         else if(aValue.isInteger()) return ((JSONInteger) aValue).getValue();

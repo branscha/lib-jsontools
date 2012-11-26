@@ -17,6 +17,9 @@ import com.sdicons.json.model.JSONValue;
 public class ByteMapper
 implements SimpleMapperHelper
 {
+    private static final String BYM001 = "JSONMapper/ByteMapper/001: Cannot map value '%s'.";
+    private static final String BYM002 = "JSONMapper/ByteMapper/002: Cannot map class '%s'.";
+
     public Class<?> getHelpedClass()
     {
         return Byte.class;
@@ -32,17 +35,17 @@ implements SimpleMapperHelper
             }
             catch (NumberFormatException e)
             {
-                throw new MapperException("ByteMapper cannot map value: " + ((JSONString)aValue).getValue());
+                throw new MapperException(String.format(BYM001, ((JSONString)aValue).getValue()), e);
             }
         }
         else if(aValue.isInteger()) return (byte) ((JSONInteger) aValue).getValue().intValue();
-        else throw new MapperException("ByteMapper cannot map: " + aValue.getClass().getName());
+        else throw new MapperException(String.format(BYM002, aValue.getClass().getName()));
     }
 
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!Byte.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("ByteMapper cannot map: " + aPojo.getClass().getName());
+        if(!Byte.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(BYM002, aPojo.getClass().getName()));
         return new JSONInteger(new BigInteger(aPojo.toString()));
     }
 }

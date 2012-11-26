@@ -18,6 +18,9 @@ import com.sdicons.json.model.JSONValue;
 public class FloatMapper
 implements SimpleMapperHelper
 {
+    private static final String FM001 = "JSONMapper/FloatMapper/001: Cannot map value '%s'.";
+    private static final String FM002 = "JSONMapper/FloatMapper/002: Cannot map class '%s'.";
+
     public Class<?> getHelpedClass()
     {
         return Float.class;
@@ -33,18 +36,18 @@ implements SimpleMapperHelper
             }
             catch (NumberFormatException e)
             {
-                throw new MapperException("FloatMapper cannot map value: " + ((JSONString)aValue).getValue());
+                throw new MapperException(String.format(FM001, ((JSONString)aValue).getValue()), e);
             }
         }
         else if(aValue.isDecimal()) return ((JSONDecimal) aValue).getValue().floatValue();
         else if(aValue.isInteger()) return ((JSONInteger)aValue).getValue().floatValue();
-        else throw new MapperException("FloatMapper cannot map: " + aValue.getClass().getName());
+        else throw new MapperException(String.format(FM002, aValue.getClass().getName()));
     }
 
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!Float.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("FloatMapper cannot map: " + aPojo.getClass().getName());
+        if(!Float.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(FM002, aPojo.getClass().getName()));
         return new JSONDecimal(new BigDecimal(aPojo.toString()));
     }
 }

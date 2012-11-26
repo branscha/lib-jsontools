@@ -17,6 +17,9 @@ import com.sdicons.json.model.JSONValue;
 public class LongMapper
 implements SimpleMapperHelper
 {
+    private static final String FP001 = "JSONMapper/LongMapper/001: Cannot map value '%s'.";
+    private static final String FP002 = "JSONMapper/LongMapper/002: Cannot map class '%s'.";
+
     public Class<?> getHelpedClass()
     {
         return Long.class;
@@ -32,17 +35,17 @@ implements SimpleMapperHelper
             }
             catch (NumberFormatException e)
             {
-                throw new MapperException("LongMapper cannot map value: " + ((JSONString)aValue).getValue());
+                throw new MapperException(String.format(FP001, ((JSONString)aValue).getValue()), e);
             }
         }
         else if(aValue.isInteger()) return ((JSONInteger) aValue).getValue().longValue();
-        else throw new MapperException("LongMapper cannot map: " + aValue.getClass().getName());
+        else throw new MapperException(String.format(FP002, aValue.getClass().getName()));
     }
 
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!Long.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("LongMapper cannot map: " + aPojo.getClass().getName());
+        if(!Long.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(FP002,aPojo.getClass().getName()));
         return new JSONInteger(new BigInteger(aPojo.toString()));
     }
 }

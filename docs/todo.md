@@ -1,6 +1,7 @@
 # Project Tasks
 ## Todo
 
+* 2012-11-26: Add the direction JSON->Java or Java->JSON to each mapper message.
 * 2012-11-26: Review date mapper, simplify to Java essentials or add configuration options that are picked up. I don't understand how the current mapper got the functionality it has right now ...
 * 2012-11-25: Review error messages JSONMapper + helpers.
 
