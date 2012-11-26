@@ -28,6 +28,19 @@ import com.sdicons.json.model.JSONValue;
 public class ObjectMapperFields
 implements SimpleMapperHelper
 {
+    private static final String OBJ001 = "JSONMapper/ObjectMapperFields/001: Found inconsistency in class: '%1$s'. If annotated methods are used, it should contain both @JSONConstruct and @JSONMap together.";
+    private static final String OBJ002 = "JSONMapper/ObjectMapperFields/002: Cannot map class '%s'.";
+    private static final String OBJ003 = "JSONMapper/ObjectMapperFields/003: Error while deserializing. Error while calling the @JSONConstruct constructor in class: '%1$s' on parameter nr: %2$d with a value of class: '%3$s'.";
+    private static final String OBJ004 = "JSONMapper/ObjectMapperFields/004: Error while deserializing. Tried to instantiate an object (using annotated constructor) of class: '%1$s'.";
+    private static final String OBJ005 = "JSONMapper/ObjectMapperFields/005: Error while deserializing. Type error while trying to set the field: '%1$s' in class: '%2$s' with a value of class: '%3$s'.";
+    private static final String OBJ006 = "JSONMapper/ObjectMapperFields/006: Error while creating java object. Tried to invoke 'readResolve' on instance of class: '%1$s'.";
+    private static final String OBJ007 = "JSONMapper/ObjectMapperFields/007: IllegalAccessException while trying to instantiate class '%s'.";
+    private static final String OBJ008 = "JSONMapper/ObjectMapperFields/008: InstantiationException while trying to instantiate class '%s'.";
+    private static final String OBJ009 = "JSONMapper/ObjectMapperFields/009: Error while trying to invoke 'writeReplace' on instance of class: '%1$s'.";
+    private static final String OBJ010 = "JSONMapper/ObjectMapperFields/010: Error while serializing. Error while reading field: '%1$s' from instance of class: '%2$s'.";
+    private static final String OBJ011 = "JSONMapper/ObjectMapperFields/011: Error while serializing. Error while invoking the @JSONMap method called '%1$s(...)' on an instance of class: '%2$s'.";
+    private static final String OBJ012 = "JSONMapper/ObjectMapperFields/012: Error while serializing. Error while serializing element nr %1$d from the @JSONMap method: '%2$s(...)' on instance of class: '%3$s'.";
+
     public Class<?> getHelpedClass()
     {
         return Object.class;
@@ -87,7 +100,7 @@ implements SimpleMapperHelper
             final Method lMeth = getAnnotatedSerializingMethod(aClass);
 
             if((lMeth == null && lCons != null) || (lMeth != null && lCons == null))
-                throw new MapperException(String.format("ObjectMapperDirect found inconsistency in class: '%1$s'. If annotated methods are used, it should contain both @JSONConstruct and @JSONMap together.", aClass.getClass().getName()));
+                throw new MapperException(String.format(OBJ001, aClass.getClass().getName()));
 
             lResult = new AnnotatedMethods(lCons, lMeth);
             annotatedPool.put(aClass, lResult);
@@ -122,7 +135,7 @@ implements SimpleMapperHelper
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass)
     throws MapperException
     {
-        if(!aValue.isObject()) throw new MapperException("ObjectMapperDirect cannot map: " + aValue.getClass().getName());
+        if(!aValue.isObject()) throw new MapperException(String.format(OBJ002 , aValue.getClass().getName()));
         JSONObject aObject = (JSONObject) aValue;
 
         try
@@ -150,7 +163,7 @@ implements SimpleMapperHelper
                     }
                     catch(MapperException e)
                     {
-                        throw new MapperException(String.format("ObjectMapperDirect error while deserializing. Error while calling the @JSONConstruct constructor in class: '%1$s' on parameter nr: %2$d with a value of class: '%3$s'.", aRequestedClass.getName(), i, lAnnotated.cons.getParameterTypes()[i].getName()), e);
+                        throw new MapperException(String.format(OBJ003, aRequestedClass.getName(), i, lAnnotated.cons.getParameterTypes()[i].getName()), e);
                     }
                 }
 
@@ -161,7 +174,7 @@ implements SimpleMapperHelper
                 }
                 catch(Exception e)
                 {
-                    throw new MapperException(String.format("ObjectMapperDirect error while deserializing. Tried to instantiate an object (using annotated constructor) of class: '%1$s'.", aRequestedClass.getName()), e);
+                    throw new MapperException(String.format(OBJ004, aRequestedClass.getName()), e);
                 }
             }
             else
@@ -199,7 +212,7 @@ implements SimpleMapperHelper
                         }
                         catch (Exception e)
                         {
-                            throw new MapperException(String.format("ObjectMapperDirect error while deserializing. Type error while trying to set the field: '%1$s' in class: '%2$s' with a value of class: '%3$s'.", lFld.getName(), aRequestedClass.getName(), lFldValue.getClass().getName()), e);
+                            throw new MapperException(String.format(OBJ005, lFld.getName(), aRequestedClass.getName(), lFldValue.getClass().getName()), e);
                         }
                     }
                 }
@@ -225,7 +238,7 @@ implements SimpleMapperHelper
                 }
                 catch (Exception e)
                 {
-                    throw new MapperException(String.format("ObjectMapperDirect error while creating java object. Tried to invoke 'readResolve' on instance of class: '%1$s'.", lResult.getClass().getName()), e);
+                    throw new MapperException(String.format(OBJ006, lResult.getClass().getName()), e);
                 }
             }
             ////////////////////////////////////////////////////////////////////////////
@@ -234,13 +247,11 @@ implements SimpleMapperHelper
         }
         catch (IllegalAccessException e)
         {
-            final String lMsg = "IllegalAccessException while trying to instantiate bean: " + aRequestedClass;
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(OBJ007, aRequestedClass.getName()), e);
         }
         catch (InstantiationException e)
         {
-            final String lMsg = "InstantiationException while trying to instantiate bean: " + aRequestedClass;
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(OBJ008, aRequestedClass.getName()), e);
         }
     }
 
@@ -270,7 +281,7 @@ implements SimpleMapperHelper
             }
             catch(Exception e)
             {
-                throw new MapperException(String.format("ObjectMapperDirect error while trying to invoke 'writeReplace' on instance of class: '%1$s'.", aPojo.getClass().getName()), e);
+                throw new MapperException(String.format(OBJ009, aPojo.getClass().getName()), e);
             }
         }
         ////////////////////////////////////////////////////////////////////////////
@@ -290,7 +301,7 @@ implements SimpleMapperHelper
             }
             catch(Exception e)
             {
-                throw new MapperException(String.format("ObjectMapperDirect error while serializing. Error while reading field: '%1$s' from instance of class: '%2$s'.", lFld.getName(), lJavaClass.getName()), e);
+                throw new MapperException(String.format(OBJ010, lFld.getName(), lJavaClass.getName()), e);
             }
         }
 
@@ -304,7 +315,7 @@ implements SimpleMapperHelper
             }
             catch(Exception e)
             {
-                throw new MapperException(String.format("ObjectMapperDirect error while serializing. Error while invoking the @JSONMap method called '%1$s(...)' on an instance of class: '%2$s'.", lAnnotated.serialize.getName(), lJavaClass.getName()), e);
+                throw new MapperException(String.format(OBJ011, lAnnotated.serialize.getName(), lJavaClass.getName()), e);
             }
 
             int i = 0;
@@ -319,10 +330,9 @@ implements SimpleMapperHelper
             }
             catch(MapperException e)
             {
-                throw new MapperException(String.format("ObjectMapperDirect error while serializing. Error while serializing element nr %1$d from the @JSONMap method: '%2$s(...)' on instance of class: '%3$s'.", i, lAnnotated.serialize.getName(), lJavaClass.getName()), e);
+                throw new MapperException(String.format(OBJ012, i, lAnnotated.serialize.getName(), lJavaClass.getName()), e);
             }
         }
-
         return lElements;
     }
 }

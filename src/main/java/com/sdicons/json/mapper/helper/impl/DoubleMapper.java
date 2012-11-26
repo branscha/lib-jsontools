@@ -18,6 +18,9 @@ import com.sdicons.json.model.JSONValue;
 public class DoubleMapper
 implements SimpleMapperHelper
 {
+    private static final String DM002 = "JSONMapper/DoubleMapper/001: Cannot map class '%s'.";
+    private static final String DM001 = "JSONMapper/DoubleMapper/002: Cannot map value '%s'.";
+
     public Class<?> getHelpedClass()
     {
         return Double.class;
@@ -33,18 +36,18 @@ implements SimpleMapperHelper
             }
             catch (NumberFormatException e)
             {
-                throw new MapperException("DoubleMapper cannot map value: " + ((JSONString)aValue).getValue());
+                throw new MapperException(String.format(DM001, ((JSONString)aValue).getValue()), e);
             }
         }
         else if(aValue.isDecimal()) return ((JSONDecimal) aValue).getValue().doubleValue();
         else if(aValue.isInteger()) return ((JSONInteger)aValue).getValue().doubleValue();
-        else throw new MapperException("DoubleMapper cannot map: " + aValue.getClass().getName());
+        else throw new MapperException(String.format(DM002, aValue.getClass().getName()));
     }
 
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!Double.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("DoubleMapper cannot map: " + aPojo.getClass().getName());
+        if(!Double.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(DM002, aPojo.getClass().getName()));
         return new JSONDecimal(new BigDecimal(aPojo.toString()));
     }
 }

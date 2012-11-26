@@ -22,6 +22,16 @@ import com.sdicons.json.model.JSONValue;
 public class ObjectMapperProps
 implements SimpleMapperHelper
 {
+    private static final String OBJ001 = "JSONMapper/ObjectMapperProps/001: ObjectMapper cannot map class '%s'.";
+    private static final String OBJ002 = "JSONMapper/ObjectMapperProps/002: Could not find a setter for property '%s' in class '%s'.";
+    private static final String OBJ003 = "JSONMapper/ObjectMapperProps/003: IllegalAccessException while trying to instantiate class '%s'.";
+    private static final String OBJ004 = "JSONMapper/ObjectMapperProps/004: InstantiationException while trying to instantiate class '%s'.";
+    private static final String OBJ005 = "JSONMapper/ObjectMapperProps/005: IntrospectionException while trying to fill class '%s'.";
+    private static final String OBJ006 = "JSONMapper/ObjectMapperProps/006: InvocationTargetException while trying to fill class '%s'.";
+    private static final String OBJ007 = "JSONMapper/ObjectMapperProps/007: Error while introspecting JavaBean with class '%s'.";
+    private static final String OBJ008 = "JSONMapper/ObjectMapperProps/008: Illegal access while trying to fetch a bean property named '%s' on bean '%s'.";
+    private static final String OBJ009 = "JSONMapper/ObjectMapperProps/009: Illegal access while trying to fetch a bean property '%s' on bean '%s'.";
+
     public Class<?> getHelpedClass()
     {
         return Object.class;
@@ -30,7 +40,7 @@ implements SimpleMapperHelper
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass)
     throws MapperException
     {
-        if(!aValue.isObject()) throw new MapperException("ObjectMapper cannot map: " + aValue.getClass().getName());
+        if(!aValue.isObject()) throw new MapperException(String.format(OBJ001, aValue.getClass().getName()));
         JSONObject aObject = (JSONObject) aValue;
 
         try
@@ -85,31 +95,26 @@ implements SimpleMapperHelper
 
                 if (!lFoundWriter)
                 {
-                    final String lMsg = "Could not find a setter for prop: " + lPropname + " in class: " + aRequestedClass;
-                    throw new MapperException(lMsg);
+                    throw new MapperException(String.format(OBJ002, lPropname, aRequestedClass.getName()));
                 }
             }
             return lBean;
         }
         catch (IllegalAccessException e)
         {
-            final String lMsg = "IllegalAccessException while trying to instantiate bean: " + aRequestedClass;
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(OBJ003, aRequestedClass.getName()), e);
         }
         catch (InstantiationException e)
         {
-            final String lMsg = "InstantiationException while trying to instantiate bean: " + aRequestedClass;
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(OBJ004, aRequestedClass.getName()), e);
         }
         catch (IntrospectionException e)
         {
-            final String lMsg = "IntrospectionException while trying to fill bean: " + aRequestedClass;
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(OBJ005, aRequestedClass.getName()), e);
         }
         catch (InvocationTargetException e)
         {
-            final String lMsg = "InvocationTargetException while trying to fill bean: " + aRequestedClass;
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(OBJ006, aRequestedClass.getName()), e);
         }
     }
 
@@ -149,18 +154,15 @@ implements SimpleMapperHelper
         }
         catch(IntrospectionException e)
         {
-            final String lMsg = "Error while introspecting JavaBean." + " Class: "+ aPojo.getClass();
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(OBJ007, aPojo.getClass().getName()), e);
         }
         catch(IllegalAccessException e)
         {
-            final String lMsg = "Illegal access while trying to fetch a bean property (1).Property: " + lPropName + " Object: " + aPojo;
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(OBJ008, lPropName, aPojo.toString()), e);
         }
         catch(InvocationTargetException e)
         {
-            final String lMsg = "Illegal access while trying to fetch a bean property (2).Property: " + lPropName + " Object: " + aPojo;
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(OBJ009, lPropName, aPojo.toString()), e);
         }
     }
 }

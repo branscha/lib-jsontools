@@ -17,6 +17,9 @@ import com.sdicons.json.model.JSONValue;
 public class IntegerMapper
 implements SimpleMapperHelper
 {
+    private static final String IM002 = "IntegerMapper cannot map class '%s'.";
+    private static final String IM001 = "IntegerMapper cannot map value '%s'.";
+
     public Class<?> getHelpedClass()
     {
         return Integer.class;
@@ -32,17 +35,17 @@ implements SimpleMapperHelper
             }
             catch (NumberFormatException e)
             {
-                throw new MapperException("IntegerMapper cannot map value: " + ((JSONString)aValue).getValue());
+                throw new MapperException(String.format(IM001, ((JSONString)aValue).getValue()), e);
             }
         }
         else if(aValue.isInteger()) return ((JSONInteger) aValue).getValue().intValue();
-        else throw new MapperException("IntegerMapper cannot map: " + aValue.getClass().getName());
+        else throw new MapperException(String.format(IM002, aValue.getClass().getName()));
     }
 
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!Integer.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("IntegerMapper cannot map: " + aPojo.getClass().getName());
+        if(!Integer.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(IM002, aPojo.getClass().getName()));
         return new JSONInteger(new BigInteger(aPojo.toString()));
     }
 }

@@ -19,6 +19,9 @@ import com.sdicons.json.model.JSONValue;
 public class MapMapper
 implements ComplexMapperHelper
 {
+    private static final String MAP001 = "JSONMapper/MapMapper/001: Cannot map class '%s .";
+    private static final String MAP002 = "JSONMapper/MapMapper/002: Currently only supports String keys.";
+
     public Class<?> getHelpedClass()
     {
         return Map.class;
@@ -34,9 +37,9 @@ implements ComplexMapperHelper
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRawClass, Type[] aTypes)
     throws MapperException
     {
-        if (!aValue.isObject()) throw new MapperException("MapMapper cannot map: " + aValue.getClass().getName());
+        if (!aValue.isObject()) throw new MapperException(String.format(MAP001, aValue.getClass().getName()));
         if (!Map.class.isAssignableFrom(aRawClass))
-            throw new MapperException("MapMapper cannot map: " + aValue.getClass().getName());
+            throw new MapperException(String.format(MAP001, aValue.getClass().getName()));
         JSONObject aObject = (JSONObject) aValue;
 
         Map lMapObj;
@@ -68,7 +71,7 @@ implements ComplexMapperHelper
         else if(aTypes.length == 2)
         {
             // Generic map, we can make use of the type of the elements.
-            if(!aTypes[0].equals(String.class)) throw new MapperException("MapMapper currently only supports String keys.");
+            if(!aTypes[0].equals(String.class)) throw new MapperException(MAP002);
             else
             {
                 for (String lKey : aObject.getValue().keySet())
@@ -85,7 +88,7 @@ implements ComplexMapperHelper
         {
             // Not possible, a collection cannot have more than two types for
             // its contents.
-            throw new MapperException("MapMapper cannot map: " + aValue.getClass().getName());
+            throw new MapperException(String.format(MAP001, aValue.getClass().getName()));
         }
 
         return lMapObj;
@@ -96,7 +99,7 @@ implements ComplexMapperHelper
     throws MapperException
     {
         final JSONObject lObj = new JSONObject();
-        if(! Map.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("MapMapper cannot map: " + aPojo.getClass().getName());
+        if(! Map.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(MAP001, aPojo.getClass().getName()));
 
         Map lMap = (Map) aPojo;
         for(Object lKey : lMap.keySet())

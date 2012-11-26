@@ -50,6 +50,10 @@ import com.sdicons.json.model.JSONValue;
  */
 public class JSONMapper
 {
+    private static final String MAPPER001 = "JSONMapper/001: Mapper does not support null values.";
+    private static final String MAPPER002 = "JSONMapper/002: Could not find a mapper helper for parameterized type '%s'.";
+    private static final String MAPPER003 = "JSONMapper/003: Could not find a mapper helper for class '%s'.";
+
     // field | property
     public static final String OPTION_OBJECTMAPPING = "objectMapperType";
 
@@ -89,8 +93,7 @@ public class JSONMapper
         // Null references are not allowed.
         if(aValue == null)
         {
-            final String lMsg = "Mapper does not support null values.";
-            throw new MapperException(lMsg);
+            throw new MapperException(MAPPER001);
         }
         // But null representations are.
         else if(aValue.isNull()) return null;
@@ -113,8 +116,7 @@ public class JSONMapper
 
         if(lHelperSimple == null)
         {
-            final String lMsg = "Could not find a mapper helper for class: " + aPojoClass.getName();
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(MAPPER003, aPojoClass.getName()));
         }
         else return lHelperSimple.toJava(this, aValue, aPojoClass);
     }
@@ -132,8 +134,7 @@ public class JSONMapper
         // Null references are not allowed.
         if(aValue == null)
         {
-            final String lMsg = "Mapper does not support null values.";
-            throw new MapperException(lMsg);
+            throw new MapperException(MAPPER001);
         }
         // But null representations are.
         else if(aValue.isNull()) return null;
@@ -147,8 +148,7 @@ public class JSONMapper
 
         if(lMapperHelper == null)
         {
-            final String lMsg = "Could not find a mapper helper for parameterized type: " + aGenericType;
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(MAPPER002, aGenericType.toString()));
         }
         else
         {
@@ -195,8 +195,7 @@ public class JSONMapper
 
         if(lHelperSimple == null)
         {
-            final String lMsg = "Could not find a mapper helper for class: " + aPojo.getClass().getName();
-            throw new MapperException(lMsg);
+            throw new MapperException(String.format(MAPPER003, aPojo.getClass().getName()));
         }
         return lHelperSimple.toJSON(this, aPojo);
     }

@@ -17,6 +17,9 @@ import com.sdicons.json.model.JSONValue;
 public class ShortMapper
 implements SimpleMapperHelper
 {
+    private static final String SHORT001 = "JSONMapper/ShortMapper/001: Cannot map value '%s'.";
+    private static final String SHORT002 = "JSONMapper/ShortMapper/002: Cannot map class '%s'.";
+
     public Class<?> getHelpedClass()
     {
         return Short.class;
@@ -32,17 +35,17 @@ implements SimpleMapperHelper
             }
             catch (NumberFormatException e)
             {
-                throw new MapperException("ShortMapper cannot map value: " + ((JSONString)aValue).getValue());
+                throw new MapperException(String.format(SHORT001, ((JSONString)aValue).getValue()), e);
             }
         }
         else if(aValue.isInteger()) return (short) ((JSONInteger) aValue).getValue().intValue();
-        else throw new MapperException("ShortMapper cannot map: " + aValue.getClass().getName());
+        else throw new MapperException(String.format(SHORT002, aValue.getClass().getName()));
     }
 
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!Short.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("ShortMapper cannot map: " + aPojo.getClass().getName());
+        if(!Short.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(SHORT002, aPojo.getClass().getName()));
         return new JSONInteger(new BigInteger(aPojo.toString()));
     }
 }
