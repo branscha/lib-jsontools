@@ -18,10 +18,10 @@ import com.sdicons.json.model.JSONValue;
 public class BigDecimalMapper
 implements SimpleMapperHelper
 {
-    private static final String BDM001 = "JSONMapper/BigDecimalMapper/001: JSON->Java. Cannot map value '%s'.";
-    private static final String BDM002 = "JSONMapper/BigDecimalMapper/002: JSON->Java. Cannot map class '%s'.";
-    private static final String BDM003 = "JSONMapper/BigDecimalMapper/002: Java->JSON. Cannot map class '%s'.";
-    
+    private static final String BDM001 = "JSONMapper/BigDecimalMapper/001: JSON->Java. Cannot map value '%s' to a BigDecimal.";
+    private static final String BDM002 = "JSONMapper/BigDecimalMapper/002: JSON->Java. Cannot map JSON class '%s' to Java BigDecimal.";
+    private static final String BDM003 = "JSONMapper/BigDecimalMapper/003: Java->JSON. Cannot map Java class '%s' to JSONDecimal.";
+
     public Class<?> getHelpedClass()
     {
         return BigDecimal.class;

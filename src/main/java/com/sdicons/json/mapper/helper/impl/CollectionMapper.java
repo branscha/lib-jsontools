@@ -23,7 +23,8 @@ import com.sdicons.json.model.JSONValue;
 public class CollectionMapper
 implements ComplexMapperHelper
 {
-    private static final String COLL001 = "JSONMapper/CollectionMapper/001: Cannot map class '%s'.";
+    private static final String COLL001 = "JSONMapper/CollectionMapper/001: JSON->Java. Cannot map class JSON '%s' to Java Collection.";
+    private static final String COLL002 = "JSONMapper/CollectionMapper/002: Java->JSON. Cannot map Java class '%s' to JSONArray.";
 
     public Class<?> getHelpedClass()
     {
@@ -110,7 +111,7 @@ implements ComplexMapperHelper
     throws MapperException
     {
         JSONArray lArray = new JSONArray();
-        if(! Collection.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(COLL001, aPojo.getClass().getName()));
+        if(! Collection.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(COLL002, aPojo.getClass().getName()));
 
         Collection<Object> lColl = (Collection<Object>) aPojo;
         for(Object lEl : lColl)

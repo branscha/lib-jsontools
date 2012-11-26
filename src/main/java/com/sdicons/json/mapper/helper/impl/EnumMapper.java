@@ -13,9 +13,9 @@ import com.sdicons.json.model.JSONValue;
 public class EnumMapper
 extends AbstractMapper
 {
-    private static final String EM001 = "JSONMapper/EnumMapper/001: Cannot map class '%s'.";
-    private static final String EM002 = "JSONMapper/EnumMapper/002: Failed to handle a non-enum class '%s'.";
-    private static final String EN003 = "JSONMapper/EnumMapper/003: The enum class '%s' is found but no matching value could be found for '%s'.";
+    private static final String EM001 = "JSONMapper/EnumMapper/001: JSON->Java. Cannot map JSON class '%s' to Java Enum.";
+    private static final String EM002 = "JSONMapper/EnumMapper/002: JSON->Java. Failed to handle a non-enum class '%s'.";
+    private static final String EN003 = "JSONMapper/EnumMapper/003: JSON->Java. The enum class '%s' was found but no matching enum value could be found for '%s'.";
 
     public Class<?> getHelpedClass()
     {

@@ -17,8 +17,9 @@ import com.sdicons.json.model.JSONValue;
 public class BigIntegerMapper
 implements SimpleMapperHelper
 {
-    private static final String BIM001 = "JSONMapper/BigIntegerMapper/001: Cannot map value '%s'.";
-    private static final String BIM002 = "JSONMapper/BigIntegerMapper/002: annot map class '%s'.";
+    private static final String BIM001 = "JSONMapper/BigIntegerMapper/001: JSON->Java. Cannot map value '%s' to a BigInteger.";
+    private static final String BIM002 = "JSONMapper/BigIntegerMapper/002: JSON->Java. Cannot map JSON class '%s' to Java BigInteger.";
+    private static final String BIM003 = "JSONMapper/BigIntegerMapper/003: Java->JSON. Cannot map Java class '%s' to JSONInteger.";
 
     public Class<?> getHelpedClass()
     {
@@ -45,7 +46,7 @@ implements SimpleMapperHelper
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!BigInteger.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(BIM002, aPojo.getClass().getName()));
+        if(!BigInteger.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(BIM003, aPojo.getClass().getName()));
         return new JSONInteger(new BigInteger(aPojo.toString()));
     }
 }

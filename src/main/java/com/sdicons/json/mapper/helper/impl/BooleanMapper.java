@@ -15,8 +15,8 @@ import com.sdicons.json.model.JSONValue;
 public class BooleanMapper
 implements SimpleMapperHelper
 {
-    private static final String BOOL001 = "JSONMapper/BooleanMapper/001: Cannot map class '%s'.";
-
+    private static final String BOOL001 = "JSONMapper/BooleanMapper/001: JSON->Java. Cannot map JSON class '%s' to Java Boolean.";
+    private static final String BOOL002 = "JSONMapper/BooleanMapper/002: Java->JSON. Cannot map Java class '%s' to JSONBoolean.";
     public Class<?> getHelpedClass()
     {
         return Boolean.class;
@@ -38,7 +38,7 @@ implements SimpleMapperHelper
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!Boolean.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(BOOL001, aPojo.getClass().getName()));
+        if(!Boolean.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(BOOL002, aPojo.getClass().getName()));
         return new JSONBoolean((Boolean) aPojo);
     }
 }

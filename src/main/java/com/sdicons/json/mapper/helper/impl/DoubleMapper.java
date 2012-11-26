@@ -18,8 +18,9 @@ import com.sdicons.json.model.JSONValue;
 public class DoubleMapper
 implements SimpleMapperHelper
 {
-    private static final String DM002 = "JSONMapper/DoubleMapper/001: Cannot map class '%s'.";
-    private static final String DM001 = "JSONMapper/DoubleMapper/002: Cannot map value '%s'.";
+    private static final String DM001 = "JSONMapper/DoubleMapper/001: JSON->Java. Cannot map value '%s' to a Double.";
+    private static final String DM002 = "JSONMapper/DoubleMapper/002: JSON->Java. Cannot map JSON class '%s' to Java Double.";
+    private static final String DM003 = "JSONMapper/DoubleMapper/003: JSON->Java. Cannot map Java class '%s' to JSONDecimal.";
 
     public Class<?> getHelpedClass()
     {
@@ -47,7 +48,7 @@ implements SimpleMapperHelper
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!Double.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(DM002, aPojo.getClass().getName()));
+        if(!Double.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(DM003, aPojo.getClass().getName()));
         return new JSONDecimal(new BigDecimal(aPojo.toString()));
     }
 }

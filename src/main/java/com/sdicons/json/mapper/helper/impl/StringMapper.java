@@ -15,7 +15,7 @@ import com.sdicons.json.model.JSONValue;
 public class StringMapper
 extends AbstractMapper
 {
-    private static final String STR001 = "JSONMapper/StringMapper/001: Cannot map class '%s'.";
+    private static final String STR001 = "JSONMapper/StringMapper/001: JSON->Java. Cannot map JSON class '%s' to String.";
 
     public Class<?> getHelpedClass()
     {
@@ -24,7 +24,7 @@ extends AbstractMapper
 
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
-    	//lenient to the data to be converted.
+    	// Lenient to the data to be converted.
     	if(aValue.isDecimal()) return ((JSONDecimal)aValue).getValue().toString();
     	if(aValue.isInteger()) return ((JSONInteger)aValue).getValue().toString();
         if (!aValue.isString()) throw new MapperException(String.format(STR001, aValue.getClass().getName()));

@@ -17,8 +17,9 @@ import com.sdicons.json.model.JSONValue;
 public class ByteMapper
 implements SimpleMapperHelper
 {
-    private static final String BYM001 = "JSONMapper/ByteMapper/001: Cannot map value '%s'.";
-    private static final String BYM002 = "JSONMapper/ByteMapper/002: Cannot map class '%s'.";
+    private static final String BYM001 = "JSONMapper/ByteMapper/001: JSON->Java. Cannot map value '%s' to a Byte.";
+    private static final String BYM002 = "JSONMapper/ByteMapper/002: JSON->Java. Cannot map JSON class '%s' to Java Byte.";
+    private static final String BYM003 = "JSONMapper/ByteMapper/003: Java->JSON. Cannot map Java class '%s' to JSONInteger.";
 
     public Class<?> getHelpedClass()
     {
@@ -45,7 +46,7 @@ implements SimpleMapperHelper
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!Byte.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(BYM002, aPojo.getClass().getName()));
+        if(!Byte.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(BYM003, aPojo.getClass().getName()));
         return new JSONInteger(new BigInteger(aPojo.toString()));
     }
 }
