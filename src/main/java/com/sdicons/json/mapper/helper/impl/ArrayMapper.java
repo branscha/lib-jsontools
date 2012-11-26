@@ -20,6 +20,12 @@ import com.sdicons.json.model.JSONValue;
 public class ArrayMapper
 implements SimpleMapperHelper
 {
+    private static final String ARR001 = "JSONMapper/ArrayMapper/001: Don't know how to map class'%s'.";
+    private static final String ARR002 = "JSONMapper/ArrayMapper/002: Unknown primitive array type '%'.";
+    private static final String ARR003 = "JSONMapper/ArrayMapper/003: Class '%s' could not be found.";
+    private static final String ARR004 = "JSONMapper/ArrayMapper/004: Unknown primitive array type '%s'.";
+    private static final String ARR005 = "JSONMapper/ArrayMapper/005: Exception while trying to unmarshal an array of type '%s'.";
+
     public JSONValue toJSON(JSONMapper mapper, Object aObj)
     throws MapperException
     {
@@ -112,7 +118,8 @@ implements SimpleMapperHelper
     }
 
 	public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException {
-		if(!aValue.isArray()) throw new MapperException("ArrayMapper cannot map: " + aValue.getClass().getName());
+	    
+		if(!aValue.isArray()) throw new MapperException(String.format(ARR001, aValue.getClass().getName()));
 
         // First we fetch all array elements.
         JSONArray lValues = (JSONArray)aValue;
@@ -142,8 +149,7 @@ implements SimpleMapperHelper
                     else if("F".equals(lArrClassName)) 	primitiveClass=Float.class;
                     else if("D".equals(lArrClassName))	primitiveClass=Double.class;
                     else {
-                        final String lMsg = "Unknown primitive array type: " + lArrClassName;
-                        throw new  MapperException(lMsg);
+                        throw new  MapperException(String.format(ARR002, lArrClassName));
                     }
             		lElements.add(mapper.toJava(jsonValue,primitiveClass));
             	}else{
@@ -153,7 +159,7 @@ implements SimpleMapperHelper
 			}
             catch (ClassNotFoundException e)
             {
-				throw new MapperException("No Class Found: " + lArrClassName);
+				throw new MapperException(String.format(ARR003, lArrClassName));
 			}
         }
         final int lArrSize = lElements.size();
@@ -258,8 +264,7 @@ implements SimpleMapperHelper
             }
             else
             {
-                final String lMsg = "Unknown primitive array type: " + lArrClassName;
-                throw new  MapperException(lMsg);
+                throw new  MapperException(String.format(ARR004, lArrClassName));
             }
         }
         else
@@ -279,8 +284,7 @@ implements SimpleMapperHelper
             }
             catch(ClassNotFoundException e)
             {
-                final String lMsg = "Exception while trying to unmarshall an array of JavaObjects: " + lArrClassName;
-                throw new  MapperException(lMsg);
+                throw new  MapperException(String.format(ARR005, lArrClassName));
             }
         }
 	}

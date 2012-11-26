@@ -18,6 +18,9 @@ import com.sdicons.json.model.JSONValue;
 public class BigDecimalMapper
 implements SimpleMapperHelper
 {
+    private static final String BDM001 = "JSONMapper/BigDecimalMapper/001: Cannot map value '%s'.";
+    private static final String BDM002 = "JSONMapper/BigDecimalMapper/002: Cannot map class '%s'.";
+
     public Class<?> getHelpedClass()
     {
         return BigDecimal.class;
@@ -33,18 +36,18 @@ implements SimpleMapperHelper
             }
             catch (NumberFormatException e)
             {
-                throw new MapperException("BigDecimalMapper cannot map value: " + ((JSONString)aValue).getValue());
+                throw new MapperException(String.format(BDM001, ((JSONString)aValue).getValue()));
             }
         }
         else if(aValue.isDecimal()) return ((JSONDecimal) aValue).getValue();
         else if(aValue.isInteger()) return new BigDecimal(((JSONInteger)aValue).getValue());
-        else throw new MapperException("BigDecimalMapper cannot map: " + aValue.getClass().getName());
+        else throw new MapperException(String.format(BDM002, aValue.getClass().getName()));
     }
 
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!BigDecimal.class.isAssignableFrom(aPojo.getClass())) throw new MapperException("BigDecimalMapper cannot map: " + aPojo.getClass().getName());
+        if(!BigDecimal.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(BDM002, aPojo.getClass().getName()));
         return new JSONDecimal(new BigDecimal(aPojo.toString()));
     }
 }

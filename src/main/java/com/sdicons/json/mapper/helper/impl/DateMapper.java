@@ -41,7 +41,7 @@ extends AbstractMapper
     	if(DateMapper.isTimeZoneIgnored())
     		return new JSONString(toRFC3339((Date) aPojo));
     	else
-    		return new JSONString(toRFC3339((Date) aPojo,false));
+    		return new JSONString(toRFC3339((Date) aPojo, false));
     }
 
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException

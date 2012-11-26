@@ -16,7 +16,7 @@ import com.sdicons.json.mapper.helper.impl.DateMapper;
 
 public class TestIso8601Date {
 
-    private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+    private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
     @Test
     public void testIt() throws MapperException {
@@ -34,16 +34,16 @@ public class TestIso8601Date {
 
         // II. Test DateMapper from JSON -> Java.
         //
-        Assert.assertEquals("2006-12-05T00:00:00.000+0100", df.format(DateMapper.fromISO8601("2006-12-05")));
-        Assert.assertEquals("2006-12-05T12:23:00.000+0100", df.format(DateMapper.fromISO8601("2006-12-05 12:23")));
-        Assert.assertEquals("2006-12-05T12:23:00.000+0100", df.format(DateMapper.fromISO8601("2006-12-05T12:23")));
-        Assert.assertEquals("2006-12-05T12:23:54.667+0100", df.format(DateMapper.fromISO8601("2006-12-05T12:23:54.667")));
-        Assert.assertEquals("2006-12-05T05:23:54.667+0100", df.format(DateMapper.fromISO8601("2006-12-05T12:23:54.667+08:00", false)));
-        Assert.assertEquals("2006-01-09T00:00:00.000+0100", df.format(DateMapper.fromISO8601("2006W02")));
-        Assert.assertEquals("2006-01-09T00:00:00.000+0100", df.format(DateMapper.fromISO8601("2006W021")));
-        Assert.assertEquals("2006-01-22T00:00:00.000+0100", df.format(DateMapper.fromISO8601("2006W027")));
-        Assert.assertEquals("2006-01-10T05:23:54.667+0100", df.format(DateMapper.fromISO8601("2006W022T12:23:54.667+08:00", false)));
-        Assert.assertEquals("2006-01-07T00:00:00.000+0100", df.format(DateMapper.fromISO8601("2006007")));
-        Assert.assertEquals("2006-01-14T05:23:54.667+0100", df.format(DateMapper.fromISO8601("2006014T12:23:54.667+08:00", false)));
+        Assert.assertEquals("2006-12-05T00:00:00.000", df.format(DateMapper.fromISO8601("2006-12-05")));
+        Assert.assertEquals("2006-12-05T12:23:00.000", df.format(DateMapper.fromISO8601("2006-12-05 12:23")));
+        Assert.assertEquals("2006-12-05T12:23:00.000", df.format(DateMapper.fromISO8601("2006-12-05T12:23")));
+        Assert.assertEquals("2006-12-05T12:23:54.667", df.format(DateMapper.fromISO8601("2006-12-05T12:23:54.667")));
+        Assert.assertEquals("2006-12-05T05:23:54.667", df.format(DateMapper.fromISO8601("2006-12-05T12:23:54.667+08:00", false)));
+        Assert.assertEquals("2006-01-09T00:00:00.000", df.format(DateMapper.fromISO8601("2006W02")));
+        Assert.assertEquals("2006-01-09T00:00:00.000", df.format(DateMapper.fromISO8601("2006W021")));
+        Assert.assertEquals("2006-01-15T00:00:00.000", df.format(DateMapper.fromISO8601("2006W027")));
+        Assert.assertEquals("2006-01-10T05:23:54.667", df.format(DateMapper.fromISO8601("2006W022T12:23:54.667+08:00", false)));
+        Assert.assertEquals("2006-01-07T00:00:00.000", df.format(DateMapper.fromISO8601("2006007")));
+        Assert.assertEquals("2006-01-14T05:23:54.667", df.format(DateMapper.fromISO8601("2006014T12:23:54.667+08:00", false)));
     }
 }

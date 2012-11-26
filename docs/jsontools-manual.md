@@ -183,21 +183,21 @@ Both mapping tool and serialization tool (this section) can be used to convert J
 
 This tool enables you to render POJO's to a JSON file. It is similar to the XML serialization in Java or the XML Stream library, but it uses the JSON format. The result is a very fast text serialization, you can customize it if you want.  The code is based on the SISE project, it was adjusted to make use of and benefit from the JSON format. Marshaling (converting from Java to JSON) as well as un-marshaling is very straightforward:
 
-	import com.sdicons.json.serializer.marshall.*;
+	import com.sdicons.json.serializer.marshal.*;
 	...
 	myTestObject = ...
-	Marshall marshall = new JSONMarshall();
-	JSONObject result = marshall.marshall(myTestObject);
+	JSONSerializer marshal = new JSONSerializer();
+	JSONObject result = marshal.marshal(myTestObject);
 
 And the other way around:
  
-	import com.sdicons.json.serializer.marshall.*;
+	import com.sdicons.json.serializer.marshal.*;
 	...
 	JSONObject myJSONObject = ...
-	MarshallValue lResult = marshall.unmarshall(myJSONObject);
+	JSONSerializeValue lResult = marshal.unmarshal(myJSONObject);
 	... = lResult.getReference()
 
-You might wonder what the MarshallValue is all about, why is un-marshaling giving an extra object back? The answer is that we went to great lengths to provide marshaling or un-marshaling for both Java reference types as Java basic types. A basic type needs to be fetched using specific methods (there is no other way). In order to provide these specific methods we need an extra class.
+You might wonder what the JSONSerializeValue is all about, why is un-marshaling giving an extra object back? The answer is that we went to great lengths to provide marshaling or un-marshaling for both Java reference types as Java basic types. A basic type needs to be fetched using specific methods (there is no other way). In order to provide these specific methods we need an extra class.
 
 ### Primitive Types ###
 
@@ -280,14 +280,14 @@ Also note that you can refer to other objects with the reference object which lo
 
 The serialization process uses the same mechanism as the mapping process, but the repository contains serialization helpers in stead of mapping helpers. There are also two different flavors of root serializers available:
 
-*  ObjectHelper Serializes an instance as a JavaBean. This is the default for compatibility reasons. You can explicitly activate it by calling ((JsonMarshall) marshall).useJavaBeanAccess().
-*  ObjectHelperDirect Serializes an instance as a POJO. You an activate this by calling the method ((JsonMarshall) marshall).usePojoAccess().
+*  ObjectHelper Serializes an instance as a JavaBean. This is the default for compatibility reasons. You can explicitly activate it by calling ((JSONSerializer) marshal).useJavaBeanAccess().
+*  ObjectHelperDirect Serializes an instance as a POJO. You an activate this by calling the method ((JSONSerializer) marshal).usePojoAccess().
 
 
 You can customize the serializer for your own business model in two ways.
 
 *  @JSONSerialize, @JSONConstruct in combination with the ObjectHelperDirect.
-*  Deriving your own helper class from MarshallHelper and adding it with the method call  ((JsonMarshall) marshall).addHelper(myHelper).
+*  Deriving your own helper class from SerializeHelper and adding it with the method call  ((JSONSerializer) marshal).addHelper(myHelper).
 
 Here is an example of an annotated class.
 
