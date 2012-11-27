@@ -1,9 +1,10 @@
 # Project Notes
 ## Design Decisions
 
-* Decision 1. Rationale.
-* Decision 2. Rationale.
-* ...
+## Remember
+
+Adding a helper for a class that is alread in the repo will replace the existing helper.
+
 
 ## Possible Enhancements
 

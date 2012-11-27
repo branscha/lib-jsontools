@@ -33,15 +33,23 @@ public class HelperRepository<T extends Helper>
         {
             if(aNode.getHelper().getHelpedClass() == helper.getHelpedClass())
             {
+                // The current tree node already contains a helper for that class,
+                // in this case we replace the helper! 
                 helper = aNode.getHelper();
                 return true;
             }
             else if(helper.getHelpedClass().isAssignableFrom(aNode.getHelper().getHelpedClass()))
             {
+                // The new node is a helper for a more specific class then the
+                // current helper.
+                
+                // First we are going to test recursively if the new node
+                // is a more specific helper then one of our children.
+                
                 boolean insertedToSomeChild = false;
-                for (HelperTreeNode<T> lChildren : children)
+                for (HelperTreeNode<T> child : children)
                 {
-                    boolean lSuccess = lChildren.insertNode(aNode);
+                    boolean lSuccess = child.insertNode(aNode);
                     if (lSuccess)
                     {
                         insertedToSomeChild = true;
@@ -49,10 +57,14 @@ public class HelperRepository<T extends Helper>
                     }
                 }
 
-                // Add node
+                // If we get here, the new node contains a helper that does not
+                // belong to one of our children, so we can add it as a new child.
                 if(!insertedToSomeChild)
                 {
-                    // Rebalance tree.
+                    // Rebalance tree. We have to rebuild the tree because the children might actually
+                    // belong to the new node. This happens when the new node is more specific then the
+                    // current node but less specific then one of the children. 
+                    // 
                     final Iterator<HelperTreeNode<T>> lIter2 = children.iterator();
                     while(lIter2.hasNext())
                     {
