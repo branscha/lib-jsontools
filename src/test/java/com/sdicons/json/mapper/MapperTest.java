@@ -31,8 +31,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sdicons.json.helper.JSONConstruct;
-import com.sdicons.json.helper.JSONMap;
+import com.sdicons.json.helper.JSONConstructor;
+import com.sdicons.json.helper.JSONConstructorArgs;
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.parser.JSONParser;
@@ -268,13 +268,13 @@ public class MapperTest {
         private Date theDate;
         private String theTimeZone;
 
-        @JSONConstruct
+        @JSONConstructor
         public MyDate(long aTime, String aTimeZone) {
             theDate = new Date(aTime);
             theTimeZone = aTimeZone;
         }
 
-        @JSONMap
+        @JSONConstructorArgs
         public Object[] getTime() {
             return new Object[] { theDate.getTime(), theTimeZone };
         }

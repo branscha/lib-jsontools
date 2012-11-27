@@ -11,8 +11,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sdicons.json.helper.JSONConstruct;
-import com.sdicons.json.helper.JSONSerialize;
+import com.sdicons.json.helper.JSONConstructor;
+import com.sdicons.json.helper.JSONConstructorArgs;
 import com.sdicons.json.model.JSONObject;
 
 public class UsersJavaBeanTest
@@ -22,14 +22,14 @@ public class UsersJavaBeanTest
         private Date theDate;
         private String theTimeZone;
 
-        @JSONConstruct
+        @JSONConstructor
         public MyDate(long aTime, String aTimeZone)
         {
             theDate = new Date(aTime);
             theTimeZone = aTimeZone;
         }
 
-        @JSONSerialize
+        @JSONConstructorArgs
         public Object[] getTime()
         {
             return new Object[]{theDate.getTime(), theTimeZone};

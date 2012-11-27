@@ -3,7 +3,7 @@
 
 JSON (JavaScript Object Notation) is a file format to represent data. It is similar to XML but has different characteristics. It is suited to represent configuration information, implement communication protocols and so on.  XML is more suited to represent annotated documents. JSON parsing is very fast, the parser can be kept lean and mean. It is easy for humans to read and write. It is based on a subset of the [JavaScript](http://www.ecma-international.org/publications/standards/Ecma-262.htm) programming language.  JSON is a text format that is completely language independent but uses conventions that are familiar to programmers of the C-family of languages.  These properties make JSON an ideal data-interchange language. The format is specified on the [JSON web site](http://www.json.org/), for the details please visit this site.
 
-JSON is a very simple format. As a result, the parsing and rendering is fast and easy, you can concentrate on  the content of the file in stead of the format. In XML it is often difficult to fully understand all features (e.g. name spaces, validation, ...). As a result, XML tends to become part of the problem i.s.o. the solution. In JSON everything is well defined, all aspects of the representation are clear, you can concentrate on how you are going to represent your application concepts. The following example comes from the [JSON example page](http://www.json.org/example.html).
+JSON is a simple format. As a result, the parsing and rendering is fast and easy, you can concentrate on  the content of the file in stead of the format. In XML it is often difficult to fully understand all features (e.g. name spaces, validation, ...). As a result, XML tends to become part of the problem i.s.o. the solution. In JSON everything is well defined, all aspects of the representation are clear, you can concentrate on how you are going to represent your application concepts. The following example comes from the [JSON example page](http://www.json.org/example.html).
 
 	{ "widget" : {
 	      "debug" : "on",
@@ -34,7 +34,6 @@ This project wants to provide the tools to manipulate and use the format in a Ja
 
 The JSON Tools library is the result of many suggestions, contributions and reviews from the users. Without the feedback the library would not be as versatile and stable as it is today. Thank you for all the feedback that makes the library better.
 
-
 ## 1.4. License
 
 The library is released under the free MIT license.
@@ -45,7 +44,7 @@ Comments. I added line comments which start with "\#". It is easier for the exam
 
 # 2. The Tools
 
-## 2.1. Parsing - Reading JSON
+## 2.1. Parsing  (Text/File/Stream -> JSONValue)
 
 The most important tool in the tool set is the parser, it enables you to convert a JSON file or stream into a Java model. All JSON objects remember the position in the file (line, column), so if you are doing post processing of the data you can always refer to the position in the original file. 
 
@@ -68,13 +67,13 @@ The JSON model is a hierarchy of types, the hierarchy looks like this:
 	         JSONInteger
 	         JSonDecimal
 
-## 2.2. Rendering - Writing JSON
+## 2.2. Rendering (JONValue -> Text/Streams/...)
 
 The classes in the JSON model can render themselves to a String. You can choose to render to a pretty form, nicely indented and easily readable by humans, or you can render to a compact form, no spaces or indentations are provided. This is suited to use on a communications channel when you are implementing a communication protocol.
 
 In the introduction we already saw a pretty rendering of some widget data. The same structure can be rendered without pretty printing in order to reduce white space. This can be an interesting feature when space optimization is very important, e.g. communication protocols.
 
-## 2.3. Mapping
+## 2.3. Mapping (Nice,readable JSONValue <-> Java Domain)
 ### When to choose mapping
 
 Both mapping tool (this section) and serialization tool can be used to convert Java into JSON and vice versa. These tools have different goals. The goals of the mapper are:
@@ -136,12 +135,10 @@ The basic Java types (byte, int, char, ..., arrays) are handled internally by th
 
 It is also possible to add your own mapper helpers to the repository. As you can see, the default repository is only two levels deep, but it can be much more specialized according to the business needs. There are two different ways to create a helper or to influence the mapping process.
 
-*  @JSONMap, @JSONConstruct. If the ObjectHelperDirect is activated as described above, then the class that you want to map can simply annotate two methods with these annotations. The @JSONMap annotation has to be used to mark a method that returns an object array. This method will be called by the mapping process when an instance of the class is mapped from the Java model to JSON. These values will be used by the mapper when the instance is mapped from JSON to Java by invoking the constructor that is annotated with the @JSONConstruct annotation.
+*  @JSONConstructorArgs, @JSONConstructor. If the ObjectHelperDirect is activated as described above, then the class that you want to map can simply annotate two methods with these annotations. The @JSONConstructorArgs annotation has to be used to mark a method that returns an object array. This method will be called by the mapping process when an instance of the class is mapped from the Java model to JSON. These values will be used by the mapper when the instance is mapped from JSON to Java by invoking the constructor that is annotated with the @JSONConstructor annotation.
 *  Another way to create a helper is to create a new class, derived from SimpleMapperHelper, and add it to the mapper repository by calling the method JSONMapper.addHelper(myHelper).
 
-
 Here is an example of an annotated class. It is the first solution, in combination with ObjectMapperDirect. Do not forget to activate the POJO mapper.
-
 
 	public class MyDate
 	{
@@ -153,7 +150,7 @@ Here is an example of an annotated class. It is the first solution, in combinati
 	    // Because of this annotation, the ObjectMapperDirect will call this 
 	    // function and serialize the values in the object array. These values 
 	    // will be used later on to call the annotated constructor. 
-	    @JSONMap   
+	    @JSONConstructorArgs   
 	    public Object[] getTime()
 	    {
 	         return new Object[]{theDate.getTime(), theTimeZone};
@@ -161,7 +158,7 @@ Here is an example of an annotated class. It is the first solution, in combinati
 	
 	    // This constructor will be called with the same values that were 
 	    // provided by the other annotated method.
-	    @JSONConstruct
+	    @JSONConstructor
 	    public MyDate(long aTime, String aTimeZone)
 	    {
 	        theDate = new Date(aTime);
@@ -169,10 +166,9 @@ Here is an example of an annotated class. It is the first solution, in combinati
 	    }        
 	}
 
-## 2.4. Serialization ##
+## 2.4. Serialization (Artificial JSONValues <-> Java Domain)
 
 Both mapping tool and serialization tool (this section) can be used to convert Java into JSON and vice versa. These tools have different goals. The goals of the serializer are:
-
 
 *  The serialization tool could be an alternative for native [serialization](http://java.sun.com/j2se/1.5.0/docs/guide/serialization/) (regarding functionality). This does not mean that all kinds of classes are supported out of the box, but it means that the general mechanism should be there and there should be an easy way to extend the mechanism so that we can deal with all classes.
 *  The serialization tool should preserve the difference between reference types and primitive types.
@@ -286,7 +282,7 @@ The serialization process uses the same mechanism as the mapping process, but th
 
 You can customize the serializer for your own business model in two ways.
 
-*  @JSONSerialize, @JSONConstruct in combination with the ObjectHelperDirect.
+*  @JSONConstructorArgs, @JSONConstructor in combination with the ObjectHelperDirect.
 *  Deriving your own helper class from SerializeHelper and adding it with the method call  ((JSONSerializer) marshal).addHelper(myHelper).
 
 Here is an example of an annotated class.
@@ -300,7 +296,7 @@ Here is an example of an annotated class.
 	
 	    // This method will be called during serialization to obtain the
 	    // values that can later be used to call the constructor.
-	    @JSONSerialize
+	    @JSONConstructorArgs
 	    public Object[] getTime()
 	    {
 	        return new Object[]{theDate.getTime(), theTimeZone};
@@ -308,7 +304,7 @@ Here is an example of an annotated class.
 	    
 	    // This constructor will be called with the values that were provided
 	    // by the other annotated method.
-	    @JSONConstruct
+	    @JSONConstructor
 	    public MyDate(long aTime, String aTimeZone)
 	    {
 	        theDate = new Date(aTime);
@@ -316,7 +312,7 @@ Here is an example of an annotated class.
 	    }
 	}
 
-The result of the serialization looks like the following listing. As you can see, there are two extra artificial fields cons-0 and cons-1 which are generated automatically by the serializer, these properties contain the values which were provided by the method which was annotated with @JSONSerialize. These same properties will be used for calling the @JSONConstruct annotated constructor.
+The result of the serialization looks like the following listing. As you can see, there are two extra artificial fields cons-0 and cons-1 which are generated automatically by the serializer, these properties contain the values which were provided by the method which was annotated with @JSONConstructorArgs. These same properties will be used for calling the @JSONConstructor annotated constructor.
 
 	{ ">" : "O",
 	  "&" : "id0",
