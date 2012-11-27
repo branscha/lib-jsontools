@@ -488,7 +488,7 @@ public class JSONSerializer
      * The objects that fall back on the general object helper will be serialized by
      * using their fields directly. Without further annotations, the default
      * constructor without arguments will be used in the POJO. If this is not sufficient,
-     * the @JSONConstruct and @JSONSerialize annotations can be used as well in the  POJO to
+     * the @JSONConstructor and @JSONConstructorArgs annotations can be used as well in the  POJO to
      * indicate which constructor has to be used.
      */
     public void usePojoAccess()

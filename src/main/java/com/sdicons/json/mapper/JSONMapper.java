@@ -225,7 +225,7 @@ public class JSONMapper
      * The objects that fall back on the general object mapper will be mapped by
      * using their fields directly. Without further annotations, the default
      * constructor without arguments will be used in the POJO. If this is not sufficient,
-     * the @JSONConstruct and @JSONMap annotations can be used as well in the mapped POJO to
+     * the @JSONConstructor and @JSONConstructorArgs annotations can be used as well in the mapped POJO to
      * indicate which constructor has to be used.
      */
     public void usePojoAccess()

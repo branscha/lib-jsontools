@@ -17,8 +17,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.sdicons.json.helper.JSONConstruct;
-import com.sdicons.json.helper.JSONMap;
+import com.sdicons.json.helper.JSONConstructor;
+import com.sdicons.json.helper.JSONConstructorArgs;
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.mapper.helper.SimpleMapperHelper;
@@ -28,9 +28,9 @@ import com.sdicons.json.model.JSONValue;
 public class ObjectMapperFields
 implements SimpleMapperHelper
 {
-    private static final String OBJ001 = "JSONMapper/ObjectMapperFields/001: JSON<->Java. Found inconsistency in class: '%1$s'. If annotated methods are used, it should contain both @JSONConstruct and @JSONMap together.";
+    private static final String OBJ001 = "JSONMapper/ObjectMapperFields/001: JSON<->Java. Found inconsistency in class: '%1$s'. If annotated methods are used, it should contain both @JSONConstructor and @JSONConstructorArgs together.";
     private static final String OBJ002 = "JSONMapper/ObjectMapperFields/002: JSON->Java. Cannot map JSON class '%s' to a JavaBean.";
-    private static final String OBJ003 = "JSONMapper/ObjectMapperFields/003: JSON->Java. Error while calling the @JSONConstruct constructor in class: '%s' on parameter nr: %d with a value of class: '%s'.";
+    private static final String OBJ003 = "JSONMapper/ObjectMapperFields/003: JSON->Java. Error while calling the @JSONConstructor constructor in class: '%s' on parameter nr: %d with a value of class '%s'.";
     private static final String OBJ004 = "JSONMapper/ObjectMapperFields/004: JSON->Java. Failed to instantiate an object (using annotated constructor) of class: '%s'.";
     private static final String OBJ005 = "JSONMapper/ObjectMapperFields/005: JSON->Java. Type error while setting the field: '%s' in class '%s' with a value of class: '%s'.";
     private static final String OBJ006 = "JSONMapper/ObjectMapperFields/006: JSON->Java. Error while creating java object. Failed to invoke 'readResolve' on instance of class: '%s'.";
@@ -38,8 +38,8 @@ implements SimpleMapperHelper
     private static final String OBJ008 = "JSONMapper/ObjectMapperFields/008: JSON->Java. InstantiationException while trying to instantiate class '%s'.";
     private static final String OBJ009 = "JSONMapper/ObjectMapperFields/009: Java->JSON. Error while trying to invoke 'writeReplace' on instance of class: '%s'.";
     private static final String OBJ010 = "JSONMapper/ObjectMapperFields/010: Java->JSON. Error while reading field: '%s' from instance of class '%s'.";
-    private static final String OBJ011 = "JSONMapper/ObjectMapperFields/011: Java->JSON. Error while invoking the @JSONMap method called '%s(...)' on an instance of class '%s'.";
-    private static final String OBJ012 = "JSONMapper/ObjectMapperFields/012: Java->JSON. Error while serializing element nr %d from the @JSONMap method: '%s(...)' on instance of class: '%s'.";
+    private static final String OBJ011 = "JSONMapper/ObjectMapperFields/011: Java->JSON. Error while invoking the @JSONConstructorArgs method called '%s(...)' on an instance of class '%s'.";
+    private static final String OBJ012 = "JSONMapper/ObjectMapperFields/012: Java->JSON. Error while serializing element nr %d from the @JSONConstructorArgs method: '%s(...)' on instance of class: '%s'.";
 
     public Class<?> getHelpedClass()
     {
@@ -65,7 +65,7 @@ implements SimpleMapperHelper
         // Check if we have an annotated class.
         for(Method lMethod : aClass.getDeclaredMethods())
         {
-            if(lMethod.isAnnotationPresent(JSONMap.class))
+            if(lMethod.isAnnotationPresent(JSONConstructorArgs.class))
             {
                 lMethod.setAccessible(true);
                 return lMethod;
@@ -79,7 +79,7 @@ implements SimpleMapperHelper
         //Check if we have a class with an annotated constructor
         final Constructor<?>[] lConstructors = aClass.getDeclaredConstructors();
         for(Constructor<?> lCons : lConstructors)
-            if(lCons.isAnnotationPresent(JSONConstruct.class))
+            if(lCons.isAnnotationPresent(JSONConstructor.class))
             {
                 // Found the constructor we are
                 // looking for.
