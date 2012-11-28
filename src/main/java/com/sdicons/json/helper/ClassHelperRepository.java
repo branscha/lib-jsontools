@@ -12,7 +12,9 @@ import java.util.List;
 /**
  * A Helper is a function that is related to a Java class. It can do things for this
  * Java type. The repository is a data structure to find the most specific helper for 
- * a class.
+ * a class. There can be a large number of helpers, they are not independent since the 
+ * the classes are related to each other in the class structure. We would like to
+ * find the most appropriate helper that closely matches the required class.
  * 
  * @param <T> A Helper implementation.
  */
