@@ -11,7 +11,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sdicons.json.helper.HelperRepository;
+import com.sdicons.json.helper.ClassHelperRepository;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.serializer.helper.SerializerHelper;
 import com.sdicons.json.serializer.helper.impl.BooleanHelper;
@@ -28,13 +28,13 @@ import com.sdicons.json.serializer.helper.impl.StringHelper;
 
 public class RepositoryTest
 {
-    HelperRepository<SerializerHelper> repo;
+    ClassHelperRepository<SerializerHelper> repo;
 
     @Before
     public void setUp()
     throws Exception
     {
-        repo = new HelperRepository<SerializerHelper>();
+        repo = new ClassHelperRepository<SerializerHelper>();
 
         repo.addHelper(new ObjectHelperProps());
         repo.addHelper(new StringHelper());

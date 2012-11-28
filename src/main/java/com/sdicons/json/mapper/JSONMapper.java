@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.sdicons.json.helper.HelperRepository;
+import com.sdicons.json.helper.ClassHelperRepository;
 import com.sdicons.json.mapper.helper.ComplexMapperHelper;
 import com.sdicons.json.mapper.helper.SimpleMapperHelper;
 import com.sdicons.json.mapper.helper.impl.ArrayMapper;
@@ -63,7 +63,7 @@ public class JSONMapper
     public static final String DATEFORMAT_DEFAULT = "yyyy-MM-dd HH:mm:ss";
 
 
-    private HelperRepository<SimpleMapperHelper> repo = new HelperRepository<SimpleMapperHelper>();
+    private ClassHelperRepository<SimpleMapperHelper> repo = new ClassHelperRepository<SimpleMapperHelper>();
     private Map<String, Object> options = new HashMap<String, Object>();
 
     public JSONMapper()
