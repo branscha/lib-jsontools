@@ -34,7 +34,7 @@ public class HelperRepository<T extends Helper>
             if(aNode.getHelper().getHelpedClass() == helper.getHelpedClass())
             {
                 // The current tree node already contains a helper for that class,
-                // in this case we replace the helper! 
+                // in this case we replace the helper!
                 helper = aNode.getHelper();
                 return true;
             }
@@ -42,10 +42,10 @@ public class HelperRepository<T extends Helper>
             {
                 // The new node is a helper for a more specific class then the
                 // current helper.
-                
+
                 // First we are going to test recursively if the new node
                 // is a more specific helper then one of our children.
-                
+
                 boolean insertedToSomeChild = false;
                 for (HelperTreeNode<T> child : children)
                 {
@@ -63,8 +63,8 @@ public class HelperRepository<T extends Helper>
                 {
                     // Rebalance tree. We have to rebuild the tree because the children might actually
                     // belong to the new node. This happens when the new node is more specific then the
-                    // current node but less specific then one of the children. 
-                    // 
+                    // current node but less specific then one of the children.
+                    //
                     final Iterator<HelperTreeNode<T>> lIter2 = children.iterator();
                     while(lIter2.hasNext())
                     {
@@ -163,7 +163,9 @@ public class HelperRepository<T extends Helper>
      */
     public T findHelper(Class<?> aClass)
     {
-        return root.findHelper(aClass);
+        T helper = root.findHelper(aClass);
+        if(helper instanceof RootHelper) return null;
+        else return helper;
     }
 
     public String prettyPrint()

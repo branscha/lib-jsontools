@@ -36,7 +36,7 @@ import com.sdicons.json.helper.JSONConstructorArgs;
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.parser.JSONParser;
-import com.sdicons.json.parser.JSONParserException;
+import com.sdicons.json.parser.ParserException;
 
 public class MapperTest {
     public static enum TheSimpsons {
@@ -304,7 +304,7 @@ public class MapperTest {
 
     @Test
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    public void testIt() throws JSONParserException, MapperException {
+    public void testIt() throws ParserException, MapperException {
         MapperTest.TestBean lDuupje = new MapperTest.TestBean();
         //
         lDuupje.setIntegerMbr(new Integer(13));

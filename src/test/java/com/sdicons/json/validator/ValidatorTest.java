@@ -13,12 +13,12 @@ import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.parser.JSONParser;
-import com.sdicons.json.parser.JSONParserException;
+import com.sdicons.json.parser.ParserException;
 
 public class ValidatorTest
 {
     @Test
-    public void testSimple() throws JSONParserException, ValidationException
+    public void testSimple() throws ParserException, ValidationException
     {
         // This is a good illustration of the use of a validator.
         // The code is kept as simple and complete as possible.
@@ -28,7 +28,7 @@ public class ValidatorTest
     }
 
     @Test
-    public void testValidations() throws JSONParserException, ValidationException
+    public void testValidations() throws ParserException, ValidationException
     {
         final JSONParser lParser1 = new JSONParser(ValidatorTest.class.getResourceAsStream("/validator-validator.json"));
         final JSONObject lValidatorObject = (JSONObject) lParser1.nextValue();
@@ -46,7 +46,7 @@ public class ValidatorTest
         }
     }
 
-    private void testCase(String aResource, Validator aValidatorValidator) throws ValidationException, JSONParserException
+    private void testCase(String aResource, Validator aValidatorValidator) throws ValidationException, ParserException
     {
         final JSONParser lParser = new JSONParser(ValidatorTest.class.getResourceAsStream(aResource));
         final JSONObject lTestData = (JSONObject) lParser.nextValue();

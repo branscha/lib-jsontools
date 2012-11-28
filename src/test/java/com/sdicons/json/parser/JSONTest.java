@@ -17,7 +17,7 @@ import com.sdicons.json.model.JSONValue;
 public class JSONTest
 {
     @Test
-    public void testExamples() throws JSONParserException
+    public void testExamples() throws ParserException
     {
         final JSONParser lParser = new JSONParser(JSONTest.class.getResourceAsStream("/data/config.json"));
         final JSONValue lConfig = lParser.nextValue();
@@ -36,8 +36,8 @@ public class JSONTest
         }
     }
 
-    @Test(expected=JSONParserException.class)
-    public void testAntiExamples() throws JSONParserException
+    @Test(expected=ParserException.class)
+    public void testAntiExamples() throws ParserException
     {
         // final String lErrorExample = "{ \"fld1\" : \"val1\" ["; // This
         // string contains an error.

@@ -5,7 +5,7 @@
  ******************************************************************************/
 package com.sdicons.json.parser;
 
-public class JSONParserException
+public class ParserException
 extends Exception
 {
     private static final long serialVersionUID = 1L;
@@ -14,17 +14,17 @@ extends Exception
     private int column = -1;
     private String streamName = "[unknown stream]";
 
-    public JSONParserException()
+    public ParserException()
     {
         super();
     }
 
-    public JSONParserException(String aMsg)
+    public ParserException(String aMsg)
     {
         super(aMsg);
     }
 
-    public JSONParserException(String aStreamName, int aLine, int aCol, String aMsg)
+    public ParserException(String aStreamName, int aLine, int aCol, String aMsg)
     {
         super(aMsg);
         line = aLine;
