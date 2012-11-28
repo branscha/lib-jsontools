@@ -15,7 +15,7 @@ import java.util.Map;
 
 import com.sdicons.json.helper.ClassHelperRepository;
 import com.sdicons.json.mapper.helper.ComplexMapperHelper;
-import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import com.sdicons.json.mapper.helper.MapperHelper;
 import com.sdicons.json.mapper.helper.impl.ArrayMapper;
 import com.sdicons.json.mapper.helper.impl.BigDecimalMapper;
 import com.sdicons.json.mapper.helper.impl.BigIntegerMapper;
@@ -63,8 +63,14 @@ public class JSONMapper
     public static final String DATEFORMAT_DEFAULT = "yyyy-MM-dd HH:mm:ss";
 
 
-    private ClassHelperRepository<SimpleMapperHelper> repo = new ClassHelperRepository<SimpleMapperHelper>();
+    private ClassHelperRepository<MapperHelper> repo = new ClassHelperRepository<MapperHelper>();
     private Map<String, Object> options = new HashMap<String, Object>();
+
+    public JSONMapper(MapperHelper ... helpers) {
+        for(MapperHelper helper:helpers) {
+            repo.addHelper(helper);
+        }
+    }
 
     public JSONMapper()
     {
@@ -118,7 +124,7 @@ public class JSONMapper
         else if(aPojoClass == Character.TYPE) aPojoClass = Character.class;
 
         // Find someone who can map it.
-        final SimpleMapperHelper lHelperSimple = repo.findHelper(aPojoClass);
+        final MapperHelper lHelperSimple = repo.findHelper(aPojoClass);
 
         if(lHelperSimple == null)
         {
@@ -150,7 +156,7 @@ public class JSONMapper
         final Type[] lTypes = aGenericType.getActualTypeArguments();
 
         // Find someone who can map it.
-        final SimpleMapperHelper lMapperHelper = repo.findHelper(lRawClass);
+        final MapperHelper lMapperHelper = repo.findHelper(lRawClass);
 
         if(lMapperHelper == null)
         {
@@ -197,7 +203,7 @@ public class JSONMapper
         	return arrayMapper.toJSON(this, aPojo);
         }
 
-        final SimpleMapperHelper lHelperSimple = repo.findHelper(aPojo.getClass());
+        final MapperHelper lHelperSimple = repo.findHelper(aPojo.getClass());
 
         if(lHelperSimple == null)
         {
@@ -211,7 +217,7 @@ public class JSONMapper
      *
      * @param aHelper the custom helper you want to add to the mapper.
      */
-    public void addHelper(SimpleMapperHelper aHelper)
+    public void addHelper(MapperHelper aHelper)
     {
         repo.addHelper(aHelper);
     }

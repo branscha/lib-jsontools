@@ -2,10 +2,10 @@ package com.sdicons.json.mapper.helper.impl;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import com.sdicons.json.mapper.helper.MapperHelper;
 import com.sdicons.json.model.JSONValue;
 
-public class ObjectMapperMeta implements SimpleMapperHelper {
+public class ObjectMapperMeta implements MapperHelper {
 
     private ObjectMapperFields fieldMapper = new ObjectMapperFields();
     private ObjectMapperProps propertyMapper = new ObjectMapperProps();

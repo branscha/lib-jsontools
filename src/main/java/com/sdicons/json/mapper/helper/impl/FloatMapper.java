@@ -9,14 +9,14 @@ import java.math.BigDecimal;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import com.sdicons.json.mapper.helper.MapperHelper;
 import com.sdicons.json.model.JSONDecimal;
 import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
 public class FloatMapper
-implements SimpleMapperHelper
+implements MapperHelper
 {
     private static final String FM001 = "JSONMapper/FloatMapper/001: JSON->Java. Cannot map value '%s' to a Float.";
     private static final String FM002 = "JSONMapper/FloatMapper/002: JSON->Java. Cannot map JSON class '%s' to Java Float.";

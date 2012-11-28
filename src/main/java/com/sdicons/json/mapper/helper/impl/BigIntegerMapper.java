@@ -9,13 +9,13 @@ import java.math.BigInteger;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import com.sdicons.json.mapper.helper.MapperHelper;
 import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
 public class BigIntegerMapper
-implements SimpleMapperHelper
+implements MapperHelper
 {
     private static final String BIM001 = "JSONMapper/BigIntegerMapper/001: JSON->Java. Cannot map value '%s' to a BigInteger.";
     private static final String BIM002 = "JSONMapper/BigIntegerMapper/002: JSON->Java. Cannot map JSON class '%s' to Java BigInteger.";

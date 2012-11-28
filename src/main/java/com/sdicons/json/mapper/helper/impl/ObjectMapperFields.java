@@ -21,12 +21,12 @@ import com.sdicons.json.helper.JSONConstructor;
 import com.sdicons.json.helper.JSONConstructorArgs;
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import com.sdicons.json.mapper.helper.MapperHelper;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 
 public class ObjectMapperFields
-implements SimpleMapperHelper
+implements MapperHelper
 {
     private static final String OBJ001 = "JSONMapper/ObjectMapperFields/001: JSON<->Java. Found inconsistency in class: '%1$s'. If annotated methods are used, it should contain both @JSONConstructor and @JSONConstructorArgs together.";
     private static final String OBJ002 = "JSONMapper/ObjectMapperFields/002: JSON->Java. Cannot map JSON class '%s' to a JavaBean.";

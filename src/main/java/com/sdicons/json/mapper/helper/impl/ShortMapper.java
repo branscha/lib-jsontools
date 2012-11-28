@@ -9,13 +9,13 @@ import java.math.BigInteger;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import com.sdicons.json.mapper.helper.MapperHelper;
 import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
 public class ShortMapper
-implements SimpleMapperHelper
+implements MapperHelper
 {
     private static final String SHORT001 = "JSONMapper/ShortMapper/001: JSON->Java. Cannot map value '%s' to a Short.";
     private static final String SHORT002 = "JSONMapper/ShortMapper/002: JSON->Java. Cannot map JSON class '%s' to Short.";

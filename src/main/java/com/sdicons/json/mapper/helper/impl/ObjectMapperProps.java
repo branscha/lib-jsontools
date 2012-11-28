@@ -15,12 +15,12 @@ import java.lang.reflect.Type;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import com.sdicons.json.mapper.helper.MapperHelper;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 
 public class ObjectMapperProps
-implements SimpleMapperHelper
+implements MapperHelper
 {
     private static final String OBJ001 = "JSONMapper/ObjectMapperProps/001: JSON->Java. ObjectMapper cannot map JSON class '%s' to a JavaBean.";
     private static final String OBJ002 = "JSONMapper/ObjectMapperProps/002: JSON->Java. Could not find a setter for property '%s' in class '%s'.";

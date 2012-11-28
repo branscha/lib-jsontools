@@ -7,13 +7,13 @@ package com.sdicons.json.mapper.helper.impl;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.SimpleMapperHelper;
+import com.sdicons.json.mapper.helper.MapperHelper;
 import com.sdicons.json.model.JSONBoolean;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
 public class BooleanMapper
-implements SimpleMapperHelper
+implements MapperHelper
 {
     private static final String BOOL001 = "JSONMapper/BooleanMapper/001: JSON->Java. Cannot map JSON class '%s' to Java Boolean.";
     private static final String BOOL002 = "JSONMapper/BooleanMapper/002: Java->JSON. Cannot map Java class '%s' to JSONBoolean.";
