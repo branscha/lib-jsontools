@@ -8,7 +8,7 @@ package com.sdicons.json.serializer;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sdicons.json.helper.HelperRepository;
+import com.sdicons.json.helper.ClassHelperRepository;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.helper.SerializerHelper;
@@ -92,7 +92,7 @@ public class JSONSerializer
     // field | property
     public static final String OPTION_OBJECTSERIALIZE = "objectSerializeType";
 
-    private HelperRepository<SerializerHelper> repo = new HelperRepository<SerializerHelper>();
+    private ClassHelperRepository<SerializerHelper> repo = new ClassHelperRepository<SerializerHelper>();
     private Map<String, Object> options = new HashMap<String, Object>();
 
     {
