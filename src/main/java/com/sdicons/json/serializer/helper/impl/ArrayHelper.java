@@ -16,9 +16,11 @@ import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.helper.SerializerHelper;
+
+// TODO Refactor this class. All the primitive array stuff can be handled genernically using the Array class !
 
 public class ArrayHelper
 implements SerializerHelper

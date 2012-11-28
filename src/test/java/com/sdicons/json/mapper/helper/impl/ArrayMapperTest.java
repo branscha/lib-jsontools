@@ -13,6 +13,7 @@ import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.mapper.helper.MapperHelper;
 import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
 public class ArrayMapperTest {
@@ -141,4 +142,21 @@ public class ArrayMapperTest {
             Assert.assertNotNull(backa[i]);
     }
 
+    @Test(expected = MapperException.class)
+    public void badInput() throws MapperException {
+        mapper.addHelper(new IntegerMapper());
+        helper.toJSON(mapper, new A());
+    }
+
+    @Test(expected = MapperException.class)
+    public void badInput2() throws MapperException {
+        mapper.addHelper(new IntegerMapper());
+        helper.toJava(mapper, new JSONString("ai"), int[].class);
+    }
+
+    @Test(expected = MapperException.class)
+    public void badInput3() throws MapperException {
+        mapper.addHelper(new IntegerMapper());
+        helper.toJava(mapper, new JSONArray(), A.class);
+    }
 }

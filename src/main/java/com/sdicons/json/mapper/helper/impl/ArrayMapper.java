@@ -7,11 +7,7 @@ package com.sdicons.json.mapper.helper.impl;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
@@ -26,83 +22,22 @@ import com.sdicons.json.model.JSONValue;
 public class ArrayMapper
 implements MapperHelper
 {
-    private static final String ARR001 = "JSONMapper/ArrayMapper/001: JSON->Java. Don't know how to map JSON class'%s' to a Java array.";
-    private static final String ARR003 = "JSONMapper/ArrayMapper/003: JSON->Java. Class '%s' could not be found.";
-    private static final String ARR004 = "JSONMapper/ArrayMapper/004: JSON->Java. Unknown primitive array type '%s'.";
+    private static final String ARR001 = "JSONMapper/ArrayMapper/001: JSON->Java. Don't know how to map JSON class '%s' to a Java array.";
+    private static final String ARR002 = "JSONMapper/ArrayMapper/002: Java->JSON. Cannot map Java class '%s' to a JSONArray.";
+    private static final String ARR003 = "JSONMapper/ArrayMapper/003: JSON->Java. The requested Java type '%s' is not an array type.";
 
-    public JSONValue toJSON(JSONMapper mapper, Object aObj)
-    throws MapperException
-    {
-    	final Class<?> lClass = aObj.getClass();
+    public JSONValue toJSON(JSONMapper mapper, Object aObj) throws MapperException {
+        final Class<?> lClass = aObj.getClass();
         final String lObjClassName = lClass.getName();
 
-    	 String lComponentName = "unknown";
-         if(lObjClassName.startsWith("[L"))
-             // Array of objects.
-        	 lComponentName = lObjClassName.substring(2, lObjClassName.length() - 1);
-         else
-             // Array of array; Array of primitive types.
-        	 lComponentName = lObjClassName.substring(1);
+        if (!lClass.isArray()) {
+            throw new MapperException(String.format(ARR002, lObjClassName));
+        }
 
         final JSONArray jsonArray = new JSONArray();
-
-        if (isPrimitiveArray(lComponentName)) {
-            char arrType = lComponentName.charAt(0);
-            switch (arrType) {
-                case 'I': {
-                    int[] lArr = (int[]) aObj;
-                    for (int i = 0; i < lArr.length; i++)
-                        jsonArray.getValue().add(mapper.toJSON(lArr[i]));
-                    break;
-                }
-                case 'C': {
-                    char[] lArr = (char[]) aObj;
-                    for (int i = 0; i < lArr.length; i++)
-                        jsonArray.getValue().add(mapper.toJSON(lArr[i]));
-                    break;
-                }
-                case 'Z': {
-                    boolean[] lArr = (boolean[]) aObj;
-                    for (int i = 0; i < lArr.length; i++)
-                        jsonArray.getValue().add(mapper.toJSON(lArr[i]));
-                    break;
-                }
-                case 'S': {
-                    short[] lArr = (short[]) aObj;
-                    for (int i = 0; i < lArr.length; i++)
-                        jsonArray.getValue().add(mapper.toJSON(lArr[i]));
-                    break;
-                }
-                case 'B': {
-                    byte[] lArr = (byte[]) aObj;
-                    for (int i = 0; i < lArr.length; i++)
-                        jsonArray.getValue().add(mapper.toJSON(lArr[i]));
-                    break;
-                }
-                case 'J': {
-                    long[] lArr = (long[]) aObj;
-                    for (int i = 0; i < lArr.length; i++)
-                        jsonArray.getValue().add(mapper.toJSON(lArr[i]));
-                    break;
-                }
-                case 'F': {
-                    float[] lArr = (float[]) aObj;
-                    for (int i = 0; i < lArr.length; i++)
-                        jsonArray.getValue().add(mapper.toJSON(lArr[i]));
-                    break;
-                }
-                case 'D': {
-                    double[] lArr = (double[]) aObj;
-                    for (int i = 0; i < lArr.length; i++)
-                        jsonArray.getValue().add(mapper.toJSON(lArr[i]));
-                    break;
-                }
-            }
-        }
-        else {
-            for(Object el : (Object[]) aObj) {
-                jsonArray.getValue().add(mapper.toJSON(el));
-            }
+        final List<JSONValue> jsonContents = jsonArray.getValue();
+        for(int i = 0; i < Array.getLength(aObj); i++) {
+            jsonContents.add(mapper.toJSON(Array.get(aObj, i)));
         }
         return jsonArray;
     }
@@ -114,187 +49,42 @@ implements MapperHelper
         return null;
     }
 
-    private static final Set<String> pimitiveIndicators = new HashSet<String>(Arrays.asList("I", "Z", "S", "B", "J", "F", "D", "C"));
-    private boolean isPrimitiveArray(String aClassName) {
-        return pimitiveIndicators.contains(aClassName);
-    }
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException {
 
-	public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException {
+        // Check if the JSON object represents a JSONArray
+        if (!aValue.isArray()) {
+            throw new MapperException(String.format(ARR001, aValue.getClass().getName()));
+        }
 
-        if (!aValue.isArray()) throw new MapperException(String.format(ARR001, aValue.getClass().getName()));
+        // Check if the requested Java type is an array type as well.
+        if (!aRequestedClass.isArray()) {
+            throw new MapperException(String.format(ARR003, aRequestedClass.getName()));
+        }
+
+        Class<?> compoType = aRequestedClass.getComponentType();
 
         // First we fetch all array elements.
         JSONArray jsonArray = (JSONArray) aValue;
 
-        final String lObjClassName = aRequestedClass.getName();
-
-        String lArrClassName = "unknown";
-        if (lObjClassName.startsWith("[L"))
-            // Array of objects.
-            lArrClassName = lObjClassName.substring(2, lObjClassName.length() - 1);
-        else
-            // Array of array; Array of primitive types.
-            lArrClassName = lObjClassName.substring(1);
-
-
-        // PART 1. First we convert all the values in the JSON array to the target type.
+        // PART 1. First we convert all the values in the JSON array to the
+        // target type.
         // The resulting values will be collected in the lElements list.
-        ////////////////////////////////////////////////////////////////////////////////
+        // //////////////////////////////////////////////////////////////////////////////
 
-        Class<?> primitiveClass = null;
-        Class<?> nonPrimitveClass = null;
         final List<Object> objArray = new ArrayList<Object>(jsonArray.size());
-
-        if (isPrimitiveArray(lArrClassName)) {
-            char arrType = lArrClassName.charAt(0);
-            switch (arrType) {
-                case 'I':
-                    primitiveClass = Integer.class;
-                    break;
-                case 'C':
-                    primitiveClass = Character.class;
-                    break;
-                case 'Z':
-                    primitiveClass = Boolean.class;
-                    break;
-                case 'S':
-                    primitiveClass = Short.class;
-                    break;
-                case 'B':
-                    primitiveClass = Byte.class;
-                    break;
-                case 'J':
-                    primitiveClass = Long.class;
-                    break;
-                case 'F':
-                    primitiveClass = Float.class;
-                    break;
-                case 'D':
-                    primitiveClass = Double.class;
-                    break;
-            }
-
-            // Fill the primitive array.
-            //
-            for (JSONValue jsonValue : jsonArray.getValue())
-                objArray.add(mapper.toJava(jsonValue, primitiveClass));
-        }
-        else {
-            try {
-                nonPrimitveClass =  Class.forName(lArrClassName);
-            }
-            catch (ClassNotFoundException e) {
-                throw new MapperException(String.format(ARR003, lArrClassName), e);
-            }
-
-            // Fill the non-primitive array
-            //
-            for (JSONValue jsonValue : jsonArray.getValue())
-                 objArray.add(mapper.toJava(jsonValue, nonPrimitveClass));
-        }
+        for (JSONValue jsonValue : jsonArray.getValue())
+            objArray.add(mapper.toJava(jsonValue, compoType));
 
         // PART 2. Now we will convert the object values in lElements into
         // the real Java arrays.
-        ///////////////////////////////////////////////////////////////////
+        // /////////////////////////////////////////////////////////////////
 
         final int lArrSize = objArray.size();
-        if(primitiveClass != null)
-        {
-            char arrType = lArrClassName.charAt(0);
-            switch (arrType) {
-                case 'I': {
-                    int[] lArr = new int[lArrSize];
-                    Iterator<Object> lIter = objArray.iterator();
-                    int i = 0;
-                    while (lIter.hasNext()) {
-                        lArr[i] = ((Integer) lIter.next()).intValue();
-                        i++;
-                    }
-                    return lArr;
-                }
-                case 'C': {
-                    char[] lArr = new char[lArrSize];
-                    Iterator<Object> lIter = objArray.iterator();
-                    int i = 0;
-                    while (lIter.hasNext()) {
-                        lArr[i] = ((Character) lIter.next()).charValue();
-                        i++;
-                    }
-                    return lArr;
-                }
-                case 'Z': {
-                    boolean[] lArr = new boolean[lArrSize];
-                    Iterator<Object> lIter = objArray.iterator();
-                    int i = 0;
-                    while (lIter.hasNext()) {
-                        lArr[i] = ((Boolean) lIter.next()).booleanValue();
-                        i++;
-                    }
-                    return lArr;
-                }
-                case 'S': {
-                    short[] lArr = new short[lArrSize];
-                    Iterator<Object> lIter = objArray.iterator();
-                    int i = 0;
-                    while (lIter.hasNext()) {
-                        lArr[i] = ((Short) lIter.next()).shortValue();
-                        i++;
-                    }
-                    return lArr;
-                }
-                case 'B': {
-                    byte[] lArr = new byte[lArrSize];
-                    Iterator<Object> lIter = objArray.iterator();
-                    int i = 0;
-                    while (lIter.hasNext()) {
-                        lArr[i] = ((Byte) lIter.next()).byteValue();
-                        i++;
-                    }
-                    return lArr;
-                }
-                case 'J': {
-                    long[] lArr = new long[lArrSize];
-                    Iterator<Object> lIter = objArray.iterator();
-                    int i = 0;
-                    while (lIter.hasNext()) {
-                        lArr[i] = ((Long) lIter.next()).longValue();
-                        i++;
-                    }
-                    return lArr;
-                }
-                case 'F': {
-                    float[] lArr = new float[lArrSize];
-                    Iterator<Object> lIter = objArray.iterator();
-                    int i = 0;
-                    while (lIter.hasNext()) {
-                        lArr[i] = ((Float) lIter.next()).floatValue();
-                        i++;
-                    }
-                    return lArr;
-                }
-                case 'D': {
-                    double[] lArr = new double[lArrSize];
-                    Iterator<Object> lIter = objArray.iterator();
-                    int i = 0;
-                    while (lIter.hasNext()) {
-                        lArr[i] = ((Double) lIter.next()).doubleValue();
-                        i++;
-                    }
-                    return lArr;
-                }
-                default:
-                    throw new MapperException(String.format(ARR004, lArrClassName));
-            }
+        Object test = Array.newInstance(compoType, lArrSize);
+        int itest = 0;
+        for (Object el : objArray) {
+            Array.set(test, itest++, el);
         }
-        else {
-            Object resultArray = Array.newInstance(nonPrimitveClass, lArrSize);
-            Iterator<Object> lIter = objArray.iterator();
-            int i = 0;
-            while (lIter.hasNext()) {
-                Array.set(resultArray, i, lIter.next());
-                i++;
-            }
-            return resultArray;
-        }
-	}
+        return test;
+    }
 }
