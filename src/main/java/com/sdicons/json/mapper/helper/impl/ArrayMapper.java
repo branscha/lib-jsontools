@@ -17,6 +17,9 @@ import com.sdicons.json.mapper.helper.SimpleMapperHelper;
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONValue;
 
+/**
+ * Map native arrays from and to JSON arrays.
+ */
 public class ArrayMapper
 implements SimpleMapperHelper
 {
