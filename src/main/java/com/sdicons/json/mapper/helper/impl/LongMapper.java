@@ -20,6 +20,7 @@ implements MapperHelper
     private static final String FP001 = "JSONMapper/LongMapper/001: JSON->Java. Cannot map value '%s'to a Long.";
     private static final String FP002 = "JSONMapper/LongMapper/002: JSON->Java. Cannot map JSON class '%s' to Java Long.";
     private static final String FP003 = "JSONMapper/LongMapper/003: Java->JSON. Cannot map Java class '%s' to JSONInteger.";
+    private static final String FP004 = "JSONMapper/LongMapper/004: JSON->Java. Cannot map to Java class '%s'.";
 
     public Class<?> getHelpedClass()
     {
@@ -28,6 +29,9 @@ implements MapperHelper
 
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
+        if(!aRequestedClass.isAssignableFrom(Long.class))
+            throw new MapperException(String.format(FP004, aRequestedClass.getName()));
+
         if(aValue.isString())
         {
             try

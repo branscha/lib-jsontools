@@ -17,27 +17,27 @@ import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
-public class ByteMapperTest {
+public class IntegerMapperTest {
 
-    private ByteMapper helper;
+    private IntegerMapper helper;
     private JSONMapper mapper;
 
     @Before
     public void init() {
-        helper = new ByteMapper();
+        helper = new IntegerMapper();
         mapper = new JSONMapper(new MapperHelper[]{});
     }
 
     @Test
     public void happy() throws MapperException {
-        Byte by = new Byte("64");
+        Integer by = new Integer(13613);
         JSONValue json  = helper.toJSON(mapper, by);
         Assert.assertNotNull(json);
         Assert.assertTrue(json.isInteger());
         //
-        Object back = helper.toJava(mapper, json, Byte.class);
+        Object back = helper.toJava(mapper, json, Integer.class);
         Assert.assertNotNull(back);
-        Assert.assertThat(back, is(instanceOf(Byte.class)));
+        Assert.assertThat(back, is(instanceOf(Integer.class)));
         Assert.assertEquals(by, back);
     }
 
@@ -51,13 +51,13 @@ public class ByteMapperTest {
     public void badInput2() throws MapperException {
         // Source JSON type cannot be converted.
         JSONValue json = new JSONArray();
-        helper.toJava(mapper, json, Byte.class);
+        helper.toJava(mapper, json, Integer.class);
     }
 
     @Test(expected=MapperException.class)
     public void badInput3() throws MapperException {
         // Target class is not supported by this mapper.
-        JSONValue json = new JSONInteger(new BigInteger("13"));
+        JSONValue json = new JSONInteger(new BigInteger("13967"));
         helper.toJava(mapper, json, String.class);
     }
 
@@ -65,6 +65,6 @@ public class ByteMapperTest {
     public void badInput4() throws MapperException {
         // Source value cannot be converted.
         JSONValue json = new JSONString("aiai");
-        helper.toJava(mapper, json, Byte.class);
+        helper.toJava(mapper, json, Integer.class);
     }
 }

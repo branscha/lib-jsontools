@@ -17,27 +17,27 @@ import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
-public class ByteMapperTest {
+public class ShortMapperTest {
 
-    private ByteMapper helper;
+    private ShortMapper helper;
     private JSONMapper mapper;
 
     @Before
     public void init() {
-        helper = new ByteMapper();
+        helper = new ShortMapper();
         mapper = new JSONMapper(new MapperHelper[]{});
     }
 
     @Test
     public void happy() throws MapperException {
-        Byte by = new Byte("64");
+        Short by = new Short("61");
         JSONValue json  = helper.toJSON(mapper, by);
         Assert.assertNotNull(json);
         Assert.assertTrue(json.isInteger());
         //
-        Object back = helper.toJava(mapper, json, Byte.class);
+        Object back = helper.toJava(mapper, json, Short.class);
         Assert.assertNotNull(back);
-        Assert.assertThat(back, is(instanceOf(Byte.class)));
+        Assert.assertThat(back, is(instanceOf(Short.class)));
         Assert.assertEquals(by, back);
     }
 
@@ -51,7 +51,7 @@ public class ByteMapperTest {
     public void badInput2() throws MapperException {
         // Source JSON type cannot be converted.
         JSONValue json = new JSONArray();
-        helper.toJava(mapper, json, Byte.class);
+        helper.toJava(mapper, json, Short.class);
     }
 
     @Test(expected=MapperException.class)
@@ -65,6 +65,6 @@ public class ByteMapperTest {
     public void badInput4() throws MapperException {
         // Source value cannot be converted.
         JSONValue json = new JSONString("aiai");
-        helper.toJava(mapper, json, Byte.class);
+        helper.toJava(mapper, json, Short.class);
     }
 }

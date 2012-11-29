@@ -15,7 +15,7 @@ import com.sdicons.json.model.JSONBoolean;
 import com.sdicons.json.model.JSONValue;
 
 public class BooleanMapperTest {
-    
+
     private BooleanMapper helper;
     private JSONMapper mapper;
 
@@ -24,9 +24,9 @@ public class BooleanMapperTest {
         helper = new BooleanMapper();
         mapper = new JSONMapper(new MapperHelper[]{});
     }
-    
+
     @Test
-    public void bigIntegerTest() throws MapperException {
+    public void happy() throws MapperException {
         Boolean b = Boolean.TRUE;
         JSONValue json  = helper.toJSON(mapper, b);
         Assert.assertNotNull(json);
@@ -37,24 +37,24 @@ public class BooleanMapperTest {
         Assert.assertThat(back, is(instanceOf(Boolean.class)));
         Assert.assertEquals(b, back);
     }
-    
+
     @Test(expected=MapperException.class)
     public void badInput() throws MapperException {
         // Bad input representation.
         helper.toJSON(mapper, "aiai");
     }
-    
+
     @Test(expected=MapperException.class)
     public void badInput2() throws MapperException {
         // Source JSON type cannot be converted.
         JSONValue json = new JSONArray();
         helper.toJava(mapper, json, Boolean.class);
     }
-    
+
     @Test(expected=MapperException.class)
     public void badInput3() throws MapperException {
         // Target class is not supported by this mapper.
         JSONValue json = new JSONBoolean(true);
         helper.toJava(mapper, json, String.class);
-    }    
+    }
 }
