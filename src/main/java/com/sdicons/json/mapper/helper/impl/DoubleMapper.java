@@ -21,6 +21,7 @@ implements MapperHelper
     private static final String DM001 = "JSONMapper/DoubleMapper/001: JSON->Java. Cannot map value '%s' to a Double.";
     private static final String DM002 = "JSONMapper/DoubleMapper/002: JSON->Java. Cannot map JSON class '%s' to Java Double.";
     private static final String DM003 = "JSONMapper/DoubleMapper/003: JSON->Java. Cannot map Java class '%s' to JSONDecimal.";
+    private static final String DM004 = "JSONMapper/DoubleMapper/004: JSON->Java. Cannot map to Java class '%s'.";
 
     public Class<?> getHelpedClass()
     {
@@ -29,6 +30,9 @@ implements MapperHelper
 
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
+        if(!aRequestedClass.isAssignableFrom(Double.class))
+            throw new MapperException(String.format(DM004, aRequestedClass.getName()));
+        
         if(aValue.isString())
         {
             try

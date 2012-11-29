@@ -15,40 +15,35 @@ import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
-public class BigDecimalMapper
-implements MapperHelper
-{
+public class BigDecimalMapper implements MapperHelper {
     private static final String BDM001 = "JSONMapper/BigDecimalMapper/001: JSON->Java. Cannot map value '%s' to a BigDecimal.";
     private static final String BDM002 = "JSONMapper/BigDecimalMapper/002: JSON->Java. Cannot map JSON class '%s' to Java BigDecimal.";
     private static final String BDM003 = "JSONMapper/BigDecimalMapper/003: Java->JSON. Cannot map Java class '%s' to JSONDecimal.";
-
-    public Class<?> getHelpedClass()
-    {
+    private static final String BDM004 = "JSONMapper/BigDecimalMapper/004: JSON->Java. Cannot convert to Java class '%s'.";
+    
+    public Class<?> getHelpedClass() {
         return BigDecimal.class;
     }
-
-    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
-    {
-        if(aValue.isString())
-        {
-            try
-            {
-                return new BigDecimal(((JSONString)aValue).getValue());
+    
+    public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException {
+        if (!aRequestedClass.isAssignableFrom(BigDecimal.class)) 
+            throw new MapperException(String.format(BDM004, aRequestedClass.getName()));
+        
+        if (aValue.isString()) {
+            try {
+                return new BigDecimal(((JSONString) aValue).getValue());
             }
-            catch (NumberFormatException e)
-            {
-                throw new MapperException(String.format(BDM001, ((JSONString)aValue).getValue()), e);
+            catch (NumberFormatException e) {
+                throw new MapperException(String.format(BDM001, ((JSONString) aValue).getValue()), e);
             }
         }
-        else if(aValue.isDecimal()) return ((JSONDecimal) aValue).getValue();
-        else if(aValue.isInteger()) return new BigDecimal(((JSONInteger)aValue).getValue());
+        else if (aValue.isDecimal()) return ((JSONDecimal) aValue).getValue();
+        else if (aValue.isInteger()) return new BigDecimal(((JSONInteger) aValue).getValue());
         else throw new MapperException(String.format(BDM002, aValue.getClass().getName()));
     }
-
-    public JSONValue toJSON(JSONMapper mapper, Object aPojo)
-    throws MapperException
-    {
-        if(!BigDecimal.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(BDM003, aPojo.getClass().getName()));
+    
+    public JSONValue toJSON(JSONMapper mapper, Object aPojo) throws MapperException {
+        if (!BigDecimal.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(BDM003, aPojo.getClass().getName()));
         return new JSONDecimal(new BigDecimal(aPojo.toString()));
     }
 }
