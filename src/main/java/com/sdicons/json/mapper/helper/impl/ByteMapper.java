@@ -20,6 +20,7 @@ implements MapperHelper
     private static final String BYM001 = "JSONMapper/ByteMapper/001: JSON->Java. Cannot map value '%s' to a Byte.";
     private static final String BYM002 = "JSONMapper/ByteMapper/002: JSON->Java. Cannot map JSON class '%s' to Java Byte.";
     private static final String BYM003 = "JSONMapper/ByteMapper/003: Java->JSON. Cannot map Java class '%s' to JSONInteger.";
+    private static final String BYM004 = "JSONMapper/ByteMapper/004: Java->JSON. Cannot map to Java class '%s'.";
 
     public Class<?> getHelpedClass()
     {
@@ -28,6 +29,9 @@ implements MapperHelper
 
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
+        if(!Byte.class.isAssignableFrom(aRequestedClass))
+            throw new MapperException(String.format(BYM004, aRequestedClass.getName()));
+        
         if(aValue.isString())
         {
             try
