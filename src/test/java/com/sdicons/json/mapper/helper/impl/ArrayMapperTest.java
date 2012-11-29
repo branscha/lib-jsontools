@@ -18,12 +18,15 @@ import com.sdicons.json.model.JSONValue;
 
 public class ArrayMapperTest {
 
-    ArrayMapper helper;
-    JSONMapper mapper;
+    private ArrayMapper helper;
+    private JSONMapper mapper;
 
     @Before
     public void init() {
         helper = new ArrayMapper();
+        // This constructor creates a mapper without any helpers.
+        // We will have to add the helpers ourselves.
+        // In this way we have control over the objects under test.
         mapper = new JSONMapper(new MapperHelper[]{});
     }
 
