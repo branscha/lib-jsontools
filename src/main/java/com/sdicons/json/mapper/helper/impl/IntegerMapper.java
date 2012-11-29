@@ -20,6 +20,7 @@ implements MapperHelper
     private static final String IM001 = "JSONMapper/IntegerMapper/001: JSON->Java. Cannot map value '%s'to an Integer.";
     private static final String IM002 = "JSONMapper/IntegerMapper/002: JSON->Java. Cannot map JSON class '%s' to Java Integer.";
     private static final String IM003 = "JSONMapper/IntegerMapper/003: Java->JSON. Cannot map Java class '%s' to JSONInteger.";
+    private static final String IM004 = "JSONMapper/IntegerMapper/004: JSON->Java. Cannot map to Java class '%s'.";
 
     public Class<?> getHelpedClass()
     {
@@ -28,6 +29,9 @@ implements MapperHelper
 
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
+        if(!aRequestedClass.isAssignableFrom(Integer.class))
+            throw new MapperException(String.format(IM004, aRequestedClass.getName()));
+
         if(aValue.isString())
         {
             try
