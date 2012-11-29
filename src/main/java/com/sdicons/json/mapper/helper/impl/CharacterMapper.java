@@ -24,7 +24,7 @@ extends AbstractMapper
 
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
-        if(!Character.class.isAssignableFrom(aRequestedClass))
+        if(!aRequestedClass.isAssignableFrom(Character.class))
             throw new MapperException(String.format(CHM003, aRequestedClass.getName()));
         
         if (!aValue.isString()) throw new MapperException(String.format(CHM001, aValue.getClass().getName()));

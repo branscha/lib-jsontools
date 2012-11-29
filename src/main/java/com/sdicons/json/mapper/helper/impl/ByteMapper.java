@@ -29,7 +29,7 @@ implements MapperHelper
 
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
-        if(!Byte.class.isAssignableFrom(aRequestedClass))
+        if(!aRequestedClass.isAssignableFrom(Byte.class))
             throw new MapperException(String.format(BYM004, aRequestedClass.getName()));
         
         if(aValue.isString())

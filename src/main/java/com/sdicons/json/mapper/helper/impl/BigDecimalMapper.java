@@ -26,7 +26,9 @@ public class BigDecimalMapper implements MapperHelper {
     }
     
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException {
-        if (!BigDecimal.class.isAssignableFrom(aRequestedClass)) throw new MapperException(String.format(BDM004, aRequestedClass.getName()));
+        if (!aRequestedClass.isAssignableFrom(BigDecimal.class)) 
+            throw new MapperException(String.format(BDM004, aRequestedClass.getName()));
+        
         if (aValue.isString()) {
             try {
                 return new BigDecimal(((JSONString) aValue).getValue());

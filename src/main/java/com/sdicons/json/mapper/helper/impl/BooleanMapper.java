@@ -22,7 +22,7 @@ public class BooleanMapper implements MapperHelper {
     }
     
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException {
-        if (!Boolean.class.isAssignableFrom(aRequestedClass)) throw new MapperException(String.format(BOOL003, aRequestedClass.getName()));
+        if (!aRequestedClass.isAssignableFrom(Boolean.class)) throw new MapperException(String.format(BOOL003, aRequestedClass.getName()));
         
         if (aValue.isString()) {
             return Boolean.parseBoolean(((JSONString) aValue).getValue());

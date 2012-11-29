@@ -25,7 +25,8 @@ public class BigIntegerMapper implements MapperHelper {
     }
     
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException {
-        if (!BigInteger.class.isAssignableFrom(aRequestedClass)) throw new MapperException(String.format(BIM004, aRequestedClass.getName()));
+        if (!aRequestedClass.isAssignableFrom(BigInteger.class)) 
+            throw new MapperException(String.format(BIM004, aRequestedClass.getName()));
         
         if (aValue.isString()) {
             try {

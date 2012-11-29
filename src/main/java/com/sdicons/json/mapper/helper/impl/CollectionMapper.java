@@ -41,9 +41,12 @@ implements ComplexMapperHelper
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRawClass, Type[] aTypes)
     throws MapperException
     {
-        if (!aValue.isArray()) throw new MapperException(String.format(COLL001, aValue.getClass().getName()));
+        if (!aValue.isArray()) 
+            throw new MapperException(String.format(COLL001, aValue.getClass().getName()));
+        
         if (!Collection.class.isAssignableFrom(aRawClass))
             throw new MapperException(String.format(COLL001,aValue.getClass().getName()));
+        
         JSONArray aObject = (JSONArray) aValue;
 
         Collection<Object> lCollObj;
