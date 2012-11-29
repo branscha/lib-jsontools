@@ -70,7 +70,7 @@ implements ComplexMapperHelper
         catch (Exception e)
         {
             // If the requested class cannot create an instance because
-            // it is abstract, or an interface, we use a default fallback class.
+            // it is abstract, or an interface, we use a default fall back class.
             // This solution is far from perfect, but we try to make the mapper
             // as convenient as possible.
             lCollObj = new LinkedList<Object>();
@@ -89,7 +89,6 @@ implements ComplexMapperHelper
             // Generic collection, we can make use of the type of the elements.
             for (JSONValue lVal : aObject.getValue())
             {
-
                 if(aTypes[0] instanceof Class)
                 	lCollObj.add(mapper.toJava(lVal, (Class<?>) aTypes[0]));
                 else

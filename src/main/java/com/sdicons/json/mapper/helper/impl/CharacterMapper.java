@@ -15,6 +15,7 @@ extends AbstractMapper
 {
     private static final String CHM002 = "JSONMapper/CharacterMapper/001: JSON->Java. Cannot map value '%s' to a Character.";
     private static final String CHM001 = "JSONMapper/CharacterMapper/002: JSON->Java. Cannot map JSON class: '%s' to Java Character.";
+    private static final String CHM003 = "JSONMapper/CharacterMapper/003: JSON->Java. Cannot map to Java class '%s'.";
 
     public Class<?> getHelpedClass()
     {
@@ -23,6 +24,9 @@ extends AbstractMapper
 
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
+        if(!Character.class.isAssignableFrom(aRequestedClass))
+            throw new MapperException(String.format(CHM003, aRequestedClass.getName()));
+        
         if (!aValue.isString()) throw new MapperException(String.format(CHM001, aValue.getClass().getName()));
         final String lRepr = ((JSONString) aValue).getValue();
 
