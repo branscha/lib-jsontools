@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -25,6 +26,7 @@ implements ComplexMapperHelper
 {
     private static final String COLL001 = "JSONMapper/CollectionMapper/001: JSON->Java. Cannot map class JSON '%s' to Java Collection.";
     private static final String COLL002 = "JSONMapper/CollectionMapper/002: Java->JSON. Cannot map Java class '%s' to JSONArray.";
+    private static final String COLL003 = "JSONMapper/CollectionMapper/003: JSON->Java. Cannot map to Java class '%s'.";
 
     public Class<?> getHelpedClass()
     {
@@ -45,57 +47,50 @@ implements ComplexMapperHelper
             throw new MapperException(String.format(COLL001, aValue.getClass().getName()));
         
         if (!Collection.class.isAssignableFrom(aRawClass))
-            throw new MapperException(String.format(COLL001,aValue.getClass().getName()));
+            throw new MapperException(String.format(COLL003, aRawClass.getName()));
         
-        JSONArray aObject = (JSONArray) aValue;
-
-        Collection<Object> lCollObj;
-
-        try
-        {
-            // First we try to instantiate the correct
-            // collection class.
-            if(aRawClass.isInterface()){
-            	//we still can't deal with some unusual interfaces.
-            	if(aRawClass==Set.class){
-            		lCollObj = new HashSet<Object>();
-            	}
-            	else if(aRawClass==SortedSet.class){
-            		lCollObj = new TreeSet<Object>();
-            	}
-            	else{
-            		lCollObj = new LinkedList<Object>();
-            	}
-            }else{
-            	lCollObj = (Collection<Object>) aRawClass.newInstance();
-            }
+        JSONArray jsonArray = (JSONArray) aValue;
+        List<JSONValue> jsonColl = jsonArray.getValue();
+        Collection<Object> javaColl;
+        
+        try {
+            // First try to instantiate the raw class.
+            // It can fail for eg. unmodifiable collections.
+            // If it fails we will try other things.
+            //
+            javaColl = (Collection<Object>) aRawClass.newInstance();
         }
-        catch (Exception e)
-        {
-            // If the requested class cannot create an instance because
-            // it is abstract, or an interface, we use a default fall back class.
-            // This solution is far from perfect, but we try to make the mapper
-            // as convenient as possible.
-            lCollObj = new LinkedList<Object>();
+        catch(Exception e){
+            // We could not instantiate the requested class, but 
+            // maybe we can provide a substitute.
+            if(SortedSet.class.isAssignableFrom(aRawClass)) {
+                javaColl = new TreeSet<Object>();
+            }
+            else if(Set.class.isAssignableFrom(aRawClass)){
+                javaColl = new HashSet<Object>(jsonColl.size());
+            }
+            else {
+                javaColl = new LinkedList<Object>();
+            }
         }
 
         if(aTypes.length == 0)
         {
             // Simple, raw collection.
-            for (JSONValue lVal : aObject.getValue())
+            for (JSONValue lVal : jsonArray.getValue())
             {
-                lCollObj.add(mapper.toJava(lVal));
+                javaColl.add(mapper.toJava(lVal));
             }
         }
         else if(aTypes.length == 1)
         {
             // Generic collection, we can make use of the type of the elements.
-            for (JSONValue lVal : aObject.getValue())
+            for (JSONValue lVal : jsonArray.getValue())
             {
                 if(aTypes[0] instanceof Class)
-                	lCollObj.add(mapper.toJava(lVal, (Class<?>) aTypes[0]));
+                	javaColl.add(mapper.toJava(lVal, (Class<?>) aTypes[0]));
                 else
-                	lCollObj.add(mapper.toJava(lVal, (ParameterizedType) aTypes[0]));
+                	javaColl.add(mapper.toJava(lVal, (ParameterizedType) aTypes[0]));
             }
         }
         else
@@ -104,22 +99,26 @@ implements ComplexMapperHelper
             // its contents.
             throw new MapperException(String.format(COLL001, aValue.getClass().getName()));
         }
-
-        return lCollObj;
+        return javaColl;
     }
 
     @SuppressWarnings("unchecked")
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        JSONArray lArray = new JSONArray();
-        if(! Collection.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(COLL002, aPojo.getClass().getName()));
+        if(!Collection.class.isAssignableFrom(aPojo.getClass())) 
+            throw new MapperException(String.format(COLL002, aPojo.getClass().getName()));
 
-        Collection<Object> lColl = (Collection<Object>) aPojo;
-        for(Object lEl : lColl)
+        JSONArray jsonArray = new JSONArray();
+        List<JSONValue> jsonColl = jsonArray.getValue();
+        
+        Collection<Object> objColl = (Collection<Object>) aPojo;
+        for(Object obj : objColl)
         {
-            lArray.getValue().add(mapper.toJSON(lEl));
+            // Convert each element and add it 
+            // to our JSON array.
+            jsonColl.add(mapper.toJSON(obj));
         }
-        return lArray;
+        return jsonArray;
     }
 }
