@@ -18,7 +18,7 @@ import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
 public class DoubleMapperTest {
-    
+
     private DoubleMapper helper;
     private JSONMapper mapper;
 
@@ -27,9 +27,9 @@ public class DoubleMapperTest {
         helper = new DoubleMapper();
         mapper = new JSONMapper(new MapperHelper[]{});
     }
-    
+
     @Test
-    public void bigIntegerTest() throws MapperException {
+    public void happy() throws MapperException {
         Double db = new Double(3.1415d);
         JSONValue json  = helper.toJSON(mapper, db);
         Assert.assertNotNull(json);
@@ -40,27 +40,27 @@ public class DoubleMapperTest {
         Assert.assertThat(back, is(instanceOf(Double.class)));
         Assert.assertEquals(db, back);
     }
-    
+
     @Test(expected=MapperException.class)
     public void badInput() throws MapperException {
         // Bad input representation.
         helper.toJSON(mapper, "aiai");
     }
-    
+
     @Test(expected=MapperException.class)
     public void badInput2() throws MapperException {
         // Source JSON type cannot be converted.
         JSONValue json = new JSONArray();
         helper.toJava(mapper, json, Double.class);
     }
-    
+
     @Test(expected=MapperException.class)
     public void badInput3() throws MapperException {
         // Target class is not supported by this mapper.
         JSONValue json = new JSONDecimal(new BigDecimal("3.1415"));
         helper.toJava(mapper, json, String.class);
     }
-    
+
     @Test(expected=MapperException.class)
     public void badInput4() throws MapperException {
         // Source value cannot be converted.

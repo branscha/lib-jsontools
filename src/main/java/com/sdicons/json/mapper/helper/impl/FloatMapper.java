@@ -21,6 +21,7 @@ implements MapperHelper
     private static final String FM001 = "JSONMapper/FloatMapper/001: JSON->Java. Cannot map value '%s' to a Float.";
     private static final String FM002 = "JSONMapper/FloatMapper/002: JSON->Java. Cannot map JSON class '%s' to Java Float.";
     private static final String FM003 = "JSONMapper/FloatMapper/003: Java->JSON. Cannot map Java class '%s' to JSONDecimal.";
+    private static final String FM004 = "JSONMapper/FloatMapper/004: JSON->Java. Cannot map to Java class '%s'.";
 
     public Class<?> getHelpedClass()
     {
@@ -29,6 +30,9 @@ implements MapperHelper
 
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass) throws MapperException
     {
+        if(!aRequestedClass.isAssignableFrom(Float.class))
+            throw new MapperException(String.format(FM004, aRequestedClass.getName()));
+
         if(aValue.isString())
         {
             try
