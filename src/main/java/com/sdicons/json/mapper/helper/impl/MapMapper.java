@@ -21,7 +21,9 @@ implements ComplexMapperHelper
 {
     private static final String MAP001 = "JSONMapper/MapMapper/001: JSON->Java. Cannot map JSON class '%s' to a Java Map.";
     private static final String MAP002 = "JSONMapper/MapMapper/002: JSON->Java. Currently only supports String keys.";
-    private static final String MAP003 = "JSONMapper/MapMapper/003: Java->JSON. Cannot map Java class '%s' to JSONObject.";
+    private static final String MAP003 = "JSONMapper/MapMapper/003: Java->JSON. Cannot map Java class '%s' to JSONObject that represents a map.";
+    private static final String MAP004 = "JSONMapper/MapMapper/004: JSON->Java. Cannot map to Java class '%s'.";
+
 
     public Class<?> getHelpedClass()
     {
@@ -38,9 +40,16 @@ implements ComplexMapperHelper
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRawClass, Type[] aTypes)
     throws MapperException
     {
-        if (!aValue.isObject()) throw new MapperException(String.format(MAP001, aValue.getClass().getName()));
-        if (!Map.class.isAssignableFrom(aRawClass))
+        if (!aValue.isObject()) 
             throw new MapperException(String.format(MAP001, aValue.getClass().getName()));
+        
+        // The requested class should be derived from Map.
+        // We will try to create the requested class, therefore we will attempt
+        // to return the correct type.
+        //
+        if (!Map.class.isAssignableFrom(aRawClass))
+            throw new MapperException(String.format(MAP004, aRawClass.getName()));
+        
         JSONObject aObject = (JSONObject) aValue;
 
         Map lMapObj;
@@ -54,7 +63,7 @@ implements ComplexMapperHelper
         catch (Exception e)
         {
             // If the requested class cannot create an instance because
-            // it is abstract, or an interface, we use a default fallback class.
+            // it is abstract, or an interface, we use a default fall back class.
             // This solution is far from perfect, but we try to make the mapper
             // as convenient as possible.
             lMapObj = new LinkedHashMap();
@@ -91,7 +100,6 @@ implements ComplexMapperHelper
             // its contents.
             throw new MapperException(String.format(MAP001, aValue.getClass().getName()));
         }
-
         return lMapObj;
     }
 
@@ -100,7 +108,9 @@ implements ComplexMapperHelper
     throws MapperException
     {
         final JSONObject lObj = new JSONObject();
-        if(! Map.class.isAssignableFrom(aPojo.getClass())) throw new MapperException(String.format(MAP003, aPojo.getClass().getName()));
+        
+        if(! Map.class.isAssignableFrom(aPojo.getClass())) 
+            throw new MapperException(String.format(MAP003, aPojo.getClass().getName()));
 
         Map lMap = (Map) aPojo;
         for(Object lKey : lMap.keySet())

@@ -45,7 +45,11 @@ implements ComplexMapperHelper
     {
         if (!aValue.isArray()) 
             throw new MapperException(String.format(COLL001, aValue.getClass().getName()));
-        
+
+        // The requested class should be derived from Collection.
+        // We will try to create the requested class, therefore we will attempt
+        // to return the correct type.
+        //
         if (!Collection.class.isAssignableFrom(aRawClass))
             throw new MapperException(String.format(COLL003, aRawClass.getName()));
         
