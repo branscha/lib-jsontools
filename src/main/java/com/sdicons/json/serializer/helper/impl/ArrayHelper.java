@@ -6,7 +6,6 @@
 package com.sdicons.json.serializer.helper.impl;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -30,86 +29,108 @@ implements SerializerHelper
     private static final String ARR001 = "JSONSerializer/ArrayHelper/001: JSON->Java. Unknown primitive array type '%s'.";
     private static final String ARR002 = "JSONSerializer/ArrayHelper/002: JSON->Java. Exception while trying to parse an array '%s'.";
 
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public void renderValue(Object javaArray, JSONObject jsonContainer, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws SerializerException
     {
-        JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
-        final JSONString lComponentAttr = (JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_CLASS);
-        final String lComponentName = lComponentAttr.getValue();
+       
+        // TODO Check that aObj is in fact an array of something.
+        
+//        JSONSerializer.requireStringAttribute(jsonContainer, JSONSerializer.RNDR_ATTR_CLASS);
+        
+//        final JSONString lComponentAttr = (JSONString) jsonContainer.get(JSONSerializer.RNDR_ATTR_CLASS);
+//        final String lComponentName = lComponentAttr.getValue();
 
-        final JSONArray lElements = new JSONArray();
-        aObjectElement.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, lElements);
+        final JSONArray jsonArray = new JSONArray();
+        jsonContainer.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, jsonArray);
+        
+//        Type compoType = Type.getType(lComponentName);
+//        compoType.
+//        
+        if (javaArray.getClass().getComponentType().isPrimitive()) {
+            // Primitive values should not be remembered in the pool.
+            // Primitives are always atomic.
+            //
+            for (int i = 0; i < Array.getLength(javaArray); i++)
+                jsonArray.getValue().add(aMarshall.marshal(Array.get(javaArray, i)));
+        }
+        else {
+            // We should bring in the pool, an array can contain loops
+            // to other objects and back to itself.
+            //
+            for (int i = 0; i < Array.getLength(javaArray); i++)
+                jsonArray.getValue().add(aMarshall.marshalImpl(Array.get(javaArray, i), aPool));
+        }
 
-        if(isPrimitiveArray(lComponentName))
-        {
-            if("I".equals(lComponentName))
-            {
-                int[] lArr = (int[]) aObj;
-                for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshal(lArr[i]));
-            }
-            if("C".equals(lComponentName))
-            {
-                char[] lArr = (char[]) aObj;
-                for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshal(lArr[i]));
-            }
-            else if("Z".equals(lComponentName))
-            {
-                boolean[] lArr = (boolean[]) aObj;
-                for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshal(lArr[i]));
-            }
-            else if("S".equals(lComponentName))
-            {
-                short[] lArr = (short[]) aObj;
-                for(int i = 0; i < lArr.length; i++)
-                   lElements.getValue().add(aMarshall.marshal(lArr[i]));
-            }
-            else if("B".equals(lComponentName))
-            {
-                byte[] lArr = (byte[]) aObj;
-                for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshal(lArr[i]));;
-            }
-            else if("J".equals(lComponentName))
-            {
-                long[] lArr = (long[]) aObj;
-                for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshal(lArr[i]));
-            }
-            else if("F".equals(lComponentName))
-            {
-                float[] lArr = (float[]) aObj;
-                for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshal(lArr[i]));
-            }
-            else if("D".equals(lComponentName))
-            {
-                double[] lArr = (double[]) aObj;
-                for(int i = 0; i < lArr.length; i++)
-                    lElements.getValue().add(aMarshall.marshal(lArr[i]));;
-            }
-        }
-        else
-        {
-            Iterator<?> lIter = Arrays.asList((Object[]) aObj).iterator();
-            while(lIter.hasNext())
-            {
-                Object lArrEl = lIter.next();
-                lElements.getValue().add(aMarshall.marshalImpl(lArrEl, aPool));
-            }
-        }
+//        if(isPrimitiveArray(lComponentName))
+//        {
+//            if("I".equals(lComponentName))
+//            {
+//                int[] lArr = (int[]) javaArray;
+//                for(int i = 0; i < lArr.length; i++)
+//                    jsonArray.getValue().add(aMarshall.marshal(lArr[i]));
+//            }
+//            if("C".equals(lComponentName))
+//            {
+//                char[] lArr = (char[]) javaArray;
+//                for(int i = 0; i < lArr.length; i++)
+//                    jsonArray.getValue().add(aMarshall.marshal(lArr[i]));
+//            }
+//            else if("Z".equals(lComponentName))
+//            {
+//                boolean[] lArr = (boolean[]) javaArray;
+//                for(int i = 0; i < lArr.length; i++)
+//                    jsonArray.getValue().add(aMarshall.marshal(lArr[i]));
+//            }
+//            else if("S".equals(lComponentName))
+//            {
+//                short[] lArr = (short[]) javaArray;
+//                for(int i = 0; i < lArr.length; i++)
+//                   jsonArray.getValue().add(aMarshall.marshal(lArr[i]));
+//            }
+//            else if("B".equals(lComponentName))
+//            {
+//                byte[] lArr = (byte[]) javaArray;
+//                for(int i = 0; i < lArr.length; i++)
+//                    jsonArray.getValue().add(aMarshall.marshal(lArr[i]));;
+//            }
+//            else if("J".equals(lComponentName))
+//            {
+//                long[] lArr = (long[]) javaArray;
+//                for(int i = 0; i < lArr.length; i++)
+//                    jsonArray.getValue().add(aMarshall.marshal(lArr[i]));
+//            }
+//            else if("F".equals(lComponentName))
+//            {
+//                float[] lArr = (float[]) javaArray;
+//                for(int i = 0; i < lArr.length; i++)
+//                    jsonArray.getValue().add(aMarshall.marshal(lArr[i]));
+//            }
+//            else if("D".equals(lComponentName))
+//            {
+//                double[] lArr = (double[]) javaArray;
+//                for(int i = 0; i < lArr.length; i++)
+//                    jsonArray.getValue().add(aMarshall.marshal(lArr[i]));;
+//            }
+//        }
+//        else
+//        {
+//            Iterator<?> lIter = Arrays.asList((Object[]) javaArray).iterator();
+//            while(lIter.hasNext())
+//            {
+//                Object lArrEl = lIter.next();
+//                jsonArray.getValue().add(aMarshall.marshalImpl(lArrEl, aPool));
+//            }
+//        }
     }
 
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object parseValue(JSONObject jsonObject, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws SerializerException
     {
-        JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
-        final String lArrClassName =((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_CLASS)).getValue();
+        JSONSerializer.requireStringAttribute(jsonObject, JSONSerializer.RNDR_ATTR_CLASS);
+        final String lArrClassName =((JSONString) jsonObject.get(JSONSerializer.RNDR_ATTR_CLASS)).getValue();
 
         // First we fetch all array elements.
-        final JSONArray lValues = ((JSONArray) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE));
+        final JSONArray lValues = ((JSONArray) jsonObject.get(JSONSerializer.RNDR_ATTR_VALUE));
         final List<Object> lElements = new LinkedList<Object>();
         for (JSONValue jsonValue : lValues.getValue())
         {
