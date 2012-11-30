@@ -128,7 +128,7 @@ implements SerializerHelper
         return null;
     }
 
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         // First we have to cope with the special case of "writeReplace" objects.
@@ -142,7 +142,7 @@ implements SerializerHelper
                 if(lWriteReplace != null)
                 {
                     lWriteReplace.setAccessible(true);
-                    final JSONObject lOele = aMarshall.marshalImpl(lWriteReplace.invoke(aObj), aPool);
+                    final JSONObject lOele = serializer.marshalImpl(lWriteReplace.invoke(aObj), aPool);
                     aObjectElement.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, lOele);
                     return;
                 }
@@ -186,7 +186,7 @@ implements SerializerHelper
             {
                 for(Object lVal : lVals)
                 {
-                    lElements.getValue().put("cons-" + i, aMarshall.marshalImpl(lVal, aPool));
+                    lElements.getValue().put("cons-" + i, serializer.marshalImpl(lVal, aPool));
                     i++;
                 }
             }
@@ -201,7 +201,7 @@ implements SerializerHelper
             try
             {
                 lFld.setAccessible(true);
-                lElements.getValue().put(lFld.getName(), aMarshall.marshalImpl(lFld.get(aObj), aPool));
+                lElements.getValue().put(lFld.getName(), serializer.marshalImpl(lFld.get(aObj), aPool));
             }
             catch(SerializerException e)
             {
@@ -214,7 +214,7 @@ implements SerializerHelper
         }
     }
 
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
@@ -250,7 +250,7 @@ implements SerializerHelper
 
                     try
                     {
-                        lAttrs[i] = aMarshall.unmarshalImpl(lSubEl, aPool);
+                        lAttrs[i] = serializer.unmarshalImpl(lSubEl, aPool);
                     }
                     catch(SerializerException e)
                     {
@@ -284,7 +284,7 @@ implements SerializerHelper
                     if (lFld.getName().equals(lPropname))
                     {
                         JSONObject lSubEl = (JSONObject) lProperties.get(lPropname);
-                        final Object lFldValue = aMarshall.unmarshalImpl(lSubEl, aPool);
+                        final Object lFldValue = serializer.unmarshalImpl(lSubEl, aPool);
 
                         try
                         {

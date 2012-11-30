@@ -21,7 +21,7 @@ extends AbstractHelper
     private static final String ENUM002 = "JSONSerializer/EnumHelper/002: JSON->Java. Failed to handle a non-enum class '%s'.";
     private static final String ENUM003 = "JSONSerializer/EnumHelper/003: JSON->Java. The enum class '%s' is found but no matching value for '%s' could be found.";
 
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);

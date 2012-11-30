@@ -27,7 +27,7 @@ extends ClassHelper
      * @param aPool          A pool of objects already encountered. Is used to resolve references.
      * @throws SerializerException
      */
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
+    public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException;
 
     /** Convert JSON representation into an instance of a class.
@@ -38,6 +38,6 @@ extends ClassHelper
      * @return The newly created object.
      * @throws SerializerException
      */
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException;
 }

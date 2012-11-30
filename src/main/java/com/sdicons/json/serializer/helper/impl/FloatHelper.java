@@ -15,7 +15,7 @@ import com.sdicons.json.serializer.JSONSerializer;
 public class FloatHelper
 extends AbstractHelper
 {
-    public Object parseValue(JSONObject aObjectValue, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject aObjectValue, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectValue, JSONSerializer.RNDR_ATTR_VALUE);
