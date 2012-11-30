@@ -265,18 +265,19 @@ public class JSONSerializer
         final Class<?> lClass = aObj.getClass();
         final String lObjClassName = lClass.getName();
 
-        // Construct the component class name.
-        String lComponentClassName = "unknown";
-        if(lObjClassName.startsWith("[L"))
-            // Array of objects.
-            lComponentClassName = lObjClassName.substring(2, lObjClassName.length() - 1);
-        else
-            // Array of array; Array of primitive types.
-            lComponentClassName = lObjClassName.substring(1);
+//        // Construct the component class name.
+//        String lComponentClassName = "unknown";
+//        if(lObjClassName.startsWith("[L"))
+//            // Array of objects.
+//            lComponentClassName = lObjClassName.substring(2, lObjClassName.length() - 1);
+//        else
+//            // Array of array; Array of primitive types.
+//            lComponentClassName = lObjClassName.substring(1);
 
         final JSONObject lArrElement = new JSONObject();
         lArrElement.getValue().put(RNDR_ATTR_KIND, new JSONString(RNDR_ARR));
-        lArrElement.getValue().put(RNDR_ATTR_CLASS, new JSONString(lComponentClassName));
+//        lArrElement.getValue().put(RNDR_ATTR_CLASS, new JSONString(lComponentClassName));
+        lArrElement.getValue().put(RNDR_ATTR_CLASS, new JSONString(lObjClassName));
 
         final ArrayHelper lAh = new ArrayHelper();
         lAh.renderValue(aObj, lArrElement, this, aPool);
