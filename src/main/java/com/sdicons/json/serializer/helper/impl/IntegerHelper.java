@@ -15,7 +15,7 @@ import com.sdicons.json.serializer.JSONSerializer;
 public class IntegerHelper
 extends AbstractHelper
 {
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);

@@ -280,7 +280,7 @@ public class JSONSerializer
         lArrElement.getValue().put(RNDR_ATTR_CLASS, new JSONString(lObjClassName));
 
         final ArrayHelper lAh = new ArrayHelper();
-        lAh.renderValue(aObj, lArrElement, this, aPool);
+        lAh.toJSON(aObj, lArrElement, this, aPool);
 
         return lArrElement;
     }
@@ -294,7 +294,7 @@ public class JSONSerializer
         lObjElement.getValue().put(RNDR_ATTR_CLASS, new JSONString(aObjClassName));
 
         final SerializerHelper lHelper = repo.findHelper(aObjClass);
-        lHelper.renderValue(aObj, lObjElement, this, aPool);
+        lHelper.toJSON(aObj, lObjElement, this, aPool);
         return lObjElement;
     }
 
@@ -383,7 +383,7 @@ public class JSONSerializer
                if (RNDR_ARR.equals(lElementKind))
                {
                    final ArrayHelper lAh = new ArrayHelper();
-                   return lAh.parseValue(aElement, this, aObjectPool);
+                   return lAh.toJava(aElement, this, aObjectPool);
                }
                else if (RNDR_OBJ.equals(lElementKind))
                {
@@ -409,7 +409,7 @@ public class JSONSerializer
 
                        final Class<?> lBeanClass = Class.forName(lBeanClassName);
                        SerializerHelper lHelper = repo.findHelper(lBeanClass);
-                       Object lResult =  lHelper.parseValue(aElement, this, aObjectPool);
+                       Object lResult =  lHelper.toJava(aElement, this, aObjectPool);
                        if(lId != null) aObjectPool.put(lId, lResult);
                        return lResult;
                    }

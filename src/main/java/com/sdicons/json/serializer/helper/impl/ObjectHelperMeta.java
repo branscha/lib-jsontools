@@ -18,16 +18,16 @@ public class ObjectHelperMeta implements SerializerHelper {
     }
 
     @Override
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool) throws SerializerException {
+    public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool) throws SerializerException {
         final String option = (String) aMarshall.getSerializeOption(JSONSerializer.OPTION_OBJECTSERIALIZE, "property");
-        if("property".equalsIgnoreCase(option)) propertySerializer.renderValue(aObj, aObjectElement, aMarshall, aPool);
-        else fieldSerializer.renderValue(aObj, aObjectElement, aMarshall, aPool);
+        if("property".equalsIgnoreCase(option)) propertySerializer.toJSON(aObj, aObjectElement, aMarshall, aPool);
+        else fieldSerializer.toJSON(aObj, aObjectElement, aMarshall, aPool);
     }
 
     @Override
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool) throws SerializerException {
+    public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool) throws SerializerException {
         final String option = (String) aMarshall.getSerializeOption(JSONSerializer.OPTION_OBJECTSERIALIZE, "property");
-        if("property".equalsIgnoreCase(option)) return propertySerializer.parseValue(aObjectElement, aMarshall, aPool);
-        else return fieldSerializer.parseValue(aObjectElement, aMarshall, aPool);
+        if("property".equalsIgnoreCase(option)) return propertySerializer.toJava(aObjectElement, aMarshall, aPool);
+        else return fieldSerializer.toJava(aObjectElement, aMarshall, aPool);
     }
 }

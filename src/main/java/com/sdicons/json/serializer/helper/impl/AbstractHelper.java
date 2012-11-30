@@ -21,7 +21,7 @@ implements SerializerHelper
         return this.getHelpedClass() == ((SerializerHelper) obj).getHelpedClass();
     }
 
-    public void renderValue(Object aObj, JSONObject aParent, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public void toJSON(Object aObj, JSONObject aParent, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         aParent.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString(aObj.toString()));

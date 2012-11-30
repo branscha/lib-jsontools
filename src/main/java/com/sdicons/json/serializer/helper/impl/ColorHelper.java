@@ -16,14 +16,14 @@ import com.sdicons.json.serializer.JSONSerializer;
 public class ColorHelper
 extends AbstractHelper
 {
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
         return Color.decode(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue());
     }
 
-    public void renderValue(Object aObj, JSONObject aParent, JSONSerializer aMarshall, HashMap<Object, Object> aPool) throws SerializerException
+    public void toJSON(Object aObj, JSONObject aParent, JSONSerializer aMarshall, HashMap<Object, Object> aPool) throws SerializerException
     {
         final Color lColor = (Color) aObj;
         aParent.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString("" + lColor.getRGB()));

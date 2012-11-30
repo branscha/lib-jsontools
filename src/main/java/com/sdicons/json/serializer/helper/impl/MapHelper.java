@@ -28,7 +28,7 @@ implements SerializerHelper
     private static final String ATTR_KEY = "key";
     private static final String ATTR_VALUE = "value";
 
-    public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         // We create a new JSON array where we will collect the elements of the
@@ -54,7 +54,7 @@ implements SerializerHelper
     }
 
     @SuppressWarnings("unchecked")
-    public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         final JSONArray lArray = (JSONArray) aObjectElement.getValue().get(JSONSerializer.RNDR_ATTR_VALUE);

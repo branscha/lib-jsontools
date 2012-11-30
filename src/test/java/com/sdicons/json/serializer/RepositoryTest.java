@@ -131,13 +131,13 @@ public class RepositoryTest
         implements SerializerHelper
         {
             @SuppressWarnings("rawtypes")
-            public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
             throws SerializerException
             {
             }
 
             @SuppressWarnings("rawtypes")
-            public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
             throws SerializerException
             {
                 return null;
@@ -154,13 +154,13 @@ public class RepositoryTest
         implements SerializerHelper
         {
             @SuppressWarnings("rawtypes")
-            public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
             throws SerializerException
             {
             }
 
             @SuppressWarnings("rawtypes")
-            public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
             throws SerializerException
             {
                 return null;
@@ -176,13 +176,13 @@ public class RepositoryTest
         implements SerializerHelper
         {
             @SuppressWarnings("rawtypes")
-            public void renderValue(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
             throws SerializerException
             {
             }
 
             @SuppressWarnings("rawtypes")
-            public Object parseValue(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
             throws SerializerException
             {
                 return null;

@@ -29,7 +29,7 @@ implements SerializerHelper
     private static final String ARR001 = "JSONSerializer/ArrayHelper/001: JSON->Java. Type '%s' is not an array type.";
     private static final String ARR002 = "JSONSerializer/ArrayHelper/002: JSON->Java. Exception while trying to parse an array '%s'.";
 
-    public void renderValue(Object javaArray, JSONObject jsonContainer, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public void toJSON(Object javaArray, JSONObject jsonContainer, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         // TODO Check that aObj is in fact an array of something.
@@ -53,7 +53,7 @@ implements SerializerHelper
         }
     }
 
-    public Object parseValue(JSONObject jsonObject, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject jsonObject, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(jsonObject, JSONSerializer.RNDR_ATTR_CLASS);
