@@ -32,7 +32,7 @@ implements SerializerHelper
     private static final String OBJ007 = "JSONSerializer/ObjectHelperProps/007: JSON->Java. IntrospectionException while trying to fill bean '%s'.";
     private static final String OBJ008 = "JSONSerializer/ObjectHelperProps/008: JSON->Java. InvocationTargetException while trying to fill bean '%s'.";
 
-    public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         // We will render the bean properties as the elements of a JSON object.
@@ -53,7 +53,7 @@ implements SerializerHelper
                 if (lReader != null && lWriter != null)
                 {
                     try {
-                        lElements.getValue().put(lPropName, aMarshall.marshalImpl(lReader.invoke(aObj), aPool));
+                        lElements.getValue().put(lPropName, serializer.marshalImpl(lReader.invoke(aObj), aPool));
                     }
                     catch(IllegalAccessException e)
                     {
@@ -72,7 +72,7 @@ implements SerializerHelper
         }
     }
 
-    public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_CLASS);
@@ -100,7 +100,7 @@ implements SerializerHelper
             {
                 // Fetch subelement information.
                 JSONObject lSubEl = (JSONObject) lProperties.get(lPropname);
-                Object lProp = aMarshall.unmarshalImpl(lSubEl, aPool);
+                Object lProp = serializer.unmarshalImpl(lSubEl, aPool);
 
                 // Put the property in the bean.
                 boolean lFoundWriter = false;

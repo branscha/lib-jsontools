@@ -28,11 +28,13 @@ implements SerializerHelper
     //
     private static final String ARR001 = "JSONSerializer/ArrayHelper/001: JSON->Java. Type '%s' is not an array type.";
     private static final String ARR002 = "JSONSerializer/ArrayHelper/002: JSON->Java. Exception while trying to parse an array '%s'.";
+    private static final String ARR003 = "JSONSerializer/ArrayHelper/003: Java->JSON. The input object class '%s' is not an array type.";
 
-    public void toJSON(Object javaArray, JSONObject jsonContainer, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public void toJSON(Object javaArray, JSONObject jsonContainer, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
-        // TODO Check that aObj is in fact an array of something.
+        if(!javaArray.getClass().isArray())
+            throw new SerializerException(String.format(ARR003, javaArray.getClass().getName()));
 
         final JSONArray jsonArray = new JSONArray();
         jsonContainer.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, jsonArray);
@@ -42,18 +44,18 @@ implements SerializerHelper
             // Primitives are always atomic.
             //
             for (int i = 0; i < Array.getLength(javaArray); i++)
-                jsonArray.getValue().add(aMarshall.marshal(Array.get(javaArray, i)));
+                jsonArray.getValue().add(serializer.marshal(Array.get(javaArray, i)));
         }
         else {
             // We should bring in the pool, an array can contain loops
             // to other objects and back to itself.
             //
             for (int i = 0; i < Array.getLength(javaArray); i++)
-                jsonArray.getValue().add(aMarshall.marshalImpl(Array.get(javaArray, i), aPool));
+                jsonArray.getValue().add(serializer.marshalImpl(Array.get(javaArray, i), aPool));
         }
     }
 
-    public Object toJava(JSONObject jsonObject, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject jsonObject, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(jsonObject, JSONSerializer.RNDR_ATTR_CLASS);
@@ -78,7 +80,7 @@ implements SerializerHelper
 
         Object javaArray = Array.newInstance(compoType, jsonValues.size());
         for(int i =0; i < jsonValues.size(); i ++) {
-            Array.set(javaArray, i, aMarshall.unmarshalImpl((JSONObject) jsonValues.get(i), aPool));
+            Array.set(javaArray, i, serializer.unmarshalImpl((JSONObject) jsonValues.get(i), aPool));
         }
         return javaArray;
     }

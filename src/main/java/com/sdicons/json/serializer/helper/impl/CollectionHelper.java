@@ -29,7 +29,7 @@ implements SerializerHelper
     {
     }
 
-    public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         // We create a new JSON array where we will collect the elements of the
@@ -42,12 +42,12 @@ implements SerializerHelper
         final Collection<?> lCollection = (Collection<?>) aObj;
         for(Object lColEl : lCollection)
         {
-            lArray.getValue().add(aMarshall.marshalImpl(lColEl, aPool));
+            lArray.getValue().add(serializer.marshalImpl(lColEl, aPool));
         }
     }
 
     @SuppressWarnings("unchecked")
-    public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         final JSONArray lArray = (JSONArray) aObjectElement.getValue().get(JSONSerializer.RNDR_ATTR_VALUE);
@@ -65,7 +65,7 @@ implements SerializerHelper
 
             for(JSONValue lVal : lArray.getValue())
             {
-                lCollection.add(aMarshall.unmarshalImpl((JSONObject)lVal, aPool));
+                lCollection.add(serializer.unmarshalImpl((JSONObject)lVal, aPool));
             }
             return lCollection;
         }

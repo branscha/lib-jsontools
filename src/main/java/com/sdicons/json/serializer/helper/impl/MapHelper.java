@@ -28,7 +28,7 @@ implements SerializerHelper
     private static final String ATTR_KEY = "key";
     private static final String ATTR_VALUE = "value";
 
-    public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         // We create a new JSON array where we will collect the elements of the
@@ -48,13 +48,13 @@ implements SerializerHelper
             // We create a JSON object to render the key-value pairs.
             final JSONObject lKeyValuePair = new JSONObject();
             lArray.getValue().add(lKeyValuePair);
-            lKeyValuePair.getValue().put(ATTR_KEY, aMarshall.marshalImpl(lKey, aPool));
-            lKeyValuePair.getValue().put(ATTR_VALUE, aMarshall.marshalImpl(lValue, aPool));
+            lKeyValuePair.getValue().put(ATTR_KEY, serializer.marshalImpl(lKey, aPool));
+            lKeyValuePair.getValue().put(ATTR_VALUE, serializer.marshalImpl(lValue, aPool));
         }
     }
 
     @SuppressWarnings("unchecked")
-    public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         final JSONArray lArray = (JSONArray) aObjectElement.getValue().get(JSONSerializer.RNDR_ATTR_VALUE);
@@ -71,8 +71,8 @@ implements SerializerHelper
 
             for(JSONValue lKeyValue : lArray.getValue())
             {
-                Object lKey = aMarshall.unmarshalImpl((JSONObject) ((JSONObject) lKeyValue).getValue().get(ATTR_KEY), aPool);
-                Object lValue = aMarshall.unmarshalImpl((JSONObject) ((JSONObject) lKeyValue).getValue().get(ATTR_VALUE), aPool);
+                Object lKey = serializer.unmarshalImpl((JSONObject) ((JSONObject) lKeyValue).getValue().get(ATTR_KEY), aPool);
+                Object lValue = serializer.unmarshalImpl((JSONObject) ((JSONObject) lKeyValue).getValue().get(ATTR_VALUE), aPool);
                 lMap.put(lKey, lValue);
             }
             return lMap;

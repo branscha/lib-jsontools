@@ -19,7 +19,7 @@ extends AbstractHelper
     //
     private static final String CHAR001 = "JSONSerializer/CharacterHelper/001: JSON->Java. Length of the character value should be > 0";
 
-    public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
