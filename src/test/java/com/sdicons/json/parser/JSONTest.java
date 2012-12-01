@@ -6,11 +6,14 @@
 package com.sdicons.json.parser;
 
 import java.io.StringReader;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
@@ -46,6 +49,30 @@ public class JSONTest
         final JSONParser lParser = new JSONParser(new StringReader(lErrorExample2));
         lParser.nextValue();
         Assert.fail("An exception should be thrown when an error is found.");
+    }
+
+    @Test(expected=ParserException.class)
+    public void bug18118() throws ParserException {
+        final String example = "{\"lots\":[ [\"01\",\"JDX004.CSPS.JDX4D002.JDX001.D110101\"]]}\r\n" +
+        		"{\"rows\":[ [\"01000000C3\"],[\"01000000C4\"],[\"01000000C5\"],[\"01000000C6\"],[\"01000000C7\"],[\"01000000C8\"],[\"01000000C9\"],[\"01000000CA\"],[\"01000000CB\"],[\"01000000CC\"],[\"01000\"]";
+
+        final JSONParser lParser = new JSONParser(new StringReader(example));
+        lParser.nextValue();
+        // This should fail ...
+        lParser.nextValue();
+    }
+
+    @Test(expected=ParserException.class)
+    public void bug17351() throws ParserException {
+        final String example = "{\"key\":\"M";
+        final JSONParser lParser = new JSONParser(new StringReader(example));
+        lParser.nextValue();
+    }
+
+    @Test
+    public void bug016634() throws ParserException  {
+        JSONObject parsed = (JSONObject) new JSONParser(new StringReader("{\"bigNumber\":-4.569565E+7}")).nextValue();
+        Assert.assertEquals(new BigDecimal(-4.569565E+7), new BigDecimal((BigInteger)parsed.get("bigNumber").strip()));
     }
 
 }

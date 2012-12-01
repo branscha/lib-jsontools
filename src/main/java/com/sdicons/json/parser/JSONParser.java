@@ -142,18 +142,39 @@ public class JSONParser
                 parsed.append("[");
                 return parseJsonList(parsed);
             case StreamTokenizer.TT_NUMBER:
+                // We must take care of exponential notation as well
+                //
+                double num = st.nval;
+                int exp = 0;
+                st.ordinaryChars('\0', ' ');
+                st.wordChars('+', '+');
+                st.nextToken();
+                st.whitespaceChars('\0', ' ');
+                st.ordinaryChars('+', '+');
+                if (st.ttype == StreamTokenizer.TT_WORD && Character.toUpperCase(st.sval.charAt(0)) == 'E') {
+                    String sss = st.sval;
+                    try {
+                        if (sss.charAt(1) == '+')
+                            exp = Integer.parseInt(sss.substring(2));
+                        else
+                            exp = Integer.parseInt(sss.substring(1));
+                    }
+                    catch (NumberFormatException e) {
+                        st.pushBack();
+                    }
+                }
+                else if (st.ttype < 0 || st.ttype > ' ') st.pushBack();
+                num =  num*Math.pow(10,exp);
                 // Plain JSON Number.
                 //
-                parsed.append(st.nval);
-                BigDecimal number = new BigDecimal(st.nval);
+                parsed.append(num);
+                BigDecimal number = new BigDecimal(num);
                 JSONNumber resultNumber = null;
-                try
-                {
+                try {
                     BigInteger integer = number.toBigIntegerExact();
                     resultNumber = new JSONInteger(integer);
                 }
-                catch(ArithmeticException e)
-                {
+                catch (ArithmeticException e) {
                     resultNumber = new JSONDecimal(number);
                 }
                 resultNumber.setLineCol(st.lineno(), 0);
