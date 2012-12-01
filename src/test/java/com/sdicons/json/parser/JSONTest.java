@@ -83,7 +83,7 @@ public class JSONTest
         parsed = new JSONParser(new StringReader("[3.2341E5, 3.2342E+5, 32343000E-2]")).nextValue();
         Assert.assertThat(parsed, is(instanceOf(JSONArray.class)));
         Assert.assertThat(parsed.strip(), is(instanceOf(List.class)));
-        Assert.assertArrayEquals(((List) parsed.strip()).toArray(), new Object[]{new BigInteger("323410"), new BigInteger("323420"), new BigInteger("323430")});
+        Assert.assertArrayEquals(((List<?>) parsed.strip()).toArray(), new Object[]{new BigInteger("323410"), new BigInteger("323420"), new BigInteger("323430")});
     }
 }
 

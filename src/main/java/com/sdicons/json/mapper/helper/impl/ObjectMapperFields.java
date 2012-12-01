@@ -196,13 +196,9 @@ implements ClassMapper
                         Object lFldValue;
                         final Type lGenType = lFld.getGenericType();
                         if(lGenType instanceof ParameterizedType)
-                        {
                             lFldValue = mapper.toJava(lSubEl, (ParameterizedType) lGenType);
-                        }
                         else
-                        {
                             lFldValue = mapper.toJava(lSubEl, lFld.getType());
-                        }
 
                         try
                         {

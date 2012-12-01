@@ -40,16 +40,16 @@ implements ComplexMapperHelper
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRawClass, Type[] aTypes)
     throws MapperException
     {
-        if (!aValue.isObject()) 
+        if (!aValue.isObject())
             throw new MapperException(String.format(MAP001, aValue.getClass().getName()));
-        
+
         // The requested class should be derived from Map.
         // We will try to create the requested class, therefore we will attempt
         // to return the correct type.
         //
         if (!Map.class.isAssignableFrom(aRawClass))
             throw new MapperException(String.format(MAP004, aRawClass.getName()));
-        
+
         JSONObject aObject = (JSONObject) aValue;
 
         Map lMapObj;
@@ -89,8 +89,11 @@ implements ComplexMapperHelper
                     JSONValue lVal = aObject.getValue().get(lKey);
                     if(aTypes[1] instanceof Class)
                     	lMapObj.put(lKey, mapper.toJava(lVal, (Class) aTypes[1]));
-                    else
+                    else if(aTypes[1] instanceof ParameterizedType)
                     	lMapObj.put(lKey, mapper.toJava(lVal, (ParameterizedType) aTypes[1]));
+                    else
+                        lMapObj.put(lKey, mapper.toJava(lVal));
+
                 }
             }
         }
@@ -108,8 +111,8 @@ implements ComplexMapperHelper
     throws MapperException
     {
         final JSONObject lObj = new JSONObject();
-        
-        if(! Map.class.isAssignableFrom(aPojo.getClass())) 
+
+        if(! Map.class.isAssignableFrom(aPojo.getClass()))
             throw new MapperException(String.format(MAP003, aPojo.getClass().getName()));
 
         Map lMap = (Map) aPojo;

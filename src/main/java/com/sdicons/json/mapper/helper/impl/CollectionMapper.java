@@ -43,7 +43,7 @@ implements ComplexMapperHelper
     public Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRawClass, Type[] aTypes)
     throws MapperException
     {
-        if (!aValue.isArray()) 
+        if (!aValue.isArray())
             throw new MapperException(String.format(COLL001, aValue.getClass().getName()));
 
         // The requested class should be derived from Collection.
@@ -52,11 +52,11 @@ implements ComplexMapperHelper
         //
         if (!Collection.class.isAssignableFrom(aRawClass))
             throw new MapperException(String.format(COLL003, aRawClass.getName()));
-        
+
         JSONArray jsonArray = (JSONArray) aValue;
         List<JSONValue> jsonColl = jsonArray.getValue();
         Collection<Object> javaColl;
-        
+
         try {
             // First try to instantiate the raw class.
             // It can fail for eg. unmodifiable collections.
@@ -65,7 +65,7 @@ implements ComplexMapperHelper
             javaColl = (Collection<Object>) aRawClass.newInstance();
         }
         catch(Exception e){
-            // We could not instantiate the requested class, but 
+            // We could not instantiate the requested class, but
             // maybe we can provide a substitute.
             if(SortedSet.class.isAssignableFrom(aRawClass)) {
                 javaColl = new TreeSet<Object>();
@@ -93,8 +93,10 @@ implements ComplexMapperHelper
             {
                 if(aTypes[0] instanceof Class)
                 	javaColl.add(mapper.toJava(lVal, (Class<?>) aTypes[0]));
-                else
+                else if(aTypes[0] instanceof ParameterizedType)
                 	javaColl.add(mapper.toJava(lVal, (ParameterizedType) aTypes[0]));
+                else
+                    javaColl.add(mapper.toJava(lVal));
             }
         }
         else
@@ -110,16 +112,16 @@ implements ComplexMapperHelper
     public JSONValue toJSON(JSONMapper mapper, Object aPojo)
     throws MapperException
     {
-        if(!Collection.class.isAssignableFrom(aPojo.getClass())) 
+        if(!Collection.class.isAssignableFrom(aPojo.getClass()))
             throw new MapperException(String.format(COLL002, aPojo.getClass().getName()));
 
         JSONArray jsonArray = new JSONArray();
         List<JSONValue> jsonColl = jsonArray.getValue();
-        
+
         Collection<Object> objColl = (Collection<Object>) aPojo;
         for(Object obj : objColl)
         {
-            // Convert each element and add it 
+            // Convert each element and add it
             // to our JSON array.
             jsonColl.add(mapper.toJSON(obj));
         }
