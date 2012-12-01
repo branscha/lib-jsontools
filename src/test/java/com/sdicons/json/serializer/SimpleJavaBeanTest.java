@@ -12,19 +12,19 @@ import org.junit.Test;
 
 public class SimpleJavaBeanTest
 {
-    JSONSerializer marshall;
+    JSONSerializer serializer;
 
     @Before
     public void setUp()
     throws Exception
     {
-        marshall = new JSONSerializer();
+        serializer = new JSONSerializer();
    }
 
     @Test
     public void testNull() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(null));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(null));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Assert.assertTrue(lResult.getReference() == null);
     }
@@ -38,8 +38,8 @@ public class SimpleJavaBeanTest
         lTest1.setInt1(new Integer(0));
         lTest1.setInt2(new Integer(0));
 
-        Assert.assertNotNull(marshall.marshal(lTest1).render(true));
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lTest1));
+        Assert.assertNotNull(serializer.marshal(lTest1).render(true));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(lTest1));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         MyBean lTest2 = (MyBean) lResult.getReference();
 
@@ -64,7 +64,7 @@ public class SimpleJavaBeanTest
         lTest2.setId(200);
         lTest2.setName("S.D.I.-Consulting");
 
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(new MyBean[] { lTest1, lTest2 }));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new MyBean[] { lTest1, lTest2 }));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         MyBean[] lArr = (MyBean[]) lResult.getReference();
 
@@ -89,7 +89,7 @@ public class SimpleJavaBeanTest
         lTest2.setId(200);
         lTest2.setName("S.D.I.-Consulting");
 
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(new MyBean[][] { { lTest1 }, { lTest2 } }));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new MyBean[][] { { lTest1 }, { lTest2 } }));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         MyBean[][] lArr = (MyBean[][]) lResult.getReference();
 

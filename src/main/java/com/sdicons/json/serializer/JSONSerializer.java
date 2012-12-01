@@ -101,6 +101,8 @@ public class JSONSerializer
     private ClassHelperRepository<ClassSerializer> repo = new ClassHelperRepository<ClassSerializer>();
     private Map<String, Object> options = new HashMap<String, Object>();
 
+
+    public JSONSerializer()
     {
         repo.addHelper(new ObjectSerializerMeta());
         repo.addHelper(new StringSerializer());
@@ -120,6 +122,12 @@ public class JSONSerializer
         repo.addHelper(new ColorSerializer());
         repo.addHelper(new FontSerializer());
         repo.addHelper(new EnumSerializer());
+    }
+
+    public JSONSerializer(ClassSerializer ... serializers){
+        for(ClassSerializer serializer : serializers) {
+            repo.addHelper(serializer);
+        }
     }
 
     /**
