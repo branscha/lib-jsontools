@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.MapperHelper;
+import com.sdicons.json.mapper.helper.ClassMapper;
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONDecimal;
 import com.sdicons.json.model.JSONString;
@@ -28,7 +28,7 @@ public class BigDecimalMapperTest {
         // This constructor creates a mapper without any helpers.
         // We will have to add the helpers ourselves.
         // In this way we have control over the objects under test.
-        mapper = new JSONMapper(new MapperHelper[]{});
+        mapper = new JSONMapper(new ClassMapper[]{});
     }
     
     @Test

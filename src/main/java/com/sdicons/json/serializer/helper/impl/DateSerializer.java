@@ -11,30 +11,25 @@ import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
-import com.sdicons.json.serializer.helper.SerializerHelper;
+import com.sdicons.json.serializer.SerializerException;
+import com.sdicons.json.serializer.helper.ClassSerializer;
 
-public class DateHelper
-implements SerializerHelper
+public class DateSerializer
+implements ClassSerializer
 {
 
     // Error messages.
     //
-    private static final String DAT001 = "JSONSerializer/DateHelper/001: JSON->Java. Could not parse the value '%s' to a Date.";
+    private static final String DAT001 = "JSONSerializer/DateSerializer/001: JSON->Java. Could not parse the value '%s' to a Date.";
 
-    private SimpleDateFormat dateFormat;
-
-    public DateHelper()
-    {
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS z");
-        dateFormat.setLenient(false);
-    }
+    private SimpleDateFormat df = new SimpleDateFormat(JSONSerializer.DATESERIALIZE_DEFAULT);
 
     public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
-        aObjectElement.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString(dateFormat.format((Date) aObj)));
+        initFormat(serializer);
+        aObjectElement.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString(df.format((Date) aObj)));
     }
 
     public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
@@ -43,9 +38,11 @@ implements SerializerHelper
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
         String dateRepr = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue().trim();
 
+        initFormat(serializer);
+
         try
         {
-            return dateFormat.parse(dateRepr);
+            return df.parse(dateRepr);
         }
         catch(Exception e)
         {
@@ -56,5 +53,14 @@ implements SerializerHelper
     public Class<?> getHelpedClass()
     {
         return Date.class;
+    }
+
+    private void initFormat(JSONSerializer  serializer) {
+        if(serializer.hasSerializeOption(JSONSerializer.DATESERIALIZE_DEFAULT)) {
+            String format = (String) serializer.getSerializeOption(JSONSerializer.OPT_DATESERIALIZE, JSONSerializer.DATESERIALIZE_DEFAULT);
+            if(!df.toPattern().equals(format)) {
+                df = new SimpleDateFormat(format);
+            }
+        }
     }
 }

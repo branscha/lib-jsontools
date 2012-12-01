@@ -12,7 +12,7 @@ import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.model.JSONValue;
 
 public interface ComplexMapperHelper
-extends MapperHelper
+extends ClassMapper
 {
     Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass, Type[] aTypes)
     throws MapperException;

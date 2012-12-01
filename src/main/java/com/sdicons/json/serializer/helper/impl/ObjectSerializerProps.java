@@ -14,23 +14,23 @@ import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
-import com.sdicons.json.serializer.helper.SerializerHelper;
+import com.sdicons.json.serializer.SerializerException;
+import com.sdicons.json.serializer.helper.ClassSerializer;
 
-public class ObjectHelperProps
-implements SerializerHelper
+public class ObjectSerializerProps
+implements ClassSerializer
 {
     // Error messages.
     //
-    private static final String OBJ001 = "JSONSerializer/ObjectHelperProps/001: Java->JSON. Error while introspecting JavaBean of class '%s'.";
-    private static final String OBJ002 = "JSONSerializer/ObjectHelperProps/002: Java->JSON. Illegal access while trying to fetch a bean property '%s' of class '%s'.";
-    private static final String OBJ003 = "JSONSerializer/ObjectHelperProps/003: JSON->Java. Could not find a setter for property '%s' in class '%s'.";
-    private static final String OBJ004 = "JSONSerializer/ObjectHelperProps/004: JSON->Java. Could not find JavaBean class '%s'.";
-    private static final String OBJ005 = "JSONSerializer/ObjectHelperProps/005: JSON->Java. IllegalAccessException while trying to instantiate bean '%s'.";
-    private static final String OBJ006 = "JSONSerializer/ObjectHelperProps/006: JSON->Java. InstantiationException while trying to instantiate bean '%s'.";
-    private static final String OBJ007 = "JSONSerializer/ObjectHelperProps/007: JSON->Java. IntrospectionException while trying to fill bean '%s'.";
-    private static final String OBJ008 = "JSONSerializer/ObjectHelperProps/008: JSON->Java. InvocationTargetException while trying to fill bean '%s'.";
+    private static final String OBJ001 = "JSONSerializer/ObjectSerializerProps/001: Java->JSON. Error while introspecting JavaBean of class '%s'.";
+    private static final String OBJ002 = "JSONSerializer/ObjectSerializerProps/002: Java->JSON. Illegal access while trying to fetch a bean property '%s' of class '%s'.";
+    private static final String OBJ003 = "JSONSerializer/ObjectSerializerProps/003: JSON->Java. Could not find a setter for property '%s' in class '%s'.";
+    private static final String OBJ004 = "JSONSerializer/ObjectSerializerProps/004: JSON->Java. Could not find JavaBean class '%s'.";
+    private static final String OBJ005 = "JSONSerializer/ObjectSerializerProps/005: JSON->Java. IllegalAccessException while trying to instantiate bean '%s'.";
+    private static final String OBJ006 = "JSONSerializer/ObjectSerializerProps/006: JSON->Java. InstantiationException while trying to instantiate bean '%s'.";
+    private static final String OBJ007 = "JSONSerializer/ObjectSerializerProps/007: JSON->Java. IntrospectionException while trying to fill bean '%s'.";
+    private static final String OBJ008 = "JSONSerializer/ObjectSerializerProps/008: JSON->Java. InvocationTargetException while trying to fill bean '%s'.";
 
     public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException

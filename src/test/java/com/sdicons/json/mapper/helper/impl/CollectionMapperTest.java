@@ -21,7 +21,7 @@ import org.junit.Test;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.MapperHelper;
+import com.sdicons.json.mapper.helper.ClassMapper;
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONValue;
@@ -33,7 +33,7 @@ public class CollectionMapperTest {
     @Before
     public void init() {
         helper = new CollectionMapper();
-        mapper = new JSONMapper(new MapperHelper[]{});
+        mapper = new JSONMapper(new ClassMapper[]{});
     }
     
     @Test

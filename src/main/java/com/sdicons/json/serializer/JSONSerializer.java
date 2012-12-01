@@ -11,26 +11,26 @@ import java.util.Map;
 import com.sdicons.json.helper.ClassHelperRepository;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.helper.SerializerHelper;
-import com.sdicons.json.serializer.helper.impl.ArrayHelper;
-import com.sdicons.json.serializer.helper.impl.BigDecimalHelper;
-import com.sdicons.json.serializer.helper.impl.BigIntegerHelper;
-import com.sdicons.json.serializer.helper.impl.BooleanHelper;
-import com.sdicons.json.serializer.helper.impl.ByteHelper;
-import com.sdicons.json.serializer.helper.impl.CharacterHelper;
-import com.sdicons.json.serializer.helper.impl.CollectionHelper;
-import com.sdicons.json.serializer.helper.impl.ColorHelper;
-import com.sdicons.json.serializer.helper.impl.DateHelper;
-import com.sdicons.json.serializer.helper.impl.DoubleHelper;
-import com.sdicons.json.serializer.helper.impl.EnumHelper;
-import com.sdicons.json.serializer.helper.impl.FloatHelper;
-import com.sdicons.json.serializer.helper.impl.FontHelper;
-import com.sdicons.json.serializer.helper.impl.IntegerHelper;
-import com.sdicons.json.serializer.helper.impl.LongHelper;
-import com.sdicons.json.serializer.helper.impl.MapHelper;
-import com.sdicons.json.serializer.helper.impl.ObjectHelperMeta;
-import com.sdicons.json.serializer.helper.impl.ShortHelper;
-import com.sdicons.json.serializer.helper.impl.StringHelper;
+import com.sdicons.json.serializer.helper.ClassSerializer;
+import com.sdicons.json.serializer.helper.impl.ArraySerializer;
+import com.sdicons.json.serializer.helper.impl.BigDecimalSerializer;
+import com.sdicons.json.serializer.helper.impl.BigIntegerSerializer;
+import com.sdicons.json.serializer.helper.impl.BooleanSerializer;
+import com.sdicons.json.serializer.helper.impl.ByteSerializer;
+import com.sdicons.json.serializer.helper.impl.CharacterSerializer;
+import com.sdicons.json.serializer.helper.impl.CollectionSerializer;
+import com.sdicons.json.serializer.helper.impl.ColorSerializer;
+import com.sdicons.json.serializer.helper.impl.DateSerializer;
+import com.sdicons.json.serializer.helper.impl.DoubleSerializer;
+import com.sdicons.json.serializer.helper.impl.EnumSerializer;
+import com.sdicons.json.serializer.helper.impl.FloatSerializer;
+import com.sdicons.json.serializer.helper.impl.FontSerializer;
+import com.sdicons.json.serializer.helper.impl.IntegerSerializer;
+import com.sdicons.json.serializer.helper.impl.LongSerializer;
+import com.sdicons.json.serializer.helper.impl.MapSerializer;
+import com.sdicons.json.serializer.helper.impl.ObjectSerializerMeta;
+import com.sdicons.json.serializer.helper.impl.ShortSerializer;
+import com.sdicons.json.serializer.helper.impl.StringSerializer;
 
 /**
  * Convert a JSON representation to/from a
@@ -59,6 +59,15 @@ public class JSONSerializer
     private static final String SER007 = "JSONSerializer/007: Error while unmarshalling primitive type '%s' with value '%s'.";
     private static final String SER008 = "JSONSerializer/008: Attribute '%s' value is missing for object at line %d, col %d.";
     private static final String SER009 = "JSONSerializer/009: Attribute '%s' is not a string value for object at line %d, col %d.";
+
+    // Options.
+    // The OBJMAPPING option indicates whether property mapping of field mapping will be used.
+    public static final String OPT_OBJSERIALIZE = "com.sdicons.json.serializer.helper.impl.ObjectHelperMeta";
+    public static final String OBJSERIALIZE_FIELD = "field";
+    public static final String OBJSERIALIZE_PROPERTY = "property";
+    // The Date format the JSON text.
+    public static final String OPT_DATESERIALIZE = "com.sdicons.json.serializer.helper.impl.DateHelper";
+    public static final String DATESERIALIZE_DEFAULT = "yyyy-MM-dd HH:mm:ss,SSS z";
 
     private static final String IDPREFIX = "id";
     private long idCounter = 0;
@@ -89,31 +98,36 @@ public class JSONSerializer
     public static final String ERR_MISSINGATTRVAL = "Attribute value is missing: ";
     public static final String ERR_MISSINGSTRING = "Attribute is not a string value: ";
 
-    // field | property
-    public static final String OPTION_OBJECTSERIALIZE = "objectSerializeType";
-
-    private ClassHelperRepository<SerializerHelper> repo = new ClassHelperRepository<SerializerHelper>();
+    private ClassHelperRepository<ClassSerializer> repo = new ClassHelperRepository<ClassSerializer>();
     private Map<String, Object> options = new HashMap<String, Object>();
 
+
+    public JSONSerializer()
     {
-        repo.addHelper(new ObjectHelperMeta());
-        repo.addHelper(new StringHelper());
-        repo.addHelper(new BooleanHelper());
-        repo.addHelper(new ByteHelper());
-        repo.addHelper(new ShortHelper());
-        repo.addHelper(new IntegerHelper());
-        repo.addHelper(new LongHelper());
-        repo.addHelper(new FloatHelper());
-        repo.addHelper(new DoubleHelper());
-        repo.addHelper(new BigIntegerHelper());
-        repo.addHelper(new BigDecimalHelper());
-        repo.addHelper(new CharacterHelper());
-        repo.addHelper(new DateHelper());
-        repo.addHelper(new CollectionHelper());
-        repo.addHelper(new MapHelper());
-        repo.addHelper(new ColorHelper());
-        repo.addHelper(new FontHelper());
-        repo.addHelper(new EnumHelper());
+        repo.addHelper(new ObjectSerializerMeta());
+        repo.addHelper(new StringSerializer());
+        repo.addHelper(new BooleanSerializer());
+        repo.addHelper(new ByteSerializer());
+        repo.addHelper(new ShortSerializer());
+        repo.addHelper(new IntegerSerializer());
+        repo.addHelper(new LongSerializer());
+        repo.addHelper(new FloatSerializer());
+        repo.addHelper(new DoubleSerializer());
+        repo.addHelper(new BigIntegerSerializer());
+        repo.addHelper(new BigDecimalSerializer());
+        repo.addHelper(new CharacterSerializer());
+        repo.addHelper(new DateSerializer());
+        repo.addHelper(new CollectionSerializer());
+        repo.addHelper(new MapSerializer());
+        repo.addHelper(new ColorSerializer());
+        repo.addHelper(new FontSerializer());
+        repo.addHelper(new EnumSerializer());
+    }
+
+    public JSONSerializer(ClassSerializer ... serializers){
+        for(ClassSerializer serializer : serializers) {
+            repo.addHelper(serializer);
+        }
     }
 
     /**
@@ -259,7 +273,7 @@ public class JSONSerializer
         }
     }
 
-    private ArrayHelper arrayHelper = new ArrayHelper();
+    private ArraySerializer arrayHelper = new ArraySerializer();
 
     private JSONObject marshalImplArray(Object aObj, HashMap<Object, Object> aPool)
     throws SerializerException
@@ -281,7 +295,7 @@ public class JSONSerializer
         lObjElement.getValue().put(RNDR_ATTR_ID, new JSONString(aObjId));
         lObjElement.getValue().put(RNDR_ATTR_CLASS, new JSONString(aObjClassName));
 
-        final SerializerHelper lHelper = repo.findHelper(aObjClass);
+        final ClassSerializer lHelper = repo.findHelper(aObjClass);
         lHelper.toJSON(aObj, lObjElement, this, aPool);
         return lObjElement;
     }
@@ -370,7 +384,7 @@ public class JSONSerializer
            {
                if (RNDR_ARR.equals(lElementKind))
                {
-                   final ArrayHelper lAh = new ArrayHelper();
+                   final ArraySerializer lAh = new ArraySerializer();
                    return lAh.toJava(aElement, this, aObjectPool);
                }
                else if (RNDR_OBJ.equals(lElementKind))
@@ -396,7 +410,7 @@ public class JSONSerializer
                        }
 
                        final Class<?> lBeanClass = Class.forName(lBeanClassName);
-                       SerializerHelper lHelper = repo.findHelper(lBeanClass);
+                       ClassSerializer lHelper = repo.findHelper(lBeanClass);
                        Object lResult =  lHelper.toJava(aElement, this, aObjectPool);
                        if(lId != null) aObjectPool.put(lId, lResult);
                        return lResult;
@@ -468,7 +482,7 @@ public class JSONSerializer
      *
      * @param aHelper the custom helper you want to add to the serializer.
      */
-    public void addHelper(SerializerHelper aHelper)
+    public void addHelper(ClassSerializer aHelper)
     {
         repo.addHelper(aHelper);
     }
@@ -482,7 +496,7 @@ public class JSONSerializer
      */
     public void usePojoAccess()
     {
-        setSerializeOption(OPTION_OBJECTSERIALIZE, "field");
+        setSerializeOption(OPT_OBJSERIALIZE, OBJSERIALIZE_FIELD);
     }
 
     /**
@@ -492,7 +506,7 @@ public class JSONSerializer
      */
     public void useJavaBeanAccess()
     {
-        setSerializeOption(OPTION_OBJECTSERIALIZE, "property");
+        setSerializeOption(OPT_OBJSERIALIZE, OBJSERIALIZE_PROPERTY);
     }
 
     public void setSerializeOption(String key, Object value) {

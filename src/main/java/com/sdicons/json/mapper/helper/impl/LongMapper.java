@@ -9,13 +9,13 @@ import java.math.BigInteger;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.MapperHelper;
+import com.sdicons.json.mapper.helper.ClassMapper;
 import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
 public class LongMapper
-implements MapperHelper
+implements ClassMapper
 {
     private static final String FP001 = "JSONMapper/LongMapper/001: JSON->Java. Cannot map value '%s'to a Long.";
     private static final String FP002 = "JSONMapper/LongMapper/002: JSON->Java. Cannot map JSON class '%s' to Java Long.";

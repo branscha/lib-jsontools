@@ -9,21 +9,27 @@ import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
+import com.sdicons.json.serializer.SerializerException;
 
-public class LongHelper
-extends AbstractHelper
+public class CharacterSerializer
+extends AbstractSerializer
 {
+    // Error messages
+    //
+    private static final String CHAR001 = "JSONSerializer/CharacterSerializer/001: JSON->Java. Length of the character value should be > 0";
+
     public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
-        return new Long(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue());
+        final String lValue = ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue();
+        if(lValue.length() < 1) throw new SerializerException(CHAR001);
+        return lValue.charAt(0);
     }
 
     public Class<?> getHelpedClass()
     {
-        return Long.class;
+        return Character.class;
     }
 }

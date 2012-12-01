@@ -619,4 +619,34 @@ public class MapperTest {
         Assert.assertThat(javaObj, is(instanceOf(MyPojo.class)));
         Assert.assertEquals("MyPojo{firstName='Homer', lastName='Simpson'}", javaObj.toString());
     }
+
+    public static abstract class Page<T> {
+        private Collection<T> items = new ArrayList<T>();
+
+        public Collection<T> getItems() {
+            return items;
+        }
+
+        public void setItems(Collection<T> items) {
+            this.items = items;
+        }
+    }
+
+    public static class VideoPage<Video> extends Page<Video> {
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    public void bug6644() throws MapperException {
+        VideoPage<String> vp = new VideoPage<String>();
+        vp.getItems().add("This should work.");
+        JSONMapper mapper = new JSONMapper();
+        JSONValue json = mapper.toJSON(vp);
+        //
+        Object back = mapper.toJava(json, VideoPage.class);
+        Assert.assertThat(back, is(instanceOf(VideoPage.class)));
+        VideoPage<String> backPage = (VideoPage<String>) back;
+        Assert.assertThat(backPage.getItems(), hasSize(1));
+        Assert.assertTrue(backPage.getItems().contains("This should work."));
+    }
 }

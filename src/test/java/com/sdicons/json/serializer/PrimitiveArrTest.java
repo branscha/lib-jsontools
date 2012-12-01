@@ -14,19 +14,19 @@ import org.junit.Test;
 public class PrimitiveArrTest
 {
 
-    JSONSerializer marshall;
+    JSONSerializer serializer;
 
     @Before
     public void setUp()
     throws Exception
     {
-        marshall = new JSONSerializer();
+        serializer = new JSONSerializer();
     }
 
     @Test
     public void testBoolean() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(new boolean[] { true, false, true, false }));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new boolean[] { true, false, true, false }));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Assert.assertTrue(java.util.Arrays.equals((boolean[])lResult.getReference(), new boolean[]{true, false, true, false}));
     }
@@ -34,7 +34,7 @@ public class PrimitiveArrTest
     @Test
     public void testByte() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(new byte[] { -1, 0, 1, 2 }));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new byte[] { -1, 0, 1, 2 }));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Assert.assertTrue(java.util.Arrays.equals((byte[])lResult.getReference(), new byte[]{-1, 0, 1, 2}));
     }
@@ -42,7 +42,7 @@ public class PrimitiveArrTest
     @Test
     public void testShort() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(new short[] { -1, 0, 11, 2 }));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new short[] { -1, 0, 11, 2 }));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Assert.assertTrue(java.util.Arrays.equals((short[])lResult.getReference(), new short[]{-1, 0, 11, 2}));
     }
@@ -50,7 +50,7 @@ public class PrimitiveArrTest
     @Test
     public void testChar() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(new char[] { 'a', 'b', 'A', 'Z' }));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new char[] { 'a', 'b', 'A', 'Z' }));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Assert.assertTrue(java.util.Arrays.equals((char[])lResult.getReference(), new char[]{'a', 'b', 'A', 'Z'}));
     }
@@ -58,7 +58,7 @@ public class PrimitiveArrTest
     @Test
     public void testInt() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(new int[] { -1003, 0, 1003, 2310 }));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new int[] { -1003, 0, 1003, 2310 }));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Assert.assertTrue(java.util.Arrays.equals((int[])lResult.getReference(), new int[]{-1003, 0, 1003, 2310}));
     }
@@ -66,7 +66,7 @@ public class PrimitiveArrTest
     @Test
     public void testLong() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(new long[] { -1003, 0, 1003, 2311 }));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new long[] { -1003, 0, 1003, 2311 }));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Assert.assertTrue(java.util.Arrays.equals((long[]) lResult.getReference(), new long[] { -1003, 0, 1003, 2311 }));
     }
@@ -74,7 +74,7 @@ public class PrimitiveArrTest
     @Test
     public void testFloat() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(new float[] { -1.13f, 0.0f, 1.13f, 2310.1f }));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new float[] { -1.13f, 0.0f, 1.13f, 2310.1f }));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Assert.assertTrue(java.util.Arrays.equals((float[])lResult.getReference(), new float[]{-1.13f, 0.0f, 1.13f, 2310.1f}));
     }
@@ -82,7 +82,7 @@ public class PrimitiveArrTest
     @Test
     public void testDouble() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(new double[] { -1.14, 0.0, 1.13, 2310.2 }));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new double[] { -1.14, 0.0, 1.13, 2310.2 }));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Assert.assertTrue(java.util.Arrays.equals((double[])lResult.getReference(), new double[]{-1.14, 0.0, 1.13, 2310.2}));
     }

@@ -21,26 +21,26 @@ import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.JSONSerializer;
 import com.sdicons.json.serializer.SerializerException;
-import com.sdicons.json.serializer.helper.SerializerHelper;
+import com.sdicons.json.serializer.helper.ClassSerializer;
 
-public class ObjectHelperFields
-implements SerializerHelper
+public class ObjectSerializerFields
+implements ClassSerializer
 {
     // Error messages.
     //
-    private static final String OBJ001 = "JSONSerializer/ObjectHelperFields/001: JSON<->Java. Found inconsistency in class: '%s'. If annotated methods are used, it should contain both @JSONConstructor and @JSONConstructorArgs together.";
-    private static final String OBJ002 = "JSONSerializer/ObjectHelperFields/002: Java->JSON. Error while trying to invoke 'writeReplace' on instance of class: '%1$s'.";
-    private static final String OBJ003 = "JSONSerializer/ObjectHelperFields/003: Java->JSON. Error while invoking the @JSONConstructorArgs method called '%1$s(...)' on an instance of class: '%2$s'.";
-    private static final String OBJ004 = "JSONSerializer/ObjectHelperFields/004: Java->JSON. Error while serializing element nr %1$d from the @JSONConstructorArgs method: '%2$s(...)' on instance of class '%3$s'.";
-    private static final String OBJ005 = "JSONSerializer/ObjectHelperFields/005: Java->JSON. Error while serializing field: '%1$s' from instance of class: '%2$s'.";
-    private static final String OBJ006 = "JSONSerializer/ObjectHelperFields/006: Java->JSON. Error while reading field: '%1$s' from instance of class: '%2$s'.";
-    private static final String OBJ007 = "JSONSerializer/ObjectHelperFields/007: JSON->Java. Error while calling the @JSONConstructor constructor in class: '%1$s' on parameter nr: %2$d with a value of class '%3$s'.";
-    private static final String OBJ008 = "JSONSerializer/ObjectHelperFields/008: JSON->Java. Tried to instantiate an object (using annotated constructor) of class '%1$s'.";
-    private static final String OBJ009 = "JSONSerializer/ObjectHelperFields/009: JSON->Java. Type error while trying to set the field: '%1$s' in class: '%2$s' with a value of class '%3$s'.";
-    private static final String OBJ010 = "JSONSerializer/ObjectHelperFields/010: JSON->Java. Tried to invoke 'readResolve' on instance of class: '%1$s'.";
-    private static final String OBJ011 = "JSONSerializer/ObjectHelperFields/011: JSON->Java. Could not find JavaBean class '%s'.";
-    private static final String OBJ012 = "JSONSerializer/ObjectHelperFields/012: JSON->Java. IllegalAccessException while trying to instantiate bean of class '%s'.";
-    private static final String OBJ013 = "JSONSerializer/ObjectHelperFields/013: JSON->Java. InstantiationException while trying to instantiate bean of class '%s'. ";
+    private static final String OBJ001 = "JSONSerializer/ObjectSerializerFields/001: JSON<->Java. Found inconsistency in class: '%s'. If annotated methods are used, it should contain both @JSONConstructor and @JSONConstructorArgs together.";
+    private static final String OBJ002 = "JSONSerializer/ObjectSerializerFields/002: Java->JSON. Error while trying to invoke 'writeReplace' on instance of class: '%1$s'.";
+    private static final String OBJ003 = "JSONSerializer/ObjectSerializerFields/003: Java->JSON. Error while invoking the @JSONConstructorArgs method called '%1$s(...)' on an instance of class: '%2$s'.";
+    private static final String OBJ004 = "JSONSerializer/ObjectSerializerFields/004: Java->JSON. Error while serializing element nr %1$d from the @JSONConstructorArgs method: '%2$s(...)' on instance of class '%3$s'.";
+    private static final String OBJ005 = "JSONSerializer/ObjectSerializerFields/005: Java->JSON. Error while serializing field: '%1$s' from instance of class: '%2$s'.";
+    private static final String OBJ006 = "JSONSerializer/ObjectSerializerFields/006: Java->JSON. Error while reading field: '%1$s' from instance of class: '%2$s'.";
+    private static final String OBJ007 = "JSONSerializer/ObjectSerializerFields/007: JSON->Java. Error while calling the @JSONConstructor constructor in class: '%1$s' on parameter nr: %2$d with a value of class '%3$s'.";
+    private static final String OBJ008 = "JSONSerializer/ObjectSerializerFields/008: JSON->Java. Tried to instantiate an object (using annotated constructor) of class '%1$s'.";
+    private static final String OBJ009 = "JSONSerializer/ObjectSerializerFields/009: JSON->Java. Type error while trying to set the field: '%1$s' in class: '%2$s' with a value of class '%3$s'.";
+    private static final String OBJ010 = "JSONSerializer/ObjectSerializerFields/010: JSON->Java. Tried to invoke 'readResolve' on instance of class: '%1$s'.";
+    private static final String OBJ011 = "JSONSerializer/ObjectSerializerFields/011: JSON->Java. Could not find JavaBean class '%s'.";
+    private static final String OBJ012 = "JSONSerializer/ObjectSerializerFields/012: JSON->Java. IllegalAccessException while trying to instantiate bean of class '%s'.";
+    private static final String OBJ013 = "JSONSerializer/ObjectSerializerFields/013: JSON->Java. InstantiationException while trying to instantiate bean of class '%s'. ";
 
     private Map<Class<?>, AnnotatedMethods> annotatedPool = new HashMap<Class<?>, AnnotatedMethods>();
 

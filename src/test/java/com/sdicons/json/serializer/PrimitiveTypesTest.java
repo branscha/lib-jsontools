@@ -12,19 +12,19 @@ import org.junit.Test;
 
 public class PrimitiveTypesTest
 {
-    JSONSerializer marshall;
+    JSONSerializer serializer;
 
     @Before
     public void setUp()
     throws Exception
     {
-        marshall = new JSONSerializer();
+        serializer = new JSONSerializer();
     }
 
     @Test
     public void testBoolean1() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(false));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(false));
         Assert.assertTrue(SerializerValue.BOOLEAN == lResult.getType());
         Assert.assertTrue(!lResult.getBoolean());
     }
@@ -32,7 +32,7 @@ public class PrimitiveTypesTest
     @Test
     public void testBoolean2() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(true));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(true));
         Assert.assertTrue(SerializerValue.BOOLEAN == lResult.getType());
         Assert.assertTrue(lResult.getBoolean());
     }
@@ -40,7 +40,7 @@ public class PrimitiveTypesTest
     @Test
     public void testByte() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal((byte) 7));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal((byte) 7));
         Assert.assertTrue(SerializerValue.BYTE == lResult.getType());
         Assert.assertTrue(lResult.getByte() == 7);
     }
@@ -48,7 +48,7 @@ public class PrimitiveTypesTest
     @Test
     public void testShort() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal((short) -13));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal((short) -13));
         Assert.assertTrue(SerializerValue.SHORT == lResult.getType());
         Assert.assertTrue(lResult.getShort() == -13);
     }
@@ -56,7 +56,7 @@ public class PrimitiveTypesTest
     @Test
     public void testChar() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal('q'));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal('q'));
         Assert.assertTrue(SerializerValue.CHAR == lResult.getType());
         Assert.assertTrue(lResult.getChar() == 'q');
     }
@@ -64,7 +64,7 @@ public class PrimitiveTypesTest
     @Test
     public void testInteger() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(177));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(177));
         Assert.assertTrue(SerializerValue.INT == lResult.getType());
         Assert.assertTrue(lResult.getInt() == 177);
     }
@@ -72,7 +72,7 @@ public class PrimitiveTypesTest
     @Test
     public void testLong() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal((long) 117));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal((long) 117));
         Assert.assertTrue(SerializerValue.LONG == lResult.getType());
         Assert.assertTrue(lResult.getLong() == 117);
     }
@@ -80,7 +80,7 @@ public class PrimitiveTypesTest
     @Test
     public void testFloat() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal((float) 3.14));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal((float) 3.14));
         Assert.assertTrue(SerializerValue.FLOAT == lResult.getType());
         Assert.assertTrue(lResult.getFloat() == (float) 3.14);
     }
@@ -88,7 +88,7 @@ public class PrimitiveTypesTest
     @Test
     public void testDouble() throws SerializerException
     {
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(3.141567));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(3.141567));
         Assert.assertTrue(SerializerValue.DOUBLE == lResult.getType());
         Assert.assertTrue(lResult.getDouble() == 3.141567);
     }

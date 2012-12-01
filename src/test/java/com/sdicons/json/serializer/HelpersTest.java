@@ -30,20 +30,20 @@ import org.junit.Test;
 public class HelpersTest
 {
 
-    JSONSerializer marshall;
+    JSONSerializer serializer;
 
     @Before
     public void setUp()
     throws Exception
     {
-        marshall = new JSONSerializer();
+        serializer = new JSONSerializer();
     }
 
     @Test
     public void testByte() throws SerializerException
     {
         Byte lByte = (byte) 5;
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lByte));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(lByte));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Byte lByte2 = (Byte) lResult.getReference();
         Assert.assertTrue(lByte2.equals(lByte));
@@ -53,7 +53,7 @@ public class HelpersTest
     public void testShort() throws SerializerException
     {
         Short lShort = (short) 3;
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lShort));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(lShort));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Short lShort2 = (Short) lResult.getReference();
         Assert.assertTrue(lShort2.equals(lShort));
@@ -63,7 +63,7 @@ public class HelpersTest
     public void testChar() throws SerializerException
     {
         Character lchar = 'x';
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lchar));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(lchar));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Character lChar2 = (Character) lResult.getReference();
         Assert.assertTrue(lChar2.equals(lchar));
@@ -73,7 +73,7 @@ public class HelpersTest
     public void testInteger() throws SerializerException
     {
         Integer lInt = 17;
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lInt));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(lInt));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Integer lInt2 = (Integer) lResult.getReference();
         Assert.assertTrue(lInt2.equals(lInt));
@@ -83,7 +83,7 @@ public class HelpersTest
     public void testLong() throws SerializerException
     {
         Long lLong = (long) 21;
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lLong));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(lLong));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Long lLong2 = (Long) lResult.getReference();
         Assert.assertTrue(lLong2.equals(lLong));
@@ -93,7 +93,7 @@ public class HelpersTest
     public void testFloat() throws SerializerException
     {
         Float lFloat = new Float(21.331);
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lFloat));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(lFloat));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Float lFloat2 = (Float) lResult.getReference();
         Assert.assertTrue(lFloat2.equals(lFloat));
@@ -103,7 +103,7 @@ public class HelpersTest
     public void testDouble() throws SerializerException
     {
         Double lDouble = 21.156331;
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lDouble));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(lDouble));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         Double lDouble2 = (Double) lResult.getReference();
         Assert.assertTrue(lDouble2.equals(lDouble));
@@ -113,7 +113,7 @@ public class HelpersTest
     public void testBigDecimal() throws SerializerException
     {
         BigDecimal lDecimal = new BigDecimal(21.331);
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lDecimal));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(lDecimal));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         BigDecimal lDecimal2 = (BigDecimal) lResult.getReference();
         Assert.assertTrue(lDecimal2.equals(lDecimal));
@@ -123,7 +123,7 @@ public class HelpersTest
     public void testBigInteger() throws SerializerException
     {
         BigInteger lBigInt = new BigInteger("123456789123456789123456789123456789");
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lBigInt));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(lBigInt));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         BigInteger lBigInt2 = (BigInteger) lResult.getReference();
         Assert.assertTrue(lBigInt2.equals(lBigInt));
@@ -133,7 +133,7 @@ public class HelpersTest
     public void testDate() throws SerializerException
     {
         final Date lDate = new Date();
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lDate));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(lDate));
         Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
         final Date lDate2 = (Date) lResult.getReference();
         Assert.assertTrue(lDate2.getTime() == lDate.getTime());
@@ -163,7 +163,7 @@ public class HelpersTest
             // StackOverflow. According to Sun this behaviour is wanted.
             // lLinkedList.add(lLinkedList);
 
-            SerializerValue lResult = marshall.unmarshal(marshall.marshal(lLinkedList));
+            SerializerValue lResult = serializer.unmarshal(serializer.marshal(lLinkedList));
             Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
             final List lLinkedList2 = (LinkedList) lResult.getReference();
             Assert.assertTrue(lLinkedList.size() == lLinkedList2.size());
@@ -183,7 +183,7 @@ public class HelpersTest
             lNestedArrayList.add("three");
             lArrayList.add(lNestedArrayList);
 
-            SerializerValue lResult = marshall.unmarshal(marshall.marshal(lArrayList));
+            SerializerValue lResult = serializer.unmarshal(serializer.marshal(lArrayList));
             Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
             final List lArrayList2 = (ArrayList) lResult.getReference();
             Assert.assertTrue(lArrayList.size() == lArrayList2.size());
@@ -197,7 +197,7 @@ public class HelpersTest
             lTreeSet.add("duo");
             lTreeSet.add("tres");
 
-            SerializerValue lResult = marshall.unmarshal(marshall.marshal(lTreeSet));
+            SerializerValue lResult = serializer.unmarshal(serializer.marshal(lTreeSet));
             Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
             final Set lTreeSet2 = (TreeSet) lResult.getReference();
             Assert.assertTrue(lTreeSet.size() == lTreeSet2.size());
@@ -216,7 +216,7 @@ public class HelpersTest
             lHashMap.put("duo", "two");
             lHashMap.put("tres", "three");
 
-            SerializerValue lResult = marshall.unmarshal(marshall.marshal(lHashMap));
+            SerializerValue lResult = serializer.unmarshal(serializer.marshal(lHashMap));
             Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
             final Map lHashMap2 = (HashMap) lResult.getReference();
             Assert.assertTrue(lHashMap.size() == lHashMap2.size());
@@ -230,7 +230,7 @@ public class HelpersTest
             lTreeMap.put("duo", "two");
             lTreeMap.put("tres", "three");
 
-            SerializerValue lResult = marshall.unmarshal(marshall.marshal(lTreeMap));
+            SerializerValue lResult = serializer.unmarshal(serializer.marshal(lTreeMap));
             Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
             final Map lTreeMap2 = (TreeMap) lResult.getReference();
             Assert.assertTrue(lTreeMap.size() == lTreeMap2.size());
@@ -242,25 +242,25 @@ public class HelpersTest
     {
         {
             final Color lColor = Color.WHITE;
-            SerializerValue lResult = marshall.unmarshal(marshall.marshal(lColor));
+            SerializerValue lResult = serializer.unmarshal(serializer.marshal(lColor));
             Assert.assertTrue(lResult.getReference().equals(lColor));
         }
 
         {
             final Color lColor = Color.RED;
-            SerializerValue lResult = marshall.unmarshal(marshall.marshal(lColor));
+            SerializerValue lResult = serializer.unmarshal(serializer.marshal(lColor));
             Assert.assertTrue(lResult.getReference().equals(lColor));
         }
 
         {
             final Color lColor = Color.GREEN;
-            SerializerValue lResult = marshall.unmarshal(marshall.marshal(lColor));
+            SerializerValue lResult = serializer.unmarshal(serializer.marshal(lColor));
             Assert.assertTrue(lResult.getReference().equals(lColor));
         }
 
         {
             final Color lColor = Color.BLUE;
-            SerializerValue lResult = marshall.unmarshal(marshall.marshal(lColor));
+            SerializerValue lResult = serializer.unmarshal(serializer.marshal(lColor));
             Assert.assertTrue(lResult.getReference().equals(lColor));
         }
     }
@@ -269,7 +269,7 @@ public class HelpersTest
     public void testFonts() throws SerializerException
     {
         final Font lFont = new JPanel().getFont();
-        SerializerValue lResult = marshall.unmarshal(marshall.marshal(lFont));
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(lFont));
         Assert.assertTrue(lResult.getReference().equals(lFont));
     }
 
@@ -279,7 +279,7 @@ public class HelpersTest
     public void testEnums() throws SerializerException
     {
         for (SimpsonEnum lSimpson : SimpsonEnum.values()) {
-            SerializerValue lResult = marshall.unmarshal(marshall.marshal(lSimpson));
+            SerializerValue lResult = serializer.unmarshal(serializer.marshal(lSimpson));
             Assert.assertTrue(lResult.getReference() == lSimpson);
         }
     }
