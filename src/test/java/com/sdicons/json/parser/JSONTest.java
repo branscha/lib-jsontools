@@ -5,9 +5,13 @@
  ******************************************************************************/
 package com.sdicons.json.parser;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -71,9 +75,15 @@ public class JSONTest
 
     @Test
     public void bug016634() throws ParserException  {
-        JSONObject parsed = (JSONObject) new JSONParser(new StringReader("{\"bigNumber\":-4.569565E+7}")).nextValue();
-        Assert.assertEquals(new BigDecimal(-4.569565E+7), new BigDecimal((BigInteger)parsed.get("bigNumber").strip()));
-    }
+        JSONValue parsed = new JSONParser(new StringReader("{\"bigNumber\":-4.569565E+7}")).nextValue();
+        Assert.assertThat(parsed, is(instanceOf(JSONObject.class)));
+        JSONObject parsedObj = (JSONObject) parsed;
+        Assert.assertEquals(new BigDecimal(-4.569565E+7), new BigDecimal( (BigInteger) parsedObj.get("bigNumber").strip()));
 
+        parsed = new JSONParser(new StringReader("[3.2341E5, 3.2342E+5, 32343000E-2]")).nextValue();
+        Assert.assertThat(parsed, is(instanceOf(JSONArray.class)));
+        Assert.assertThat(parsed.strip(), is(instanceOf(List.class)));
+        Assert.assertArrayEquals(((List) parsed.strip()).toArray(), new Object[]{new BigInteger("323410"), new BigInteger("323420"), new BigInteger("323430")});
+    }
 }
 
