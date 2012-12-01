@@ -9,15 +9,15 @@ import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
+import com.sdicons.json.serializer.SerializerException;
 
 public class CharacterSerializer
 extends AbstractSerializer
 {
     // Error messages
     //
-    private static final String CHAR001 = "JSONSerializer/CharacterHelper/001: JSON->Java. Length of the character value should be > 0";
+    private static final String CHAR001 = "JSONSerializer/CharacterSerializer/001: JSON->Java. Length of the character value should be > 0";
 
     public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException

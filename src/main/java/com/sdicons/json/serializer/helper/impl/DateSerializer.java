@@ -21,7 +21,7 @@ implements ClassSerializer
 
     // Error messages.
     //
-    private static final String DAT001 = "JSONSerializer/DateHelper/001: JSON->Java. Could not parse the value '%s' to a Date.";
+    private static final String DAT001 = "JSONSerializer/DateSerializer/001: JSON->Java. Could not parse the value '%s' to a Date.";
 
     private SimpleDateFormat df = new SimpleDateFormat(JSONSerializer.DATESERIALIZE_DEFAULT);
 

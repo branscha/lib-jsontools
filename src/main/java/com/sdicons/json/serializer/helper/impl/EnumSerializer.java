@@ -9,17 +9,17 @@ import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
-import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
+import com.sdicons.json.serializer.SerializerException;
 
 public class EnumSerializer
 extends AbstractSerializer
 {
     // Error messages.
     //
-    private static final String ENUM001 = "JSONSerializer/EnumHelper/001: JSON->Java. The class '%s' cannot be instantiated, it cannot be found in the classpath.";
-    private static final String ENUM002 = "JSONSerializer/EnumHelper/002: JSON->Java. Failed to handle a non-enum class '%s'.";
-    private static final String ENUM003 = "JSONSerializer/EnumHelper/003: JSON->Java. The enum class '%s' is found but no matching value for '%s' could be found.";
+    private static final String ENUM001 = "JSONSerializer/EnumSerializer/001: JSON->Java. The class '%s' cannot be instantiated, it cannot be found in the classpath.";
+    private static final String ENUM002 = "JSONSerializer/EnumSerializer/002: JSON->Java. Failed to handle a non-enum class '%s'.";
+    private static final String ENUM003 = "JSONSerializer/EnumSerializer/003: JSON->Java. The enum class '%s' is found but no matching value for '%s' could be found.";
 
     public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException

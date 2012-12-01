@@ -24,9 +24,9 @@ import com.sdicons.json.serializer.helper.ClassSerializer;
 public class ArraySerializer implements ClassSerializer {
     // Error messages
     //
-    private static final String ARR001 = "JSONSerializer/ArrayHelper/001: JSON->Java. Type '%s' is not an array type.";
-    private static final String ARR002 = "JSONSerializer/ArrayHelper/002: JSON->Java. Exception while trying to parse an array '%s'.";
-    private static final String ARR003 = "JSONSerializer/ArrayHelper/003: Java->JSON. The input object class '%s' is not an array type.";
+    private static final String ARR001 = "JSONSerializer/ArraySerializer/001: JSON->Java. Type '%s' is not an array type.";
+    private static final String ARR002 = "JSONSerializer/ArraySerializer/002: JSON->Java. Exception while trying to parse an array '%s'.";
+    private static final String ARR003 = "JSONSerializer/ArraySerializer/003: Java->JSON. The input object class '%s' is not an array type.";
 
     public void toJSON(Object javaArray, JSONObject jsonContainer, JSONSerializer serializer, HashMap<Object, Object> aPool) throws SerializerException {
         if (!javaArray.getClass().isArray()) throw new SerializerException(String.format(ARR003, javaArray.getClass().getName()));

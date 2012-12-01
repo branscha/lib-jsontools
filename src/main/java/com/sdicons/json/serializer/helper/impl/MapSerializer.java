@@ -12,8 +12,8 @@ import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.helper.ClassSerializer;
 
 public class MapSerializer
@@ -21,9 +21,9 @@ implements ClassSerializer
 {
     // Error messages.
     //
-    private static final String MAP001 = "JSONSerializer/MapHelper/001: JSON->Java. IllegalAccessException while trying to instantiate map of type '%s'.";
-    private static final String MAP002 = "JSONSerializer/MapHelper/002: JSON->Java. IllegalAccessException while trying to instantiate map of type '%s'.";
-    private static final String MAP003 = "JSONSerializer/MapHelper/003: JSON->Java. IllegalAccessException while trying to instantiate map of type '%s'.";
+    private static final String MAP001 = "JSONSerializer/MapSerializer/001: JSON->Java. IllegalAccessException while trying to instantiate map of type '%s'.";
+    private static final String MAP002 = "JSONSerializer/MapSerializer/002: JSON->Java. IllegalAccessException while trying to instantiate map of type '%s'.";
+    private static final String MAP003 = "JSONSerializer/MapSerializer/003: JSON->Java. IllegalAccessException while trying to instantiate map of type '%s'.";
 
     private static final String ATTR_KEY = "key";
     private static final String ATTR_VALUE = "value";

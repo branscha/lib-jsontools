@@ -12,8 +12,8 @@ import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
+import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.helper.ClassSerializer;
 
 public class CollectionSerializer
@@ -21,9 +21,9 @@ implements ClassSerializer
 {
     // Error messages.
     //
-    private static final String COLL001 = "JSONSerializer/CollectionHelper/001: JSON->Java. IllegalAccessException while trying to instantiate collection '%s'.";
-    private static final String COLL002 = "JSONSerializer/CollectionHelper/001: JSON->Java. InstantiationException while trying to instantiate collection '%s'.";
-    private static final String COLL003 = "JSONSerializer/CollectionHelper/001: JSON->Java. ClassNotFoundException while trying to instantiate collection '%s'.";
+    private static final String COLL001 = "JSONSerializer/CollectionSerializer/001: JSON->Java. IllegalAccessException while trying to instantiate collection '%s'.";
+    private static final String COLL002 = "JSONSerializer/CollectionSerializer/001: JSON->Java. InstantiationException while trying to instantiate collection '%s'.";
+    private static final String COLL003 = "JSONSerializer/CollectionSerializer/001: JSON->Java. ClassNotFoundException while trying to instantiate collection '%s'.";
 
     public CollectionSerializer()
     {

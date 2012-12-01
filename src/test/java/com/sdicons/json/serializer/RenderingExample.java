@@ -35,7 +35,7 @@ public class RenderingExample
                 lMyBean.setName("This is a test...");
                 lMyBean.setPtr(lMyBean);
                 JSONObject lElement = lRenderer.marshal(lMyBean);
-                 System.out.println(lElement.render(true));
+                System.out.println(lElement.render(true));
             }
 
             {

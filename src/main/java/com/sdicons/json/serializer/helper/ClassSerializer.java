@@ -20,24 +20,24 @@ extends ClassHelper
 {
     /** Convert an element to JSON.
      *
-     * @param aObj Instance that should be rendered to JSON.
-     * @param aObjectElement The parent element where we have to put the rendered information. A helper is allowed to add
+     * @param javaObj Instance that should be rendered to JSON.
+     * @param jsonContainer The parent element where we have to put the rendered information. A helper is allowed to add
      *                       child elements.
      * @param serializer      The marshal we can use to recursively render parts of our own object.
      * @param aPool          A pool of objects already encountered. Is used to resolve references.
      * @throws SerializerException
      */
-    public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
+    public void toJSON(Object javaObj, JSONObject jsonContainer, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException;
 
     /** Convert JSON representation into an instance of a class.
      *
-     * @param aObjectElement The source element we have to convert into an object.
+     * @param jsonObj The source element we have to convert into an object.
      * @param serializer The marshal we can use to convert sub elements into sub objects to compose our target object.
      * @param aPool A pool of objects already encountered. Is used to resolve references.
      * @return The newly created object.
      * @throws SerializerException
      */
-    public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject jsonObj, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException;
 }
