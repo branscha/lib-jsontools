@@ -5,6 +5,7 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
+import java.awt.Color;
 import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
@@ -12,18 +13,24 @@ import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
 
-public class DoubleHelper
-extends AbstractHelper
+public class ColorSerializer
+extends AbstractSerializer
 {
     public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
-        return new Double(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue());
+        return Color.decode(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue());
+    }
+
+    public void toJSON(Object aObj, JSONObject aParent, JSONSerializer serializer, HashMap<Object, Object> aPool) throws SerializerException
+    {
+        final Color lColor = (Color) aObj;
+        aParent.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString("" + lColor.getRGB()));
     }
 
     public Class<?> getHelpedClass()
     {
-        return Double.class;
+        return Color.class;
     }
 }

@@ -21,10 +21,10 @@ import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.JSONSerializer;
 import com.sdicons.json.serializer.SerializerException;
-import com.sdicons.json.serializer.helper.SerializerHelper;
+import com.sdicons.json.serializer.helper.ClassSerializer;
 
-public class ObjectHelperFields
-implements SerializerHelper
+public class ObjectSerializerFields
+implements ClassSerializer
 {
     // Error messages.
     //

@@ -12,18 +12,18 @@ import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
 
-public class BooleanHelper
-extends AbstractHelper
+public class StringSerializer
+extends AbstractSerializer
 {
     public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
-        return Boolean.valueOf(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue());
+        return ((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue();
     }
 
     public Class<?> getHelpedClass()
     {
-        return Boolean.class;
+        return String.class;
     }
 }

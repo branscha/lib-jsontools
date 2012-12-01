@@ -5,25 +5,26 @@
  ******************************************************************************/
 package com.sdicons.json.serializer.helper.impl;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
-import com.sdicons.json.serializer.helper.SerializerHelper;
 
-public abstract class AbstractHelper
-implements SerializerHelper
+public class BigDecimalSerializer
+extends AbstractSerializer
 {
-    public boolean equals(Object obj)
-    {
-        return this.getHelpedClass() == ((SerializerHelper) obj).getHelpedClass();
-    }
-
-    public void toJSON(Object aObj, JSONObject aParent, JSONSerializer serializer, HashMap<Object, Object> aPool)
+    public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
-        aParent.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, new JSONString(aObj.toString()));
+        JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
+        return new BigDecimal(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue());
+    }
+
+    public Class<?> getHelpedClass()
+    {
+        return BigDecimal.class;
     }
 }

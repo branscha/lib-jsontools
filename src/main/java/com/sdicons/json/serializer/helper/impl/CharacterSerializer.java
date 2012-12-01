@@ -12,8 +12,8 @@ import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
 
-public class CharacterHelper
-extends AbstractHelper
+public class CharacterSerializer
+extends AbstractSerializer
 {
     // Error messages
     //

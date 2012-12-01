@@ -15,7 +15,7 @@ import java.util.Map;
 
 import com.sdicons.json.helper.ClassHelperRepository;
 import com.sdicons.json.mapper.helper.ComplexMapperHelper;
-import com.sdicons.json.mapper.helper.MapperHelper;
+import com.sdicons.json.mapper.helper.ClassMapper;
 import com.sdicons.json.mapper.helper.impl.ArrayMapper;
 import com.sdicons.json.mapper.helper.impl.BigDecimalMapper;
 import com.sdicons.json.mapper.helper.impl.BigIntegerMapper;
@@ -54,20 +54,20 @@ public class JSONMapper
     private static final String MAPPER002 = "JSONMapper/002: JSON->Java. Could not find a mapper helper for parameterized type '%s'.";
     private static final String MAPPER003 = "JSONMapper/003: JSON<->Java. Could not find a mapper helper for class '%s'.";
 
-    // field | property
+    // The OBJMAPPING option indicates whether property mapping of field mapping will be used.
     public static final String OPT_OBJMAPPING = "com.sdicons.json.mapper.helper.impl.ObjectMapperMeta";
     public static final String OBJMAPPING_FIELD = "field";
     public static final String OBJMAPPING_PROPERTY = "property";
-    //
+    // The Date format the JSON text.
     public static final String OPT_DATEFORMAT = "com.sdicons.json.mapper.helper.impl.DateMapper";
     public static final String DATEFORMAT_DEFAULT = "yyyy-MM-dd HH:mm:ss";
 
 
-    private ClassHelperRepository<MapperHelper> repo = new ClassHelperRepository<MapperHelper>();
+    private ClassHelperRepository<ClassMapper> repo = new ClassHelperRepository<ClassMapper>();
     private Map<String, Object> options = new HashMap<String, Object>();
 
-    public JSONMapper(MapperHelper ... helpers) {
-        for(MapperHelper helper:helpers) {
+    public JSONMapper(ClassMapper ... helpers) {
+        for(ClassMapper helper:helpers) {
             repo.addHelper(helper);
         }
     }
@@ -124,7 +124,7 @@ public class JSONMapper
         else if(aPojoClass == Character.TYPE) aPojoClass = Character.class;
 
         // Find someone who can map it.
-        final MapperHelper lHelperSimple = repo.findHelper(aPojoClass);
+        final ClassMapper lHelperSimple = repo.findHelper(aPojoClass);
 
         if(lHelperSimple == null)
         {
@@ -156,7 +156,7 @@ public class JSONMapper
         final Type[] lTypes = aGenericType.getActualTypeArguments();
 
         // Find someone who can map it.
-        final MapperHelper lMapperHelper = repo.findHelper(lRawClass);
+        final ClassMapper lMapperHelper = repo.findHelper(lRawClass);
 
         if(lMapperHelper == null)
         {
@@ -203,7 +203,7 @@ public class JSONMapper
         	return arrayMapper.toJSON(this, aPojo);
         }
 
-        final MapperHelper lHelperSimple = repo.findHelper(aPojo.getClass());
+        final ClassMapper lHelperSimple = repo.findHelper(aPojo.getClass());
 
         if(lHelperSimple == null)
         {
@@ -217,7 +217,7 @@ public class JSONMapper
      *
      * @param aHelper the custom helper you want to add to the mapper.
      */
-    public void addHelper(MapperHelper aHelper)
+    public void addHelper(ClassMapper aHelper)
     {
         repo.addHelper(aHelper);
     }

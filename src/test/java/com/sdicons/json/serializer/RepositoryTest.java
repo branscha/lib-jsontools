@@ -13,40 +13,40 @@ import org.junit.Test;
 
 import com.sdicons.json.helper.ClassHelperRepository;
 import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.serializer.helper.SerializerHelper;
-import com.sdicons.json.serializer.helper.impl.BooleanHelper;
-import com.sdicons.json.serializer.helper.impl.ByteHelper;
-import com.sdicons.json.serializer.helper.impl.CharacterHelper;
-import com.sdicons.json.serializer.helper.impl.DateHelper;
-import com.sdicons.json.serializer.helper.impl.DoubleHelper;
-import com.sdicons.json.serializer.helper.impl.FloatHelper;
-import com.sdicons.json.serializer.helper.impl.IntegerHelper;
-import com.sdicons.json.serializer.helper.impl.LongHelper;
-import com.sdicons.json.serializer.helper.impl.ObjectHelperProps;
-import com.sdicons.json.serializer.helper.impl.ShortHelper;
-import com.sdicons.json.serializer.helper.impl.StringHelper;
+import com.sdicons.json.serializer.helper.ClassSerializer;
+import com.sdicons.json.serializer.helper.impl.BooleanSerializer;
+import com.sdicons.json.serializer.helper.impl.ByteSerializer;
+import com.sdicons.json.serializer.helper.impl.CharacterSerializer;
+import com.sdicons.json.serializer.helper.impl.DateSerializer;
+import com.sdicons.json.serializer.helper.impl.DoubleSerializer;
+import com.sdicons.json.serializer.helper.impl.FloatSerializer;
+import com.sdicons.json.serializer.helper.impl.IntegerSerializer;
+import com.sdicons.json.serializer.helper.impl.LongSerializer;
+import com.sdicons.json.serializer.helper.impl.ObjectSerializerProps;
+import com.sdicons.json.serializer.helper.impl.ShortSerializer;
+import com.sdicons.json.serializer.helper.impl.StringSerializer;
 
 public class RepositoryTest
 {
-    ClassHelperRepository<SerializerHelper> repo;
+    ClassHelperRepository<ClassSerializer> repo;
 
     @Before
     public void setUp()
     throws Exception
     {
-        repo = new ClassHelperRepository<SerializerHelper>();
+        repo = new ClassHelperRepository<ClassSerializer>();
 
-        repo.addHelper(new ObjectHelperProps());
-        repo.addHelper(new StringHelper());
-        repo.addHelper(new BooleanHelper());
-        repo.addHelper(new ByteHelper());
-        repo.addHelper(new ShortHelper());
-        repo.addHelper(new IntegerHelper());
-        repo.addHelper(new LongHelper());
-        repo.addHelper(new FloatHelper());
-        repo.addHelper(new DoubleHelper());
-        repo.addHelper(new CharacterHelper());
-        repo.addHelper(new DateHelper());
+        repo.addHelper(new ObjectSerializerProps());
+        repo.addHelper(new StringSerializer());
+        repo.addHelper(new BooleanSerializer());
+        repo.addHelper(new ByteSerializer());
+        repo.addHelper(new ShortSerializer());
+        repo.addHelper(new IntegerSerializer());
+        repo.addHelper(new LongSerializer());
+        repo.addHelper(new FloatSerializer());
+        repo.addHelper(new DoubleSerializer());
+        repo.addHelper(new CharacterSerializer());
+        repo.addHelper(new DateSerializer());
     }
 
     @Test
@@ -54,58 +54,58 @@ public class RepositoryTest
     {
         {
             Class<?> lClass = String.class;
-            SerializerHelper lHelper = repo.findHelper(lClass);
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
 
         {
             Class<?> lClass = Boolean.class;
-            SerializerHelper lHelper = repo.findHelper(lClass);
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Byte.class;
-            SerializerHelper lHelper = repo.findHelper(lClass);
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Short.class;
-            SerializerHelper lHelper = repo.findHelper(lClass);
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Integer.class;
-            SerializerHelper lHelper = repo.findHelper(lClass);
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Short.class;
-            SerializerHelper lHelper = repo.findHelper(lClass);
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Long.class;
-            SerializerHelper lHelper = repo.findHelper(lClass);
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Float.class;
-            SerializerHelper lHelper = repo.findHelper(lClass);
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Double.class;
-            SerializerHelper lHelper = repo.findHelper(lClass);
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = Character.class;
-            SerializerHelper lHelper = repo.findHelper(lClass);
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
             Class<?> lClass = String.class;
-            SerializerHelper lHelper = repo.findHelper(lClass);
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
     }
@@ -128,7 +128,7 @@ public class RepositoryTest
         }
 
         class AHelper
-        implements SerializerHelper
+        implements ClassSerializer
         {
             @SuppressWarnings("rawtypes")
             public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
@@ -151,7 +151,7 @@ public class RepositoryTest
         }
 
         class BHelper
-        implements SerializerHelper
+        implements ClassSerializer
         {
             @SuppressWarnings("rawtypes")
             public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
@@ -173,7 +173,7 @@ public class RepositoryTest
         }
 
         class CHelper
-        implements SerializerHelper
+        implements ClassSerializer
         {
             @SuppressWarnings("rawtypes")
             public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
@@ -199,13 +199,13 @@ public class RepositoryTest
         repo.addHelper(new BHelper()); // B first.
         repo.addHelper(new AHelper()); // C and B will be part of rebalancing.
 
-        SerializerHelper lH1 = repo.findHelper(B.class);
+        ClassSerializer lH1 = repo.findHelper(B.class);
         Assert.assertEquals(B.class, lH1.getHelpedClass());
 
-        SerializerHelper lH2 = repo.findHelper(A.class);
+        ClassSerializer lH2 = repo.findHelper(A.class);
         Assert.assertEquals(A.class, lH2.getHelpedClass());
 
-        SerializerHelper lH3 = repo.findHelper(C.class);
+        ClassSerializer lH3 = repo.findHelper(C.class);
         Assert.assertEquals(C.class, lH3.getHelpedClass());
     }
 }

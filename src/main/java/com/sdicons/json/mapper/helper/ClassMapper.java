@@ -10,7 +10,7 @@ import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.model.JSONValue;
 
-public interface MapperHelper
+public interface ClassMapper
 extends ClassHelper
 {
     Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass)

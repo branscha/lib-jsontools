@@ -9,13 +9,13 @@ import java.math.BigDecimal;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.MapperHelper;
+import com.sdicons.json.mapper.helper.ClassMapper;
 import com.sdicons.json.model.JSONDecimal;
 import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
-public class BigDecimalMapper implements MapperHelper {
+public class BigDecimalMapper implements ClassMapper {
     private static final String BDM001 = "JSONMapper/BigDecimalMapper/001: JSON->Java. Cannot map value '%s' to a BigDecimal.";
     private static final String BDM002 = "JSONMapper/BigDecimalMapper/002: JSON->Java. Cannot map JSON class '%s' to Java BigDecimal.";
     private static final String BDM003 = "JSONMapper/BigDecimalMapper/003: Java->JSON. Cannot map Java class '%s' to JSONDecimal.";

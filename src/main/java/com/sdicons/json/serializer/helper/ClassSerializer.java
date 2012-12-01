@@ -15,7 +15,7 @@ import com.sdicons.json.serializer.JSONSerializer;
 /** A helper can render an instance of a specific class in a custom way.
  * It is the helpers responsibility to render instances of a class to/from JSON.
  */
-public interface SerializerHelper
+public interface ClassSerializer
 extends ClassHelper
 {
     /** Convert an element to JSON.

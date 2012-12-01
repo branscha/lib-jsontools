@@ -11,7 +11,7 @@ import java.util.List;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.MapperHelper;
+import com.sdicons.json.mapper.helper.ClassMapper;
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONValue;
 
@@ -20,7 +20,7 @@ import com.sdicons.json.model.JSONValue;
  * integrated in the JSONMapper. So this mapper has a special status.
  */
 public class ArrayMapper
-implements MapperHelper
+implements ClassMapper
 {
     private static final String ARR001 = "JSONMapper/ArrayMapper/001: JSON->Java. Don't know how to map JSON class '%s' to a Java array.";
     private static final String ARR002 = "JSONMapper/ArrayMapper/002: Java->JSON. Cannot map Java class '%s' to a JSONArray.";

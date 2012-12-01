@@ -9,13 +9,13 @@ import java.math.BigInteger;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.MapperHelper;
+import com.sdicons.json.mapper.helper.ClassMapper;
 import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 
 public class IntegerMapper
-implements MapperHelper
+implements ClassMapper
 {
     private static final String IM001 = "JSONMapper/IntegerMapper/001: JSON->Java. Cannot map value '%s'to an Integer.";
     private static final String IM002 = "JSONMapper/IntegerMapper/002: JSON->Java. Cannot map JSON class '%s' to Java Integer.";

@@ -12,18 +12,18 @@ import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
 
-public class IntegerHelper
-extends AbstractHelper
+public class ShortSerializer
+extends AbstractSerializer
 {
     public Object toJava(JSONObject aObjectElement, JSONSerializer serializer, HashMap<Object, Object> aPool)
     throws SerializerException
     {
         JSONSerializer.requireStringAttribute(aObjectElement, JSONSerializer.RNDR_ATTR_VALUE);
-        return new Integer(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue());
+        return new Short(((JSONString) aObjectElement.get(JSONSerializer.RNDR_ATTR_VALUE)).getValue());
     }
 
     public Class<?> getHelpedClass()
     {
-        return Integer.class;
+        return Short.class;
     }
 }

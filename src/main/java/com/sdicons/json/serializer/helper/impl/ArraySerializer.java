@@ -19,22 +19,17 @@ import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.serializer.JSONSerializer;
 import com.sdicons.json.serializer.SerializerException;
-import com.sdicons.json.serializer.helper.SerializerHelper;
+import com.sdicons.json.serializer.helper.ClassSerializer;
 
-public class ArrayHelper
-implements SerializerHelper
-{
+public class ArraySerializer implements ClassSerializer {
     // Error messages
     //
     private static final String ARR001 = "JSONSerializer/ArrayHelper/001: JSON->Java. Type '%s' is not an array type.";
     private static final String ARR002 = "JSONSerializer/ArrayHelper/002: JSON->Java. Exception while trying to parse an array '%s'.";
     private static final String ARR003 = "JSONSerializer/ArrayHelper/003: Java->JSON. The input object class '%s' is not an array type.";
 
-    public void toJSON(Object javaArray, JSONObject jsonContainer, JSONSerializer serializer, HashMap<Object, Object> aPool)
-    throws SerializerException
-    {
-        if(!javaArray.getClass().isArray())
-            throw new SerializerException(String.format(ARR003, javaArray.getClass().getName()));
+    public void toJSON(Object javaArray, JSONObject jsonContainer, JSONSerializer serializer, HashMap<Object, Object> aPool) throws SerializerException {
+        if (!javaArray.getClass().isArray()) throw new SerializerException(String.format(ARR003, javaArray.getClass().getName()));
 
         final JSONArray jsonArray = new JSONArray();
         jsonContainer.getValue().put(JSONSerializer.RNDR_ATTR_VALUE, jsonArray);
@@ -55,39 +50,38 @@ implements SerializerHelper
         }
     }
 
-    public Object toJava(JSONObject jsonObject, JSONSerializer serializer, HashMap<Object, Object> aPool)
-    throws SerializerException
-    {
+    public Object toJava(JSONObject jsonObject, JSONSerializer serializer, HashMap<Object, Object> aPool) throws SerializerException {
+        // Check that the class name is present in the JSON object.
         JSONSerializer.requireStringAttribute(jsonObject, JSONSerializer.RNDR_ATTR_CLASS);
-        final String lArrClassName =((JSONString) jsonObject.get(JSONSerializer.RNDR_ATTR_CLASS)).getValue();
-
+        // Get the class name from the JSON object.
+        final String arrayClassName = ((JSONString) jsonObject.get(JSONSerializer.RNDR_ATTR_CLASS)).getValue();
+        // Try to materialize the class.
         Class<?> arrayClass;
         try {
-            arrayClass = Class.forName(lArrClassName);
+            arrayClass = Class.forName(arrayClassName);
         }
         catch (ClassNotFoundException e1) {
-            throw new SerializerException(String.format(ARR002, lArrClassName), e1);
+            throw new SerializerException(String.format(ARR002, arrayClassName), e1);
         }
-
-        if(!arrayClass.isArray())
-            throw new SerializerException(String.format(ARR001, lArrClassName));
-
+        // Check on the class itself that it denotes an array type.
+        if (!arrayClass.isArray()) throw new SerializerException(String.format(ARR001, arrayClassName));
+        // We can fetch the array element type.
         Class<?> compoType = arrayClass.getComponentType();
-
-        // First we fetch all array elements.
+        //
         final JSONArray jsonArray = ((JSONArray) jsonObject.get(JSONSerializer.RNDR_ATTR_VALUE));
         final List<JSONValue> jsonValues = jsonArray.getValue();
-
+        // Create the new Java array, there should not be any problems after all
+        // the checks we did.
         Object javaArray = Array.newInstance(compoType, jsonValues.size());
-        for(int i =0; i < jsonValues.size(); i ++) {
+        for (int i = 0; i < jsonValues.size(); i++) {
             Array.set(javaArray, i, serializer.unmarshalImpl((JSONObject) jsonValues.get(i), aPool));
         }
         return javaArray;
     }
 
-    public Class<?> getHelpedClass()
-    {
-        // It does not need to return a class since the ArrayHelper is directly integrated in the JSONSerializer.
+    public Class<?> getHelpedClass() {
+        // It does not need to return a class since the ArrayHelper is directly
+        // integrated in the JSONSerializer.
         return null;
     }
 }
