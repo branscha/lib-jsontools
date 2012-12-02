@@ -11,12 +11,16 @@ import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.model.JSONValue;
 
+/**
+ * The ComplexClassMapper can make use of extra type information from generic declarations.
+ *
+ */
 public interface ComplexClassMapper
 extends ClassMapper
 {
-    Object toJava(JSONMapper mapper, JSONValue aValue, Class<?> aRequestedClass, Type[] aTypes)
+    Object toJava(JSONMapper mapper, JSONValue json, Class<?> requestedClass, Type[] types)
     throws MapperException;
 
-    JSONValue toJSON(JSONMapper mapper, Object aPojo)
+    JSONValue toJSON(JSONMapper mapper, Object pojo)
     throws MapperException;
 }

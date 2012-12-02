@@ -37,16 +37,60 @@ import com.sdicons.json.model.JSONNull;
 import com.sdicons.json.model.JSONValue;
 
 /**
- * The mapper class is able to convert a JSON representation to/from a
- * Java representation. The mapper's goal is to produce a nice and clean JSON output which can
- * easily be used in e.g. Javascript context. As a consequence, not all Java constructs
- * are preserved during the conversion to/from JSON. The mapper is the best choice in an application
- * where the clean JSON format is central. If the emphasis is on exact Java serialization where types are
+ * The mapper class is able to convert a JSON representation to/from a Java
+ * representation. The mapper's goal is to produce a nice and clean JSON output
+ * which can easily be used in e.g. Javascript context. As a consequence, not
+ * all Java constructs are preserved during the conversion to/from JSON. The
+ * mapper is the best choice in an application where the clean JSON format is
+ * central. If the emphasis is on exact Java serialization where types are
  * preserved, take a look at the serializer tool.
  *
- * The main difference between the serializer and the mapper is that the serializer keeps as much
- * type information and structure information in the JSON data where the mapper uses the type information
- * in the provided Java classes to interpret the JSON data.
+ * The main difference between the serializer and the mapper is that the
+ * serializer keeps as much type information and structure information in the
+ * JSON data where the mapper uses the type information in the provided Java
+ * classes to interpret the JSON data.
+ *
+ * Example: The Java model
+ *
+ * <pre>
+ * <code>
+ *     public class Person {
+ *     private String name;
+ *     private String phoneNumber;
+ *     private int age;
+ *     // Getters and setters omitted.
+ *     // ...
+ *     }
+ * </code>
+ * </pre>
+ *
+ * The mapping code
+ *
+ * <pre>
+ * <code>
+ *     // Create a person.
+ *     Person p = new Person();
+ *     p.setName(&quot;Mr. Jason Tools&quot;);
+ *     p.setPhoneNumber(&quot;0123456789&quot;);
+ *     p.setAge(40);
+ *     // Map and print.
+ *     JSONMapper mapper = new JSONMapper();
+ *     JSONValue json = mapper.toJSON(p);
+ *     System.out.println(json.render(true));
+ * </code>
+ * </pre>
+ *
+ * The resulting JSON text
+ *
+ * <pre>
+ * <code>
+ * {
+ *    "age" : 40,
+ *    "name" : "Mr. Jason Tools",
+ *    "phoneNumber" : "0123456789"
+ * }
+ * </code>
+ * </pre>
  */
 public class JSONMapper
 {
@@ -55,15 +99,33 @@ public class JSONMapper
     private static final String MAPPER003 = "JSONMapper/003: JSON<->Java. Could not find a mapper helper for class '%s'.";
 
     /**
-     * The OBJMAPPING option indicates whether property mapping of field mapping will be used.
+     * The mapping option OBJMAPPING indicates whether property mapping of field mapping will be used.
+     * There are two possible values {@link JSONMapper#OBJMAPPING_FIELD} or {@link JSONMapper#OBJMAPPING_PROPERTY}.
+     * @see JSONMapper#setMappingOption(String, Object)
      */
     public static final String OPT_OBJMAPPING = "com.sdicons.json.mapper.helper.impl.ObjectMapperMeta";
+    /**
+     * The object mapper will use field access to access the contents of an instance.
+     * @see JSONMapper#OPT_OBJMAPPING
+     */
     public static final String OBJMAPPING_FIELD = "field";
+    /**
+     * The object mapper will use JavaBean getters and setters to access the contents of an instance.
+     * @see JSONMapper#OPT_OBJMAPPING
+     */
     public static final String OBJMAPPING_PROPERTY = "property";
     /**
-     * The Date format the JSON text.
+     * The mapping option DATAFORMAT indicates which date pattern will be used by the DateMapper to convert String
+     * values to Dates and vice versa.
+     * @see JSONMapper#DATEFORMAT_DEFAULT
      */
     public static final String OPT_DATEFORMAT = "com.sdicons.json.mapper.helper.impl.DateMapper";
+    /**
+     * The default pattern used by the DateMapper to convert String representations into Java dates.
+     * You can modify the pattern using the OPT_DATEFORMAT mapper option.
+     * @see JSONMapper#OPT_DATEFORMAT
+     * @see JSONMapper#setMappingOption(String, Object)
+     */
     public static final String DATEFORMAT_DEFAULT = "yyyy-MM-dd HH:mm:ss";
 
     private ClassHelperRepository<ClassMapper> repo = new ClassHelperRepository<ClassMapper>();
@@ -253,6 +315,9 @@ public class JSONMapper
      *
      * @param key The name of the option.
      * @param value The value of the option.
+     *
+     * @see JSONMapper#OPT_DATEFORMAT
+     * @see JSONMapper#OPT_OBJMAPPING
      */
     public void setMappingOption(String key, Object value) {
         options.put(key,  value);
@@ -265,6 +330,9 @@ public class JSONMapper
      * @param key The option name.
      * @param defaultValue The default value that will be returned if the option is not set.
      * @return The value of the option or the default value if the option was not set explicitly.
+     *
+     *  @see JSONMapper#OPT_DATEFORMAT
+     *  @see JSONMapper#OPT_OBJMAPPING
      */
     public Object getMappingOption(String key, Object defaultValue) {
         if(options.containsKey(key)) return options.get(key);
