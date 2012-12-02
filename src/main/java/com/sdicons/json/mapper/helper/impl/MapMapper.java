@@ -12,12 +12,12 @@ import java.util.Map;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.ComplexMapperHelper;
+import com.sdicons.json.mapper.helper.ComplexClassMapper;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 
 public class MapMapper
-implements ComplexMapperHelper
+implements ComplexClassMapper
 {
     private static final String MAP001 = "JSONMapper/MapMapper/001: JSON->Java. Cannot map JSON class '%s' to a Java Map.";
     private static final String MAP002 = "JSONMapper/MapMapper/002: JSON->Java. Currently only supports String keys.";

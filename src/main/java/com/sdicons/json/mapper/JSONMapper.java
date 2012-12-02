@@ -14,8 +14,8 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.sdicons.json.helper.ClassHelperRepository;
-import com.sdicons.json.mapper.helper.ComplexMapperHelper;
 import com.sdicons.json.mapper.helper.ClassMapper;
+import com.sdicons.json.mapper.helper.ComplexClassMapper;
 import com.sdicons.json.mapper.helper.impl.ArrayMapper;
 import com.sdicons.json.mapper.helper.impl.BigDecimalMapper;
 import com.sdicons.json.mapper.helper.impl.BigIntegerMapper;
@@ -54,14 +54,17 @@ public class JSONMapper
     private static final String MAPPER002 = "JSONMapper/002: JSON->Java. Could not find a mapper helper for parameterized type '%s'.";
     private static final String MAPPER003 = "JSONMapper/003: JSON<->Java. Could not find a mapper helper for class '%s'.";
 
-    // The OBJMAPPING option indicates whether property mapping of field mapping will be used.
+    /**
+     * The OBJMAPPING option indicates whether property mapping of field mapping will be used.
+     */
     public static final String OPT_OBJMAPPING = "com.sdicons.json.mapper.helper.impl.ObjectMapperMeta";
     public static final String OBJMAPPING_FIELD = "field";
     public static final String OBJMAPPING_PROPERTY = "property";
-    // The Date format the JSON text.
+    /**
+     * The Date format the JSON text.
+     */
     public static final String OPT_DATEFORMAT = "com.sdicons.json.mapper.helper.impl.DateMapper";
     public static final String DATEFORMAT_DEFAULT = "yyyy-MM-dd HH:mm:ss";
-
 
     private ClassHelperRepository<ClassMapper> repo = new ClassHelperRepository<ClassMapper>();
     private Map<String, Object> options = new HashMap<String, Object>();
@@ -134,92 +137,92 @@ public class JSONMapper
     }
 
     /**
-     *  Map a JSON representation to a Java object.
-     * @param aValue The JSON value that has to be mapped.
-     * @param aGenericType A type indication to help the mapper map the JSON text.
+     * Map a JSON representation to a Java object.
+     * @param json The JSON value that has to be mapped.
+     * @param genericType A type indication to help the mapper map the JSON text.
      * @return The resulting Java POJO.
      * @throws MapperException When the JSON text cannot be mapped to POJO.
      */
-    public Object toJava(JSONValue aValue, ParameterizedType aGenericType)
+    public Object toJava(JSONValue json, ParameterizedType genericType)
     throws MapperException
     {
         // Null references are not allowed.
-        if(aValue == null)
+        if(json == null)
         {
             throw new MapperException(MAPPER001);
         }
         // But null representations are.
-        else if(aValue.isNull()) return null;
+        else if(json.isNull()) return null;
 
         // First decompose the type in its raw class and the classes of the parameters.
-        final Class<?> lRawClass = (Class<?>) aGenericType.getRawType();
-        final Type[] lTypes = aGenericType.getActualTypeArguments();
+        final Class<?> lRawClass = (Class<?>) genericType.getRawType();
+        final Type[] lTypes = genericType.getActualTypeArguments();
 
         // Find someone who can map it.
         final ClassMapper lMapperHelper = repo.findHelper(lRawClass);
 
         if(lMapperHelper == null)
         {
-            throw new MapperException(String.format(MAPPER002, aGenericType.toString()));
+            throw new MapperException(String.format(MAPPER002, genericType.toString()));
         }
         else
         {
-            if(lMapperHelper instanceof ComplexMapperHelper) return ((ComplexMapperHelper) lMapperHelper).toJava(this, aValue, lRawClass, lTypes);
-            else return lMapperHelper.toJava(this, aValue, lRawClass);
+            if(lMapperHelper instanceof ComplexClassMapper) return ((ComplexClassMapper) lMapperHelper).toJava(this, json, lRawClass, lTypes);
+            else return lMapperHelper.toJava(this, json, lRawClass);
         }
     }
 
     /**
      * Map a JSON representation to a Java object. Since no class nor type hint is passed to the
      * mapper, this method can only handle the most basic mappings.
-     * @param aValue The JSON value that has to be mapped.
+     * @param json The JSON value that has to be mapped.
      * @return he resulting Java POJO.
      * @throws MapperException When the JSON text cannot be mapped to POJO.
      */
-    public Object toJava(JSONValue aValue)
+    public Object toJava(JSONValue json)
     throws MapperException
     {
-        if(aValue.isArray()) return toJava(aValue, LinkedList.class);
-        else if(aValue.isBoolean()) return toJava(aValue, Boolean.class);
-        else if(aValue.isDecimal()) return toJava(aValue, BigDecimal.class);
-        else if(aValue.isInteger()) return toJava(aValue, BigInteger.class);
-        else if(aValue.isString()) return toJava(aValue, String.class);
-        else return toJava(aValue, Object.class);
+        if(json.isArray()) return toJava(json, LinkedList.class);
+        else if(json.isBoolean()) return toJava(json, Boolean.class);
+        else if(json.isDecimal()) return toJava(json, BigDecimal.class);
+        else if(json.isInteger()) return toJava(json, BigInteger.class);
+        else if(json.isString()) return toJava(json, String.class);
+        else return toJava(json, Object.class);
     }
 
     /**
      * Map a POJO to the JSON representation.
-     * @param aPojo to be mapped to JSON.
+     * @param pojo to be mapped to JSON.
      * @return The JSON representation.
      * @throws MapperException If something goes wrong during mapping.
      */
-    public JSONValue toJSON(Object aPojo)
+    public JSONValue toJSON(Object pojo)
     throws MapperException
     {
-        if(aPojo == null) return JSONNull.NULL;
-        final Class<?> lObjectClass =  aPojo.getClass();
+        if(pojo == null) return JSONNull.NULL;
+        final Class<?> lObjectClass =  pojo.getClass();
         if(lObjectClass.isArray()){
             final ArrayMapper arrayMapper = new ArrayMapper();
-        	return arrayMapper.toJSON(this, aPojo);
+        	return arrayMapper.toJSON(this, pojo);
         }
 
-        final ClassMapper lHelperSimple = repo.findHelper(aPojo.getClass());
+        final ClassMapper lHelperSimple = repo.findHelper(pojo.getClass());
 
         if(lHelperSimple == null)
         {
-            throw new MapperException(String.format(MAPPER003, aPojo.getClass().getName()));
+            throw new MapperException(String.format(MAPPER003, pojo.getClass().getName()));
         }
-        return lHelperSimple.toJSON(this, aPojo);
+        return lHelperSimple.toJSON(this, pojo);
     }
 
     /**
      * Add custom helper class.
      *
-     * @param aHelper the custom helper you want to add to the mapper.
+     * @param helper the custom helper you want to add to the mapper.
      */
-    public void addHelper(ClassMapper aHelper)
+    public void addHelper(ClassMapper helper)
     {
-        repo.addHelper(aHelper);
+        repo.addHelper(helper);
     }
 
     /**
@@ -244,15 +247,37 @@ public class JSONMapper
         setMappingOption(OPT_OBJMAPPING, JSONMapper.OBJMAPPING_PROPERTY);
     }
 
+    /**
+     * Add a mapping option. The mapping options are passed to all the class mappers, this is the
+     * way to configure the class mappers. It can influence the mapping behavior.
+     *
+     * @param key The name of the option.
+     * @param value The value of the option.
+     */
     public void setMappingOption(String key, Object value) {
         options.put(key,  value);
     }
 
+    /**
+     * Get the value of a mapping option.
+     * If you write your own parameterized mapper you can use this method to fetch the parameters.
+     *
+     * @param key The option name.
+     * @param defaultValue The default value that will be returned if the option is not set.
+     * @return The value of the option or the default value if the option was not set explicitly.
+     */
     public Object getMappingOption(String key, Object defaultValue) {
         if(options.containsKey(key)) return options.get(key);
         else return defaultValue;
     }
 
+    /**
+     * Check to see if an option was set explicitly or not.
+     * If you write your own parameterized mapper, it can check its options using this method.
+     *
+     * @param key The option name.
+     * @return A boolean indicating whether the option was explicitly set or not.
+     */
     public boolean hasMappingOption(String key) {
         return options.containsKey(key);
     }
