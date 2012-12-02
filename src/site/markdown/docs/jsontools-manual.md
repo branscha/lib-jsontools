@@ -34,11 +34,11 @@ This project wants to provide the tools to manipulate and use the format in a Ja
 
 The JSON Tools library is the result of many suggestions, contributions and reviews from the users. Without the feedback the library would not be as versatile and stable as it is today. Thank you for all the feedback that makes the library better.
 
-## 1.4. License
+## 1.3. License
 
 The library is released under the free MIT license.
 
-## 1.5. JSON Extensions
+## 1.4. JSON Extensions
 
 Comments. I added line comments which start with "\#". It is easier for the examples to be able to put comments in the file. The comments are not retained, they are skipped and ignored.
 
@@ -105,7 +105,7 @@ This list could be interpreted as a list of Strings, but also as a list of Dates
 
 ### The mapping process ###
 
-The mapper uses a repository of helpers. Each helper is specialized in mapping instances of a certain class or interface. The mappers are organized in the repository in a hierarchical way, ordered according to the class hierarchy. When mapping an object, the mapper will try to find the most specific helper available. The default hierarchy looks like this:
+The mapper uses a repository of class mappers. Each class mapper is specialized in mapping instances of a certain class or interface. The mappers are organized in the repository in a hierarchical way, ordered according to the class hierarchy. When mapping an object, the mapper will try to find the most specific class mapper available. The default hierarchy looks like this:
 
 	// Calling this method:
 	System.out.println(mapper.getRepository().prettyPrint());
@@ -129,16 +129,16 @@ The mapper uses a repository of helpers. Each helper is specialized in mapping i
 	
 The basic Java types (byte, int, char, ..., arrays) are handled internally by the mapper, no helpers are used for this. For all reference types, the repository is used to find an appropriate handler. If there is no specific helper available, the mapper will eventually use the root mapper. Currently there are two flavors available of the root mapper that handles java.lang.Object.
 
-*  ObjectMapper is the default helper for objects that have no specific helper. It tries to access the object as a JavaBean. The object has to have an empty constructor, and the helper will only look at the getters/setters to retrieve the contents of the bean. This helper is the default root helper for compatibility reasons with earlier versions of the JSON Tools. The JavaBean helper can be explicitly activated by calling the method JSONMapper.useJavaBeanAccess().
-*  ObjectMaperDirect is optional, this helper will access the fields directly, no getters or setters are needed. The fields can even be private. This POJO helper can be activated by calling the method JSONMapper.usePojoAccess();.
+*  ObjectMapperProps is the default helper for objects that have no specific helper. It tries to access the object as a JavaBean. The object has to have an empty constructor, and the helper will only look at the getters/setters to retrieve the contents of the bean. This helper is the default root helper for compatibility reasons with earlier versions of the JSON Tools. The JavaBean helper can be explicitly activated by calling the method JSONMapper.useJavaBeanAccess().
+*  ObjectMaperFields is optional, this helper will access the fields directly, no getters or setters are needed. The fields can even be private. This POJO helper can be activated by calling the method JSONMapper.usePojoAccess();.
 
 
 It is also possible to add your own mapper helpers to the repository. As you can see, the default repository is only two levels deep, but it can be much more specialized according to the business needs. There are two different ways to create a helper or to influence the mapping process.
 
 *  @JSONConstructorArgs, @JSONConstructor. If the ObjectHelperDirect is activated as described above, then the class that you want to map can simply annotate two methods with these annotations. The @JSONConstructorArgs annotation has to be used to mark a method that returns an object array. This method will be called by the mapping process when an instance of the class is mapped from the Java model to JSON. These values will be used by the mapper when the instance is mapped from JSON to Java by invoking the constructor that is annotated with the @JSONConstructor annotation.
-*  Another way to create a helper is to create a new class, derived from SimpleMapperHelper, and add it to the mapper repository by calling the method JSONMapper.addHelper(myHelper).
+*  Another way to create a helper is to create a new class, derived from ClassMapper, and add it to the mapper repository by calling the method JSONMapper.addHelper(myHelper).
 
-Here is an example of an annotated class. It is the first solution, in combination with ObjectMapperDirect. Do not forget to activate the POJO mapper.
+Here is an example of an annotated class. It is the first solution, in combination with ObjectMapperFields. Do not forget to activate the POJO mapper.
 
 	public class MyDate
 	{
@@ -177,7 +177,7 @@ Both mapping tool and serialization tool (this section) can be used to convert J
 *  The content of the JSON text can contain meta information which can help de-serialization. We are allowed to add extra information in the JSON text in order to accomplish the other goals.
 
 
-This tool enables you to render POJO's to a JSON file. It is similar to the XML serialization in Java or the XML Stream library, but it uses the JSON format. The result is a very fast text serialization, you can customize it if you want.  The code is based on the SISE project, it was adjusted to make use of and benefit from the JSON format. Marshaling (converting from Java to JSON) as well as un-marshaling is very straightforward:
+This tool enables you to render POJO's to a JSON file. It is similar to the XML serialization in Java or the XML Stream library, but it uses the JSON format. The result is a very fast text serialization, you can customize it if you want. Marshaling (converting from Java to JSON) as well as un-marshaling is very straightforward:
 
 	import com.sdicons.json.serializer.marshal.*;
 	...
@@ -190,10 +190,10 @@ And the other way around:
 	import com.sdicons.json.serializer.marshal.*;
 	...
 	JSONObject myJSONObject = ...
-	JSONSerializeValue lResult = marshal.unmarshal(myJSONObject);
+	SerializerValue lResult = marshal.unmarshal(myJSONObject);
 	... = lResult.getReference()
 
-You might wonder what the JSONSerializeValue is all about, why is un-marshaling giving an extra object back? The answer is that we went to great lengths to provide marshaling or un-marshaling for both Java reference types as Java basic types. A basic type needs to be fetched using specific methods (there is no other way). In order to provide these specific methods we need an extra class.
+You might wonder what the SerializerValue is all about, why is un-marshaling giving an extra object back? The answer is that we went to great lengths to provide marshaling or un-marshaling for both Java reference types as Java basic types. A basic type needs to be fetched using specific methods (there is no other way). In order to provide these specific methods we need an extra class.
 
 ### Primitive Types ###
 
@@ -207,7 +207,7 @@ The ">"  attribute with value "P"  indicates a primitive type. The "="  attribut
 
 ### Reference Types ###
 
-An array is defined recursively like this. We can see the ``>'' attribute this time with the "A"  value, indicating that the object represents an array. The "C" attribute contains the type representation for arrays as it is defined in Java. The ``=''  attribute contains a list of the values.
+An array is defined recursively like this. We can see the ">" attribute this time with the "A"  value, indicating that the object represents an array. The "C" attribute contains the type representation for arrays as it is defined in Java. The "="  attribute contains a list of the values.
 
 	{ ">" : "A",
 	  "c" : "I",
@@ -263,7 +263,7 @@ An object is represented like this.
 	          "&" : "id1",
 	          "=" : "1003" } } }
 
-The ``>'' marker contains "O" for object this time. The "C" attribute contains a fully qualified class name. The ``\&'' contains a unique id, it can be used to refer to the object so that we are able to represent recursive data structures. The ``=''  attribute contains a JSON object having a property for each JavaBean property.  The property value is recursively a representation of a Java object. Note that there is a special notation to represent Java null values.
+The ">" marker contains "O" for object this time. The "C" attribute contains a fully qualified class name. The "\&" contains a unique id, it can be used to refer to the object so that we are able to represent recursive data structures. The "="  attribute contains a JSON object having a property for each JavaBean property.  The property value is recursively a representation of a Java object. Note that there is a special notation to represent Java null values.
 
 	{ ">" : "null" }
 
@@ -276,14 +276,13 @@ Also note that you can refer to other objects with the reference object which lo
 
 The serialization process uses the same mechanism as the mapping process, but the repository contains serialization helpers in stead of mapping helpers. There are also two different flavors of root serializers available:
 
-*  ObjectHelper Serializes an instance as a JavaBean. This is the default for compatibility reasons. You can explicitly activate it by calling ((JSONSerializer) marshal).useJavaBeanAccess().
-*  ObjectHelperDirect Serializes an instance as a POJO. You an activate this by calling the method ((JSONSerializer) marshal).usePojoAccess().
-
+*  ObjectSerializerPrps Serializes an instance as a JavaBean. This is the default for compatibility reasons. You can explicitly activate it by calling ((JSONSerializer) marshal).useJavaBeanAccess().
+*  ObjectSerializerFields Serializes an instance as a POJO. You an activate this by calling the method ((JSONSerializer) marshal).usePojoAccess().
 
 You can customize the serializer for your own business model in two ways.
 
-*  @JSONConstructorArgs, @JSONConstructor in combination with the ObjectHelperDirect.
-*  Deriving your own helper class from SerializeHelper and adding it with the method call  ((JSONSerializer) marshal).addHelper(myHelper).
+*  @JSONConstructorArgs, @JSONConstructor in combination with the ObjectSerializerFields.
+*  Deriving your own helper class from ClassSerializer and adding it with the method call  ((JSONSerializer) marshal).addHelper(myHelper).
 
 Here is an example of an annotated class.
 
@@ -510,7 +509,7 @@ Note that in contrast with the "properties" rule (for objects), you can specify 
 
 This predicate is only applicable (and only has meaning) on object data structures. It will fail on any other type.
 
-*  **pairs** A list of ``key/value'' pair descriptions. Note that in contrast with the content rule above you can specify a rule per attribute. Each description contains three properties:  
+*  **pairs** A list of "key/value" pair descriptions. Note that in contrast with the content rule above you can specify a rule per attribute. Each description contains three properties:  
 *  **key** The key string. 
 *  **optional** A boolean indicating whether this property is optional or not. 
 *  **rule** A validation rule that should be applied to the properties value. 

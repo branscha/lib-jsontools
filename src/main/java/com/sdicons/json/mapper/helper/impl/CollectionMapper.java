@@ -17,12 +17,12 @@ import java.util.TreeSet;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.mapper.helper.ComplexMapperHelper;
+import com.sdicons.json.mapper.helper.ComplexClassMapper;
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONValue;
 
 public class CollectionMapper
-implements ComplexMapperHelper
+implements ComplexClassMapper
 {
     private static final String COLL001 = "JSONMapper/CollectionMapper/001: JSON->Java. Cannot map class JSON '%s' to Java Collection.";
     private static final String COLL002 = "JSONMapper/CollectionMapper/002: Java->JSON. Cannot map Java class '%s' to JSONArray.";
