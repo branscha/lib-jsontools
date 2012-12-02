@@ -34,11 +34,11 @@ This project wants to provide the tools to manipulate and use the format in a Ja
 
 The JSON Tools library is the result of many suggestions, contributions and reviews from the users. Without the feedback the library would not be as versatile and stable as it is today. Thank you for all the feedback that makes the library better.
 
-## 1.4. License
+## 1.3. License
 
 The library is released under the free MIT license.
 
-## 1.5. JSON Extensions
+## 1.4. JSON Extensions
 
 Comments. I added line comments which start with "\#". It is easier for the examples to be able to put comments in the file. The comments are not retained, they are skipped and ignored.
 
@@ -207,7 +207,7 @@ The ">"  attribute with value "P"  indicates a primitive type. The "="  attribut
 
 ### Reference Types ###
 
-An array is defined recursively like this. We can see the ``>'' attribute this time with the "A"  value, indicating that the object represents an array. The "C" attribute contains the type representation for arrays as it is defined in Java. The ``=''  attribute contains a list of the values.
+An array is defined recursively like this. We can see the ">" attribute this time with the "A"  value, indicating that the object represents an array. The "C" attribute contains the type representation for arrays as it is defined in Java. The "="  attribute contains a list of the values.
 
 	{ ">" : "A",
 	  "c" : "I",
@@ -263,7 +263,7 @@ An object is represented like this.
 	          "&" : "id1",
 	          "=" : "1003" } } }
 
-The ``>'' marker contains "O" for object this time. The "C" attribute contains a fully qualified class name. The ``\&'' contains a unique id, it can be used to refer to the object so that we are able to represent recursive data structures. The ``=''  attribute contains a JSON object having a property for each JavaBean property.  The property value is recursively a representation of a Java object. Note that there is a special notation to represent Java null values.
+The ">" marker contains "O" for object this time. The "C" attribute contains a fully qualified class name. The "\&" contains a unique id, it can be used to refer to the object so that we are able to represent recursive data structures. The "="  attribute contains a JSON object having a property for each JavaBean property.  The property value is recursively a representation of a Java object. Note that there is a special notation to represent Java null values.
 
 	{ ">" : "null" }
 
@@ -510,7 +510,7 @@ Note that in contrast with the "properties" rule (for objects), you can specify 
 
 This predicate is only applicable (and only has meaning) on object data structures. It will fail on any other type.
 
-*  **pairs** A list of ``key/value'' pair descriptions. Note that in contrast with the content rule above you can specify a rule per attribute. Each description contains three properties:  
+*  **pairs** A list of "key/value" pair descriptions. Note that in contrast with the content rule above you can specify a rule per attribute. Each description contains three properties:  
 *  **key** The key string. 
 *  **optional** A boolean indicating whether this property is optional or not. 
 *  **rule** A validation rule that should be applied to the properties value. 
