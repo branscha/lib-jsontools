@@ -35,6 +35,7 @@ import com.sdicons.json.mapper.helper.impl.StringMapper;
 import com.sdicons.json.model.JSONNull;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.repository.ClassHelperRepository;
+import com.sdicons.json.serializer.JSONSerializer;
 
 /**
  * The mapper class is able to convert a JSON representation to/from a Java
@@ -50,17 +51,17 @@ import com.sdicons.json.repository.ClassHelperRepository;
  * JSON data where the mapper uses the type information in the provided Java
  * classes to interpret the JSON data.
  *
- * Example: The Java model
+ * <br>Example: The Java model
  *
  * <pre>
  * <code>
- *     public class Person {
- *     private String name;
- *     private String phoneNumber;
- *     private int age;
- *     // Getters and setters omitted.
- *     // ...
- *     }
+ * public class Person {
+ *   private String name;
+ *   private String phoneNumber;
+ *   private int age;
+ *   // Getters and setters omitted.
+ *   // ...
+ * }
  * </code>
  * </pre>
  *
@@ -68,15 +69,15 @@ import com.sdicons.json.repository.ClassHelperRepository;
  *
  * <pre>
  * <code>
- *     // Create a person.
- *     Person p = new Person();
- *     p.setName(&quot;Mr. Jason Tools&quot;);
- *     p.setPhoneNumber(&quot;0123456789&quot;);
- *     p.setAge(40);
- *     // Map and print.
- *     JSONMapper mapper = new JSONMapper();
- *     JSONValue json = mapper.toJSON(p);
- *     System.out.println(json.render(true));
+ * // Create a person.
+ * Person p = new Person();
+ * p.setName(&quot;Mr. Jason Tools&quot;);
+ * p.setPhoneNumber(&quot;0123456789&quot;);
+ * p.setAge(40);
+ * // Map and print.
+ * JSONMapper mapper = new JSONMapper();
+ * JSONValue json = mapper.toJSON(p);
+ * System.out.println(json.render(true));
  * </code>
  * </pre>
  *
@@ -91,6 +92,8 @@ import com.sdicons.json.repository.ClassHelperRepository;
  * }
  * </code>
  * </pre>
+ *
+ * @see JSONSerializer
  */
 public class JSONMapper
 {
