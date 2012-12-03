@@ -8,6 +8,7 @@ package com.sdicons.json.serializer;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.repository.ClassHelperRepository;
@@ -44,6 +45,75 @@ import com.sdicons.json.serializer.helper.impl.StringSerializer;
  * * The main difference between the serializer and the mapper is that the serializer keeps as much
  * type information and structure information in the JSON data where the mapper uses the type information
  * in the provided Java classes to interpret the JSON data.
+ *
+ * <br>Example: The Java model
+ *
+ * <pre>
+ * <code>
+ * public class Person {
+ *   private String name;
+ *   private String phoneNumber;
+ *   private int age;
+ *   // Getters and setters omitted.
+ *   // ...
+ * }
+ * </code>
+ * </pre>
+ *
+ * The mapping code
+ *
+ * <pre>
+ * <code>
+ * // Create a person.
+ * Person p = new Person();
+ * p.setName(&quot;Mr. Jason Tools&quot;);
+ * p.setPhoneNumber(&quot;0123456789&quot;);
+ * p.setAge(40);
+ * // Map and print.
+ * JSONSerializer serializer = new JSONSerializer();
+ * JSONValue json = serializer.marshal(p);
+ * System.out.println(json.render(true));
+ * </code>
+ * </pre>
+ *
+ * The resulting JSON text
+ *
+ * <pre>
+ * <code>
+ * {
+ *    ">" : "O",
+ *    "&" : "id0",
+ *    "c" : "com.sdicons.json.examples.Person",
+ *    "=" :
+ *       {
+ *          "age" :
+ *             {
+ *                ">" : "O",
+ *                "&" : "id1",
+ *                "c" : "java.lang.Integer",
+ *                "=" : "40"
+ *             },
+ *          "name" :
+ *             {
+ *                ">" : "O",
+ *                "&" : "id2",
+ *                "c" : "java.lang.String",
+ *                "=" : "Mr. Jason Tools"
+ *             },
+ *          "phoneNumber" :
+ *             {
+ *                ">" : "O",
+ *                "&" : "id3",
+ *                "c" : "java.lang.String",
+ *                "=" : "0123456789"
+ *             }
+ *       }
+ * }
+ * </code>
+ * </pre>
+ *
+ *  @see JSONMapper
+ *
  */
 public class JSONSerializer
 {
