@@ -8,9 +8,9 @@ package com.sdicons.json.serializer;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sdicons.json.helper.ClassHelperRepository;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
+import com.sdicons.json.repository.ClassHelperRepository;
 import com.sdicons.json.serializer.helper.ClassSerializer;
 import com.sdicons.json.serializer.helper.impl.ArraySerializer;
 import com.sdicons.json.serializer.helper.impl.BigDecimalSerializer;

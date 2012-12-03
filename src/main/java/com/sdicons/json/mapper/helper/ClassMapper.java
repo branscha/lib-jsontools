@@ -5,10 +5,10 @@
  ******************************************************************************/
 package com.sdicons.json.mapper.helper;
 
-import com.sdicons.json.helper.ClassHelper;
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.model.JSONValue;
+import com.sdicons.json.repository.ClassHelper;
 
 /**
  * It is a ClassHelper which knows how to map the instances of a range of classes from JSON to Java and vice versa.

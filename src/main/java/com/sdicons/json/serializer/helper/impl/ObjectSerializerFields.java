@@ -15,8 +15,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import com.sdicons.json.helper.JSONConstructor;
-import com.sdicons.json.helper.JSONConstructorArgs;
+import com.sdicons.json.annotations.JSONConstructor;
+import com.sdicons.json.annotations.JSONConstructorArgs;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.serializer.JSONSerializer;
