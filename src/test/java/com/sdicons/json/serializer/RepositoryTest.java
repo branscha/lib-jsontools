@@ -11,8 +11,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sdicons.json.helper.ClassHelperRepository;
 import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.repository.ClassHelperRepository;
 import com.sdicons.json.serializer.helper.ClassSerializer;
 import com.sdicons.json.serializer.helper.impl.BooleanSerializer;
 import com.sdicons.json.serializer.helper.impl.ByteSerializer;

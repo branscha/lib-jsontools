@@ -3,7 +3,7 @@
  * Released under the MIT License: http://opensource.org/licenses/MIT
  * Library "jsontools"
  ******************************************************************************/
-package com.sdicons.json.helper;
+package com.sdicons.json.repository;
 
 import java.util.Iterator;
 import java.util.LinkedList;

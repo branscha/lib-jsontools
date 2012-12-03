@@ -11,8 +11,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.sdicons.json.helper.JSONConstructor;
-import com.sdicons.json.helper.JSONConstructorArgs;
+import com.sdicons.json.annotations.JSONConstructor;
+import com.sdicons.json.annotations.JSONConstructorArgs;
 import com.sdicons.json.model.JSONObject;
 
 public class UsersJavaBeanTest

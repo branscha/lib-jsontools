@@ -3,7 +3,7 @@
  * Released under the MIT License: http://opensource.org/licenses/MIT
  * Library "jsontools"
  ******************************************************************************/
-package com.sdicons.json.helper;
+package com.sdicons.json.repository;
 
 /**
  * It represents some kind of functionality that is associated with a class. 

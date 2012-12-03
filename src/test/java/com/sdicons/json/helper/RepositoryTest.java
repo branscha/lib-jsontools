@@ -9,6 +9,9 @@ import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import com.sdicons.json.repository.ClassHelper;
+import com.sdicons.json.repository.ClassHelperRepository;
+
 public class RepositoryTest {
 
     // A <-- B <-- C <-- D1 <-- E11

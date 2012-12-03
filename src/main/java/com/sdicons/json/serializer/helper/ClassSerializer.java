@@ -7,8 +7,8 @@ package com.sdicons.json.serializer.helper;
 
 import java.util.HashMap;
 
-import com.sdicons.json.helper.ClassHelper;
 import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.repository.ClassHelper;
 import com.sdicons.json.serializer.SerializerException;
 import com.sdicons.json.serializer.JSONSerializer;
 

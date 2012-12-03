@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.sdicons.json.helper.ClassHelperRepository;
 import com.sdicons.json.mapper.helper.ClassMapper;
 import com.sdicons.json.mapper.helper.ComplexClassMapper;
 import com.sdicons.json.mapper.helper.impl.ArrayMapper;
@@ -35,6 +34,7 @@ import com.sdicons.json.mapper.helper.impl.ShortMapper;
 import com.sdicons.json.mapper.helper.impl.StringMapper;
 import com.sdicons.json.model.JSONNull;
 import com.sdicons.json.model.JSONValue;
+import com.sdicons.json.repository.ClassHelperRepository;
 
 /**
  * The mapper class is able to convert a JSON representation to/from a Java
