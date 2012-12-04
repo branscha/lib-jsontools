@@ -1,0 +1,15 @@
+<html>
+<body>
+<p>
+A framework to parse and render JSON text to the JSON object model; Map the JSON model to your Java model; Validate the JSON data structures.
+JSON (JavaScript Object Notation) is a file format to represent data.  JSON is a very simple format. As a result, the parsing and rendering is fast and easy, you can concentrate on the content of the file in stead of the format. In XML it is often difficult to fully understand all features (e.g. name spaces, validation, ...). As a result, XML tends to become part of the problem i.s.o. the solution. In JSON everything is well defined, all aspects of the representation are clear, you can concentrate on how you are going to represent your application concepts.
+<p>
+Following tools are available:
+<ul>
+ <li>{@link com.sdicons.json.parser.JSONParser}: Parse JSON text files and convert these to a Java model.</li>
+ <li>{@link com.sdicons.json.serializer.JSONSerializer}: Serialize plain POJO clusters to a JSON representation. The goal is to provide a serializing mechanism which can cope with all kinds of Java datastructures (recursion, references, primitive types, ...) .</li>
+ <li>{@link com.sdicons.json.mapper.JSONMapper}: Map POJO to JSON, this time the JSON text should be as clean as possible. This tool is the best choice when data has to be communicated between Java and other programming languages who can parse JSON.</li>
+ <li>{@link com.sdicons.json.validator.JSONValidator}: Validate the contents of a JSON file using a JSON schema.</li>
+</ul>
+</body>
+</html>
