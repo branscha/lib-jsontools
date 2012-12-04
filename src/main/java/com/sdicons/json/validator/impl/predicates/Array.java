@@ -9,6 +9,9 @@ import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
+/** 
+ * A predicate to check if a JSON value is an array.
+ */
 public class Array
 extends Predicate
 {

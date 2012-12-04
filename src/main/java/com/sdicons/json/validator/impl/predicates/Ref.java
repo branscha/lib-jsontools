@@ -14,6 +14,11 @@ import com.sdicons.json.model.JSONString;
 
 import java.util.HashMap;
 
+/**
+ * A rule that uses a named rule that was defined earlier. This feature lets you define
+ * rules first and then use these rules in more complex constructs.
+ * Note that the rule name has to exist at validation time, not at creation time.
+ */
 public class Ref
 extends Predicate
 {

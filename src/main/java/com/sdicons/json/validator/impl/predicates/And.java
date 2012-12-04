@@ -33,6 +33,8 @@ extends Predicate
      * @param aRule
      *        The JSON object that contains information about this rule.
      * @param aRuleset
+     *        The set of named validation rules that were already encountered, they can 
+     *        be used recursively.
      * @throws ValidationException
      */
     public And(String aName, JSONObject aRule, HashMap<String,Validator> aRuleset)
@@ -49,6 +51,9 @@ extends Predicate
         }
     }
 
+    /**
+     * Execute the And predicate.
+     */
     public void validate(JSONValue aValue)
     throws ValidationException
     {

@@ -15,6 +15,11 @@ import com.sdicons.json.model.JSONArray;
 import java.util.HashMap;
 import java.util.Iterator;
 
+/**
+ * A predicate that checks if all elements of a complex JSON structure JSONObject or 
+ * JSONArray comply to another named predicate.
+ * It is a predicate to put a restriction on the elements of a JSON object.
+ */
 public class Content
 extends Predicate
 {

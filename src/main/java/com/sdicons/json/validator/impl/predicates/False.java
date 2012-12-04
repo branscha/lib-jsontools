@@ -9,6 +9,9 @@ import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.model.JSONObject;
 
+/**
+ * This rule always fails. We have to include it to make our logic complete.
+ */
 public class False
 extends Predicate
 {
