@@ -5,10 +5,30 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
-import com.sdicons.json.model.*;
+import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONInteger;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.impl.ValidatorUtil;
 
+/**
+ * A bounds check on the number of elements in a {@link JSONArray}, the length of a {@link JSONString} or the number of properties in a {@link JSONObject}.
+ * <p>
+ * An example of a length validator. The JSONValue must be an array and it must have an exact length of 5.
+ *
+ * <pre>
+ * <code>
+ * {
+ *    "name"  :"Array of length 5",
+ *    "type"  :"and",
+ *    "rules" : [{"type":"array"}, {"type":"length","min":5,"max":5}]
+ * }
+ * </code>
+ * </pre>
+ *
+ */
 public class Length
 extends Predicate
 {

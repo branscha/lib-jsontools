@@ -564,6 +564,18 @@ Example
 	      {"name":"a", "type":"regexp", "pattern":"a*"},
 	      {"name":"b", "type":"regexp", "pattern":"b*" } ] }
 
+#### "type":"custom"
+
+An instance of this validator will be created and will be given a hash map of validations.  A custom validator should be derived from CustomValidator.
+
+
+*  **class** The fully qualified class name of the validator.}
+
+Example
+
+	{ "name" :"Custom test",
+	  "type" :"custom",
+	  "class" : "com.sdicons.json.validator.MyValidator" }
 
 The validator class looks like this:
 
@@ -588,19 +600,6 @@ The validator class looks like this:
 	        // to throw the Validation exception for you.
 	    }
 	}
-
-#### "type":"custom"
-
-An instance of this validator will be created and will be given a hash map of validations.  A custom validator should be derived from CustomValidator.
-
-
-*  **class** The fully qualified class name of the validator.}
-
-Example
-
-	{ "name" :"Custom test",
-	  "type" :"custom",
-	  "class" : "com.sdicons.json.validator.MyValidator" }
 
 #### "type":"switch"
 

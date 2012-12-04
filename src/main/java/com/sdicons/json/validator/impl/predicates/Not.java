@@ -5,14 +5,18 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
+import java.util.HashMap;
+
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.Validator;
 import com.sdicons.json.validator.impl.ValidatorUtil;
 
-import java.util.HashMap;
-
+/**
+ * This predicate is a negation of another one.
+ *
+ */
 public class Not
 extends Predicate
 {

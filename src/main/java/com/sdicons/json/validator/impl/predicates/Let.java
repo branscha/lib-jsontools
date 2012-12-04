@@ -5,17 +5,44 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
-import com.sdicons.json.validator.Validator;
-import com.sdicons.json.validator.ValidationException;
-import com.sdicons.json.validator.impl.ValidatorUtil;
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONArray;
-import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.model.JSONString;
-
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 
+import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
+import com.sdicons.json.validator.ValidationException;
+import com.sdicons.json.validator.Validator;
+import com.sdicons.json.validator.impl.ValidatorUtil;
+
+/**
+ * It is a convenience rule that lets you specify a list of global shared
+ * validation rules in advance before using these later on. It becomes possible
+ * to first define a number of recurring types and then give the starting point.
+ * It is a utility rule that lets you tackle more complex validations. Note that
+ * it makes no sense to define anonymous rules inside the list, it is impossible
+ * to refer to these later on.
+ * <p>
+ * In this example we create a rule that matches a's or b's but not a mix of the
+ * two. In order to make the definition of our predicate a bit easier we make
+ * use of named sub rules.
+ *
+ * <pre>
+ *  <code>
+ * {
+ *   "name" :"Let test -  a's or b's",
+ *   "type" :"let",
+ *   "*" : "start",
+ *   "rules" : [{"name":"start", "type":"or", "rules":[{"type":"ref", "*":"a"}, {"type":"ref", "*":"b"}]},
+ *              {"name":"a", "type":"regexp", "pattern":"a*"},
+ *              {"name":"b", "type":"regexp", "pattern":"b*"}
+ *             ]
+ * }
+ * </code>
+ * </pre>
+ *
+ */
 public class Let
 extends Predicate
 {

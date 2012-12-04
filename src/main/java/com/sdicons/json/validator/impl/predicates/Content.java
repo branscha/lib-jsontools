@@ -5,20 +5,33 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
-import com.sdicons.json.validator.Validator;
-import com.sdicons.json.validator.ValidationException;
-import com.sdicons.json.validator.impl.ValidatorUtil;
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.model.JSONArray;
-
 import java.util.HashMap;
 import java.util.Iterator;
 
+import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONValue;
+import com.sdicons.json.validator.ValidationException;
+import com.sdicons.json.validator.Validator;
+import com.sdicons.json.validator.impl.ValidatorUtil;
+
 /**
- * A predicate that checks if all elements of a complex JSON structure JSONObject or 
+ * A predicate that checks if all elements of a complex JSON structure JSONObject or
  * JSONArray comply to another named predicate.
  * It is a predicate to put a restriction on the elements of a JSON object.
+ * <p>
+ * An example of a content validator. The JSONValue must be an array and it must contain integers.
+ *
+ * <pre>
+ * <code>
+ * {
+ *    "name" :"List of integers",
+ *    "type" :"and",
+ *    "rules" : [{"type":"array"},{"type":"content","rule":{"type":"int"}}]
+ * }
+ * </code>
+ * </pre>
+ *
  */
 public class Content
 extends Predicate

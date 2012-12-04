@@ -18,6 +18,28 @@ import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.Validator;
 import com.sdicons.json.validator.impl.ValidatorUtil;
 
+/**
+ * Predicate to subject the properties of a {@link JSONObject} to some tests.
+ * <ul>
+ *    <li>We can indicate if a property is optional or not.</li>
+ *    <li>we can subject each property to a separate validator rule.</li>
+ * </ul>
+ * <p>
+ * Example
+ *
+ * <pre>
+ * <code>
+ * {
+ *    "name" :"Contact spec.",
+ *    "type" :"properties",
+ *    "pairs" : [{"key":"name", "optional":false, "rule":{"type":"string"}},
+ *               {"key":"country", "optional":false, "rule":{"type":"string"}},
+ *               {"key":"salary", "optional":true, "rule":{"type":"decimal"}}
+ *              ]
+ * }
+ * </code>
+ * </pre>
+ */
 public class Properties
 extends Predicate
 {

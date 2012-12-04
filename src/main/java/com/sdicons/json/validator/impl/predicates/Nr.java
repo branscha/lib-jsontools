@@ -5,10 +5,16 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
+import com.sdicons.json.model.JSONDecimal;
+import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
+/**
+ * A predicate to test if a {@link JSONValue} is a number representation, in JSON there are two viz. {@link JSONInteger}  and {@link JSONDecimal}.
+ *
+ */
 public class Nr
 extends Predicate
 {

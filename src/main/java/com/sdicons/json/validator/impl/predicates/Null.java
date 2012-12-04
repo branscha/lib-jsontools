@@ -5,6 +5,9 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
+/**
+ * A predicate to test if a {@link JSONValue} is the {@link JSONNull}.
+ */
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
