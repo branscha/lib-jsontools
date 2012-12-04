@@ -5,16 +5,29 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
 import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.impl.ValidatorUtil;
 
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-import java.util.regex.Matcher;
 
+/**
+ * Test if a {@link JSONString}  matches a regexp pattern.
+ * <p>
+ * <pre>
+ * <code>
+ * { "name" :"A-B-C validator",
+ *   "type" :"regexp",
+ *   "pattern" : "a*b*c*" }
+ * </code>
+ * </pre>
+ *
+ */
 public class Regexp
 extends Predicate
 {

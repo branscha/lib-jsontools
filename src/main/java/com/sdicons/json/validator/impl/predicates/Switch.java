@@ -5,18 +5,37 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
-import com.sdicons.json.validator.Validator;
-import com.sdicons.json.validator.ValidationException;
-import com.sdicons.json.validator.impl.ValidatorUtil;
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONArray;
-import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.model.JSONString;
 
-import java.util.List;
-import java.util.LinkedList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
+import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
+import com.sdicons.json.validator.ValidationException;
+import com.sdicons.json.validator.Validator;
+import com.sdicons.json.validator.impl.ValidatorUtil;
+
+/**
+ * The switch validator is a convenience one. It is a subset of the or validator, but the problem with the or validator is
+ * that it does a bad job for error reporting when things go wrong.
+ * The reason is that all rules fail and it is not always clear why, because the reason a rule fails might be some levels deeper.
+ *  The switch validator selects a validator based on the value of  a property encountered in the value being validated.
+ *  The error produced will be the one of the selected validator.  The first applicable validator is used, the following ones are ignored.
+ *  <p>
+ *  <pre>
+ *  <code>
+ *  {
+ *     "name" :"Switch test",
+ *     "type" :"switch",
+ *     "key":"discriminator",
+ *     "case" : [{"values":["a", "b", "c", 1, 2, 3], "rule":{"type":"true"}}]
+ * }
+ *  </code>
+ *  </pre>
+ */
 public class Switch
 extends Predicate
 {

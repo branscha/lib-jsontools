@@ -22,6 +22,8 @@ import com.sdicons.json.validator.ValidationException;
  * }
  * </code>
  * </pre>
+ *
+ * @see True
  */
 public class False
 extends Predicate

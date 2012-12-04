@@ -6,9 +6,20 @@
 package com.sdicons.json.validator.impl.predicates;
 
 import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
+/**
+ * Test to see if a {@link JSONValue} is a {@link JSONString}.
+ * <p>
+ * <pre>
+ * <code>
+ * {"type":"string"}
+ * </code>
+ * </pre>
+ *
+ */
 public class Str
 extends Predicate
 {

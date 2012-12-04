@@ -5,12 +5,31 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
-import com.sdicons.json.model.*;
+import java.math.BigDecimal;
+
+import com.sdicons.json.model.JSONDecimal;
+import com.sdicons.json.model.JSONInteger;
+import com.sdicons.json.model.JSONNumber;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.impl.ValidatorUtil;
 
-import java.math.BigDecimal;
-
+/**
+ * A predicate to see if a {@link JSONNumber} falls in the required range.
+ * <p>
+ * This examples allows numbers between 50 and 100.
+ * <pre>
+ * <code>
+ * { "name" :"Range validator",
+ *   "type" :"range",
+ *   "min" : 50,
+ *   "max" : 100
+v  }
+ * </code>
+ * </pre>
+ *
+ */
 public class Range
 extends Predicate
 {
@@ -53,7 +72,6 @@ extends Predicate
         // If there are length specs, we check them.
         if(minValue != null)
         {
-
             if(lSize.compareTo(minValue) < 0) fail("The size (" + lSize +") is smaller then allowed (" + minValue + ").", aValue);
         }
         if(maxValue != null)

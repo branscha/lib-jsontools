@@ -12,6 +12,12 @@ import com.sdicons.json.validator.ValidationException;
 
 /**
  * A predicate to check if a value is a boolean.
+ * <p>
+ * <pre>
+ * <code>
+ * {"type":"bool"}
+ * </code>
+ * </pre>
  */
 public class Bool
 extends Predicate

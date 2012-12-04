@@ -5,10 +5,15 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
+
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
+/**
+ * This predicate tests if a {@link JSONValue} is a {@link JSONObject} or not.
+ * The {@link Properties} predicate can be used for content related checking.
+ */
 public class Object
 extends Predicate
 {

@@ -5,19 +5,25 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
-import com.sdicons.json.validator.Validator;
-import com.sdicons.json.validator.ValidationException;
-import com.sdicons.json.validator.impl.ValidatorUtil;
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.model.JSONString;
-
 import java.util.HashMap;
+
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
+import com.sdicons.json.model.JSONValue;
+import com.sdicons.json.validator.ValidationException;
+import com.sdicons.json.validator.Validator;
+import com.sdicons.json.validator.impl.ValidatorUtil;
 
 /**
  * A rule that uses a named rule that was defined earlier. This feature lets you define
  * rules first and then use these rules in more complex constructs.
  * Note that the rule name has to exist at validation time, not at creation time.
+ * <p>
+ * <pre>
+ * <code>
+ * {"type":"ref", "*" : "OTHER-RULE" }
+ * </code>
+ * </pre>
  */
 public class Ref
 extends Predicate

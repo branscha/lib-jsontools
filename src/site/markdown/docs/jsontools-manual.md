@@ -410,7 +410,6 @@ A validator that succeeds if the object under scrutiny is both a list and has co
 
 One of the nested rules has to succeed for this rule to succeed.
 
-
 *  **rules** Array of nested rules.
 
 A validator that validates booleans or integers.
@@ -422,7 +421,6 @@ A validator that validates booleans or integers.
 #### "type":"not"
 
 The rule succeeds if the nested rule fails and vice versa.
-
 
 *  **rule** A single nested rule. 
 
@@ -604,6 +602,7 @@ The validator class looks like this:
 #### "type":"switch"
 
 The switch validator is a convenience one. It is a subset of the or validator, but the problem with the or validator is that it does a bad job for error reporting when things go wrong. The reason is that all rules fail and it is not always clear why, because the reason a rule fails might be some levels deeper. The switch validator selects a validator based on the value of  a property encountered in the value being validated. The error produced will be the one of the selected validator.  The first applicable validator is used, the following ones are ignored.
+
 Example: The top level rule in the validator for validators contains a switch that could have been described by an or, but the switch gives better error messages.
 
 

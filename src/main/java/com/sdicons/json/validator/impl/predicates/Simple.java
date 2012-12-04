@@ -5,10 +5,20 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
+import com.sdicons.json.model.JSONBoolean;
+import com.sdicons.json.model.JSONDecimal;
+import com.sdicons.json.model.JSONInteger;
+import com.sdicons.json.model.JSONNull;
 import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
+/**
+ * This predicate tests whether a {@link JSONValue} is a simple value, one of {@link JSONString}, {@link JSONBoolean},
+ * {@link JSONDecimal}, {@link JSONInteger} or {@link JSONNull}.
+ *
+ */
 public class Simple
 extends Predicate
 {

@@ -5,17 +5,22 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
-import com.sdicons.json.validator.Validator;
-import com.sdicons.json.validator.ValidationException;
-import com.sdicons.json.validator.impl.ValidatorUtil;
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONArray;
-import com.sdicons.json.model.JSONValue;
-
-import java.util.List;
-import java.util.LinkedList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
+import com.sdicons.json.model.JSONArray;
+import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.model.JSONValue;
+import com.sdicons.json.validator.ValidationException;
+import com.sdicons.json.validator.Validator;
+import com.sdicons.json.validator.impl.ValidatorUtil;
+
+/**
+ * This predicate represents the logical OR combination of a number of other predicates.
+ * At least one of the nested rules has to succeed for this rule to succeed.
+ *
+ */
 public class Or
 extends Predicate
 {
