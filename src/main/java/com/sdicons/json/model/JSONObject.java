@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import com.sdicons.json.parser.impl.ParserUtil;
+import com.sdicons.json.parser.util.ParserUtil;
 
 /**
  * Representation of a JSON object, a collection (unordered) of name/value pairs.

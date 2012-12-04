@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
+import com.sdicons.json.mapper.helper.BooleanMapper;
 import com.sdicons.json.mapper.helper.ClassMapper;
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONBoolean;

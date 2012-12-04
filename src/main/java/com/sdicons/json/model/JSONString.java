@@ -5,7 +5,7 @@
  ******************************************************************************/
 package com.sdicons.json.model;
 
-import com.sdicons.json.parser.impl.ParserUtil;
+import com.sdicons.json.parser.util.ParserUtil;
 
 /**
  * Represents a JSON delimited string.
