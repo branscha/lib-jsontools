@@ -16,6 +16,13 @@ import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.Validator;
 import com.sdicons.json.validator.impl.ValidatorUtil;
 
+/**
+ * A predicate that uses a Java implementation of CustomValidation. You 
+ * can implement your own CustomValidator and then create a rule with the
+ * classname in it.
+ * 
+ * @see CustomValidator
+ */
 public class CustomPredicate
 extends Predicate
 {

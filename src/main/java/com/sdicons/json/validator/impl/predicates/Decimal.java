@@ -9,6 +9,9 @@ import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
+/** 
+ * Check if a JSON value is a JSON decimal or not.
+ */
 public class Decimal
 extends Predicate
 {

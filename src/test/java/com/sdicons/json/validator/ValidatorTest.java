@@ -22,9 +22,9 @@ public class ValidatorTest
     {
         // This is a good illustration of the use of a validator.
         // The code is kept as simple and complete as possible.
-        final JSONParser lParser = new JSONParser(ValidatorTest.class.getResourceAsStream("/rules/simple.json"));
-        final Validator lChecker = new JSONValidator((JSONObject) lParser.nextValue());
-        lChecker.validate(new JSONObject());                  
+        final JSONParser parser = new JSONParser(ValidatorTest.class.getResourceAsStream("/rules/simple.json"));
+        final Validator validator = new JSONValidator((JSONObject) parser.nextValue());
+        validator.validate(new JSONObject());                  
     }
 
     @Test

@@ -5,6 +5,9 @@
  ******************************************************************************/
 package com.sdicons.json.validator.impl.predicates;
 
+/**
+ * A predicate to check if a value is a boolean. 
+ */
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;

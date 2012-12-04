@@ -13,6 +13,10 @@ import com.sdicons.json.validator.impl.ValidatorUtil;
 
 import java.util.List;
 
+/**
+ * This predicate checks if the JSON value is one of the set of values
+ * specified by this rule.
+ */
 public class Enumeration
 extends Predicate
 {

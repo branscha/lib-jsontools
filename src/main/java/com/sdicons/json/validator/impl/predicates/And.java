@@ -16,11 +16,27 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.HashMap;
 
+/**
+ * This predicate represents the logical AND combination of a number of other predicates.
+ * If one of the predicates fails the evaluation of the predicate will fail immediately.
+ */
 public class And
 extends Predicate
 {
     private List<Validator> rules = new LinkedList<Validator>();
 
+    /**
+     * Create the AND predicate.
+     * 
+     * @param aName
+     *        The name of the rule. If the rule fails we can find it back using this name.
+     * @param aRule
+     *        The JSON object that contains information about this rule.
+     * @param aRuleset
+     *        The set of named validation rules that were already encountered, they can 
+     *        be used recursively.
+     * @throws ValidationException
+     */
     public And(String aName, JSONObject aRule, HashMap<String,Validator> aRuleset)
     throws ValidationException
     {
@@ -35,6 +51,9 @@ extends Predicate
         }
     }
 
+    /**
+     * Execute the And predicate.
+     */
     public void validate(JSONValue aValue)
     throws ValidationException
     {
