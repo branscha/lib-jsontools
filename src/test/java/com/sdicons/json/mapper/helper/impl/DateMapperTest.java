@@ -13,6 +13,7 @@ import org.junit.Test;
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.mapper.helper.ClassMapper;
+import com.sdicons.json.mapper.helper.DateMapper;
 import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;

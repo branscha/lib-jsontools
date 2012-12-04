@@ -13,18 +13,18 @@ import org.junit.Test;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.repository.ClassHelperRepository;
+import com.sdicons.json.serializer.helper.BooleanSerializer;
+import com.sdicons.json.serializer.helper.ByteSerializer;
+import com.sdicons.json.serializer.helper.CharacterSerializer;
 import com.sdicons.json.serializer.helper.ClassSerializer;
-import com.sdicons.json.serializer.helper.impl.BooleanSerializer;
-import com.sdicons.json.serializer.helper.impl.ByteSerializer;
-import com.sdicons.json.serializer.helper.impl.CharacterSerializer;
-import com.sdicons.json.serializer.helper.impl.DateSerializer;
-import com.sdicons.json.serializer.helper.impl.DoubleSerializer;
-import com.sdicons.json.serializer.helper.impl.FloatSerializer;
-import com.sdicons.json.serializer.helper.impl.IntegerSerializer;
-import com.sdicons.json.serializer.helper.impl.LongSerializer;
-import com.sdicons.json.serializer.helper.impl.ObjectSerializerProps;
-import com.sdicons.json.serializer.helper.impl.ShortSerializer;
-import com.sdicons.json.serializer.helper.impl.StringSerializer;
+import com.sdicons.json.serializer.helper.DateSerializer;
+import com.sdicons.json.serializer.helper.DoubleSerializer;
+import com.sdicons.json.serializer.helper.FloatSerializer;
+import com.sdicons.json.serializer.helper.IntegerSerializer;
+import com.sdicons.json.serializer.helper.LongSerializer;
+import com.sdicons.json.serializer.helper.ObjectSerializerProps;
+import com.sdicons.json.serializer.helper.ShortSerializer;
+import com.sdicons.json.serializer.helper.StringSerializer;
 
 public class RepositoryTest
 {

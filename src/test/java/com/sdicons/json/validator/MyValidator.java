@@ -5,7 +5,7 @@
  ******************************************************************************/
 package com.sdicons.json.validator;
 
-import com.sdicons.json.validator.impl.predicates.CustomValidator;
+import com.sdicons.json.validator.predicates.CustomValidator;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.model.JSONObject;
 

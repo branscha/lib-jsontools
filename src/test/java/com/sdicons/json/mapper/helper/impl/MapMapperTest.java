@@ -15,6 +15,8 @@ import org.junit.Test;
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
 import com.sdicons.json.mapper.helper.ClassMapper;
+import com.sdicons.json.mapper.helper.MapMapper;
+import com.sdicons.json.mapper.helper.StringMapper;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;

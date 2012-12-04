@@ -11,7 +11,17 @@ import org.junit.Test;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
+import com.sdicons.json.mapper.helper.ArrayMapper;
+import com.sdicons.json.mapper.helper.BooleanMapper;
+import com.sdicons.json.mapper.helper.ByteMapper;
+import com.sdicons.json.mapper.helper.CharacterMapper;
 import com.sdicons.json.mapper.helper.ClassMapper;
+import com.sdicons.json.mapper.helper.DoubleMapper;
+import com.sdicons.json.mapper.helper.FloatMapper;
+import com.sdicons.json.mapper.helper.IntegerMapper;
+import com.sdicons.json.mapper.helper.LongMapper;
+import com.sdicons.json.mapper.helper.ObjectMapperFields;
+import com.sdicons.json.mapper.helper.ShortMapper;
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
