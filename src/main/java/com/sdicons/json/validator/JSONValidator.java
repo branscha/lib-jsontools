@@ -11,11 +11,12 @@ import com.sdicons.json.validator.util.ValidatorUtil;
 
 /**
  * A validator that accepts a validator description in JSON format.
- * 
+ *
  * <p>
  * In this example the validator itself is stored in a JSON text file as well. This is not
  * a requirement, you can build the validator in code as well.
- * 
+ * The validator is composed of predicates which can be found in the package {@link com.sdicons.json.validator.predicates}
+ *
  * <pre>
  * <code>
  * final JSONParser parser = new JSONParser(ValidatorTest.class.getResourceAsStream("/rules/range-validator.json"));
@@ -23,9 +24,9 @@ import com.sdicons.json.validator.util.ValidatorUtil;
  * validator.validate(new JSONInteger(new BigDecimal("5")));
  * </code>
  * </pre>
- * 
+ *
  * The validator file looks like this. It is a range check.
- * 
+ *
  * <pre>
  * <code>
  * {
@@ -36,6 +37,8 @@ import com.sdicons.json.validator.util.ValidatorUtil;
  * }
  * </code>
  * </pre>
+ *
+ * @see com.sdicons.json.validator.predicates
  */
 public class JSONValidator
 implements Validator

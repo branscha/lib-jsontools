@@ -13,6 +13,7 @@ import java.io.StreamTokenizer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONBoolean;
 import com.sdicons.json.model.JSONDecimal;
@@ -22,9 +23,24 @@ import com.sdicons.json.model.JSONNumber;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
+import com.sdicons.json.serializer.JSONSerializer;
 
 /**
  * Reads JSON text and convert it into a Java model for further handling.
+ * <p>
+ * <pre>
+ * <code>
+ * // Open a JSON file in the classpath.
+ * final JSONParser lParser = new JSONParser(JSONTest.class.getResourceAsStream("/example.json"));
+ * // Parse the first object in the file.
+ * final JSONValue lMyObject = lParser.nextValue();
+ * </code>
+ * </pre>
+ *
+ * After the parsing you have an object from the JSON model from package {@link com.sdicons.json.model}.
+ * You can map it to Java using the {@link JSONMapper} or unmarshal it to Java using the {@link JSONSerializer}.
+ *
+ * Note that the rendering to text can be done using the {@link JSONValue#render(boolean) render()} method.
  */
 public class JSONParser
 {
