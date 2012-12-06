@@ -11,7 +11,7 @@ import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
-import com.sdicons.json.validator.util.ValidatorUtil;
+import com.sdicons.json.validator.ValidatorUtil;
 
 /**
  * A bounds check on the number of elements in a {@link JSONArray}, the length of a {@link JSONString} or the number of properties in a {@link JSONObject}.

@@ -16,7 +16,7 @@ import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.Validator;
-import com.sdicons.json.validator.util.ValidatorUtil;
+import com.sdicons.json.validator.ValidatorUtil;
 
 /**
  * Predicate to subject the properties of a {@link JSONObject} to some tests.

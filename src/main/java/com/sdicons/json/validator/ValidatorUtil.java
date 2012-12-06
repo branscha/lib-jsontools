@@ -3,15 +3,13 @@
  * Released under the MIT License: http://opensource.org/licenses/MIT
  * Library "jsontools"
  ******************************************************************************/
-package com.sdicons.json.validator.util;
+package com.sdicons.json.validator;
 
 import java.util.HashMap;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.validator.ValidationException;
-import com.sdicons.json.validator.Validator;
 import com.sdicons.json.validator.predicates.And;
 import com.sdicons.json.validator.predicates.Array;
 import com.sdicons.json.validator.predicates.Bool;
@@ -38,8 +36,15 @@ import com.sdicons.json.validator.predicates.Str;
 import com.sdicons.json.validator.predicates.Switch;
 import com.sdicons.json.validator.predicates.True;
 
+/**
+ * Utility functions used by the {@link JSONValidator}.
+ */
 public class ValidatorUtil
 {
+    private ValidatorUtil() {
+        // Prevent the utility class from being instantiated.
+    }
+    
     public static final String PARAM_NAME = "name";
     public static final String PARAM_TYPE = "type";
     public static final String PARAM_RULES = "rules";

@@ -14,7 +14,7 @@ import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.Validator;
-import com.sdicons.json.validator.util.ValidatorUtil;
+import com.sdicons.json.validator.ValidatorUtil;
 
 /**
  * It is a convenience rule that lets you specify a list of global shared

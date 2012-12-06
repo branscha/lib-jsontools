@@ -7,7 +7,7 @@ package com.sdicons.json.validator.predicates;
 
 import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.Validator;
-import com.sdicons.json.validator.util.ValidatorUtil;
+import com.sdicons.json.validator.ValidatorUtil;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONArray;

@@ -13,7 +13,7 @@ import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.Validator;
-import com.sdicons.json.validator.util.ValidatorUtil;
+import com.sdicons.json.validator.ValidatorUtil;
 
 /**
  * A predicate that checks if all elements of a complex JSON structure JSONObject or

@@ -13,7 +13,7 @@ import com.sdicons.json.model.JSONNumber;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
-import com.sdicons.json.validator.util.ValidatorUtil;
+import com.sdicons.json.validator.ValidatorUtil;
 
 /**
  * A predicate to see if a {@link JSONNumber} falls in the required range.
