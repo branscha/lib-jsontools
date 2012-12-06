@@ -7,7 +7,6 @@ package com.sdicons.json.validator;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.validator.util.ValidatorUtil;
 
 /**
  * A validator that accepts a validator description in JSON format.

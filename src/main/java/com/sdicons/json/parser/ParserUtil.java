@@ -3,7 +3,7 @@
  * Released under the MIT License: http://opensource.org/licenses/MIT
  * Library "jsontools"
  ******************************************************************************/
-package com.sdicons.json.parser.util;
+package com.sdicons.json.parser;
 
 public class ParserUtil
 {
