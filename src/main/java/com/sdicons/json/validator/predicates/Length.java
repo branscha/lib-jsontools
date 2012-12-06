@@ -64,6 +64,12 @@ extends Predicate
 
     }
 
+    public Length(String aName, Integer min, Integer max) {
+        super(aName);
+        minLength = min;
+        maxLength = max;
+    }
+
     public void validate(JSONValue aValue) throws ValidationException
     {
         int lSize = 0;

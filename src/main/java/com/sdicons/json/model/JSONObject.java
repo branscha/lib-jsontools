@@ -125,6 +125,10 @@ extends JSONComplex
         return map.get(aKey);
     }
 
+    public void put(String key, JSONValue value) {
+        map.put(key, value);
+    }
+
     /**
      * Remove all JSON related information. In the case of a JSONObject, a HashMap is returned.
      * The values of the HashMap are stripped as well.

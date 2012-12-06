@@ -43,12 +43,17 @@ extends Predicate
     {
         super(aName);
 
-        rule = new True(aName, aRule);
+        rule = new True(aName);
         if (aRule.containsKey(ValidatorUtil.PARAM_RULE))
         {
             ValidatorUtil.requiresAttribute(aRule, ValidatorUtil.PARAM_RULE, JSONObject.class);
             rule = ValidatorUtil.buildValidator(aRule.get(ValidatorUtil.PARAM_RULE), aRuleset);
         }
+    }
+
+    public Content(String aName, Validator rule) {
+        super(aName);
+        this.rule = rule;
     }
 
     public void validate(JSONValue aValue)

@@ -44,7 +44,33 @@ public class ValidatorUtil
     private ValidatorUtil() {
         // Prevent the utility class from being instantiated.
     }
-    
+
+    public static final String TYPE_SWITCH = "switch";
+    public static final String TYPE_CUSTOM = "custom";
+    public static final String TYPE_LET = "let";
+    public static final String TYPE_RANGE = "range";
+    public static final String TYPE_ENUM = "enum";
+    public static final String TYPE_REGEXP = "regexp";
+    public static final String TYPE_PROPERTIES = "properties";
+    public static final String TYPE_CONTENT = "content";
+    public static final String TYPE_LENGTH = "length";
+    public static final String TYPE_DECIMAL = "decimal";
+    public static final String TYPE_INT = "int";
+    public static final String TYPE_COMPLEX = "complex";
+    public static final String TYPE_NUMBER = "number";
+    public static final String TYPE_STRING = "string";
+    public static final String TYPE_BOOL = "bool";
+    public static final String TYPE_NULL = "null";
+    public static final String TYPE_SIMPLE = "simple";
+    public static final String TYPE_OBJECT = "object";
+    public static final String TYPE_ARRAY = "array";
+    public static final String TYPE_REF = "ref";
+    public static final String TYPE_NOT = "not";
+    public static final String TYPE_AND = "and";
+    public static final String TYPE_OR = "or";
+    public static final String TYPE_FALSE = "false";
+    public static final String TYPE_TRUE = "true";
+    //
     public static final String PARAM_NAME = "name";
     public static final String PARAM_TYPE = "type";
     public static final String PARAM_RULES = "rules";
@@ -111,31 +137,31 @@ public class ValidatorUtil
         final String lRuleType = ((JSONString) lRule.get(PARAM_TYPE)).getValue();
         Validator lNewValidator = null;
 
-        if("true".equals(lRuleType))        lNewValidator = new True(lRuleName, lRule);
-        else if("false".equals(lRuleType))  lNewValidator = new False(lRuleName, lRule);
-        else if("or".equals(lRuleType))     lNewValidator = new Or(lRuleName, lRule, aRuleset);
-        else if("and".equals(lRuleType))    lNewValidator = new And(lRuleName, lRule, aRuleset);
-        else if("not".equals(lRuleType))    lNewValidator = new Not(lRuleName, lRule, aRuleset);
-        else if("ref".equals(lRuleType))    lNewValidator = new Ref(lRuleName, lRule, aRuleset);
-        else if("complex".equals(lRuleType))lNewValidator = new Complex(lRuleName, lRule);
-        else if("array".equals(lRuleType))  lNewValidator = new Array(lRuleName, lRule);
-        else if("object".equals(lRuleType)) lNewValidator = new Object(lRuleName, lRule);
-        else if("simple".equals(lRuleType)) lNewValidator = new Simple(lRuleName, lRule);
-        else if("null".equals(lRuleType))   lNewValidator = new Null(lRuleName, lRule);
-        else if("bool".equals(lRuleType))   lNewValidator = new Bool(lRuleName);
-        else if("string".equals(lRuleType)) lNewValidator = new Str(lRuleName, lRule);
-        else if("number".equals(lRuleType)) lNewValidator = new Nr(lRuleName, lRule);
-        else if("int".equals(lRuleType))    lNewValidator = new Int(lRuleName, lRule);
-        else if("decimal".equals(lRuleType))lNewValidator = new Decimal(lRuleName, lRule);
-        else if("length".equals(lRuleType)) lNewValidator = new Length(lRuleName, lRule);
-        else if("content".equals(lRuleType))lNewValidator = new Content(lRuleName, lRule, aRuleset);
-        else if("properties".equals(lRuleType))lNewValidator = new Properties(lRuleName, lRule, aRuleset);
-        else if("regexp".equals(lRuleType)) lNewValidator = new Regexp(lRuleName, lRule);
-        else if("enum".equals(lRuleType)) lNewValidator = new Enumeration(lRuleName, lRule);
-        else if("range".equals(lRuleType)) lNewValidator = new Range(lRuleName, lRule);
-        else if("let".equals(lRuleType)) lNewValidator = new Let(lRuleName, lRule, aRuleset);
-        else if("custom".equals(lRuleType)) lNewValidator = new CustomPredicate(lRuleName, lRule, aRuleset);
-        else if("switch".equals(lRuleType)) lNewValidator = new Switch(lRuleName, lRule, aRuleset);
+        if(TYPE_TRUE.equals(lRuleType))        lNewValidator = new True(lRuleName);
+        else if(TYPE_FALSE.equals(lRuleType))  lNewValidator = new False(lRuleName);
+        else if(TYPE_OR.equals(lRuleType))     lNewValidator = new Or(lRuleName, lRule, aRuleset);
+        else if(TYPE_AND.equals(lRuleType))    lNewValidator = new And(lRuleName, lRule, aRuleset);
+        else if(TYPE_NOT.equals(lRuleType))    lNewValidator = new Not(lRuleName, lRule, aRuleset);
+        else if(TYPE_REF.equals(lRuleType))    lNewValidator = new Ref(lRuleName, lRule, aRuleset);
+        else if(TYPE_COMPLEX.equals(lRuleType))lNewValidator = new Complex(lRuleName);
+        else if(TYPE_ARRAY.equals(lRuleType))  lNewValidator = new Array(lRuleName);
+        else if(TYPE_OBJECT.equals(lRuleType)) lNewValidator = new Object(lRuleName);
+        else if(TYPE_SIMPLE.equals(lRuleType)) lNewValidator = new Simple(lRuleName);
+        else if(TYPE_NULL.equals(lRuleType))   lNewValidator = new Null(lRuleName);
+        else if(TYPE_BOOL.equals(lRuleType))   lNewValidator = new Bool(lRuleName);
+        else if(TYPE_STRING.equals(lRuleType)) lNewValidator = new Str(lRuleName);
+        else if(TYPE_NUMBER.equals(lRuleType)) lNewValidator = new Nr(lRuleName);
+        else if(TYPE_INT.equals(lRuleType))    lNewValidator = new Int(lRuleName);
+        else if(TYPE_DECIMAL.equals(lRuleType))lNewValidator = new Decimal(lRuleName);
+        else if(TYPE_LENGTH.equals(lRuleType)) lNewValidator = new Length(lRuleName, lRule);
+        else if(TYPE_CONTENT.equals(lRuleType))lNewValidator = new Content(lRuleName, lRule, aRuleset);
+        else if(TYPE_PROPERTIES.equals(lRuleType))lNewValidator = new Properties(lRuleName, lRule, aRuleset);
+        else if(TYPE_REGEXP.equals(lRuleType)) lNewValidator = new Regexp(lRuleName, lRule);
+        else if(TYPE_ENUM.equals(lRuleType)) lNewValidator = new Enumeration(lRuleName, lRule);
+        else if(TYPE_RANGE.equals(lRuleType)) lNewValidator = new Range(lRuleName, lRule);
+        else if(TYPE_LET.equals(lRuleType)) lNewValidator = new Let(lRuleName, lRule, aRuleset);
+        else if(TYPE_CUSTOM.equals(lRuleType)) lNewValidator = new CustomPredicate(lRuleName, lRule, aRuleset);
+        else if(TYPE_SWITCH.equals(lRuleType)) lNewValidator = new Switch(lRuleName, lRule, aRuleset);
         else
         {
             final String lMsg = "Unknown validator type: \""  + lRuleType + "\" for rule: \""  + lRuleName + "\"";

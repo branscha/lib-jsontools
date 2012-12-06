@@ -5,18 +5,17 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
-import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
 /**
- * A predicate to check if a JSON value is a JSONObject or a JSONArray. It fails if 
+ * A predicate to check if a JSON value is a JSONObject or a JSONArray. It fails if
  * the JSON value is a JSONInteger, JSONBoolean, JSONString or JSONDecimal.
  */
 public class Complex
 extends Predicate
 {
-    public Complex(String aName, JSONObject aRule)
+    public Complex(String aName)
     {
         super(aName);
     }

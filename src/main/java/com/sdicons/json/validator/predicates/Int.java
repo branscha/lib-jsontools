@@ -6,7 +6,6 @@
 package com.sdicons.json.validator.predicates;
 
 import com.sdicons.json.validator.ValidationException;
-import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 
 /**
@@ -15,7 +14,7 @@ import com.sdicons.json.model.JSONValue;
 public class Int
 extends Predicate
 {
-    public Int(String aName, JSONObject aRule)
+    public Int(String aName)
     {
         super(aName);
     }

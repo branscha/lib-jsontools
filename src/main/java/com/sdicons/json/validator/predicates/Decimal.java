@@ -5,7 +5,6 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
-import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
@@ -15,7 +14,7 @@ import com.sdicons.json.validator.ValidationException;
 public class Decimal
 extends Predicate
 {
-    public Decimal(String aName, JSONObject aRule)
+    public Decimal(String aName)
     {
         super(aName);
     }

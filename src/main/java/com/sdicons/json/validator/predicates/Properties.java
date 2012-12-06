@@ -47,13 +47,11 @@ extends Predicate
     {
         private String key;
         private Validator rule;
-//        private boolean optional;
 
         public PropRule(String key, Validator rule, boolean optional)
         {
             this.key = key;
             this.rule = rule;
-//            this.optional = optional;
         }
 
         public String getKey()
@@ -61,34 +59,10 @@ extends Predicate
             return key;
         }
 
-//        @SuppressWarnings("unused")
-//        public void setKey(String key)
-//        {
-//            this.key = key;
-//        }
-
         public Validator getRule()
         {
             return rule;
         }
-
-//        @SuppressWarnings("unused")
-//        public void setRule(Validator rule)
-//        {
-//            this.rule = rule;
-//        }
-
-//        @SuppressWarnings("unused")
-//        public boolean isOptional()
-//        {
-//            return optional;
-//        }
-//
-//        @SuppressWarnings("unused")
-//        public void setOptional(boolean optional)
-//        {
-//            this.optional = optional;
-//        }
     }
 
     private List<PropRule> required = new LinkedList<PropRule>();
@@ -114,7 +88,7 @@ extends Predicate
             ValidatorUtil.requiresAttribute(lObj, ValidatorUtil.PARAM_KEY, JSONString.class);
             final String lKeyname = ((JSONString) lObj.get(ValidatorUtil.PARAM_KEY)).getValue();
 
-            Validator lValrule = new True(ValidatorUtil.ANONYMOUS_RULE, aRule);
+            Validator lValrule = new True(ValidatorUtil.ANONYMOUS_RULE);
             if (lObj.containsKey(ValidatorUtil.PARAM_RULE))
             {
                 ValidatorUtil.requiresAttribute(lObj, ValidatorUtil.PARAM_RULE, JSONObject.class);

@@ -5,13 +5,15 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.sdicons.json.model.JSONArray;
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.ValidatorUtil;
-
-import java.util.List;
 
 /**
  * This predicate checks if the JSON value is one of the set of values
@@ -29,6 +31,11 @@ extends Predicate
 
        ValidatorUtil.requiresAttribute(aRule, ValidatorUtil.PARAM_VALUES, JSONArray.class);
        enumValues = ((JSONArray) aRule.get(ValidatorUtil.PARAM_VALUES)).getValue();
+    }
+
+    public Enumeration(String aName, JSONValue ... values) {
+        super(aName);
+        enumValues = new ArrayList<JSONValue>(Arrays.asList(values));
     }
 
     public void validate(JSONValue aValue)

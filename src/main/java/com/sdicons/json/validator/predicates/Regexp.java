@@ -34,22 +34,25 @@ extends Predicate
     private Pattern pattern;
     private String representation;
 
-    public Regexp(String aName, JSONObject aRule)
-    throws ValidationException
-    {
+    public Regexp(String aName, JSONObject aRule) throws ValidationException {
         super(aName);
-
         ValidatorUtil.requiresAttribute(aRule, ValidatorUtil.PARAM_PATTERN, JSONString.class);
         String lPattern = ((JSONString) aRule.get(ValidatorUtil.PARAM_PATTERN)).getValue();
+        init(lPattern);
+    }
 
-        try
-        {
-            pattern = Pattern.compile(lPattern);
-            representation = lPattern;
+    public Regexp(String aName, String aPattern) {
+        super(aName);
+        init(aPattern);
+    }
+
+    private void init(String pattern) {
+        try {
+            this.pattern = Pattern.compile(pattern);
+            this.representation = pattern;
         }
-        catch (PatternSyntaxException e)
-        {
-           fail("Error while compiling the pattern: " + e.getMessage(), aRule);
+        catch (PatternSyntaxException e) {
+            throw new IllegalArgumentException("Error while compiling the pattern: " + e.getMessage());
         }
     }
 

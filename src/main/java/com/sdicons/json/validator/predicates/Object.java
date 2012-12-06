@@ -17,8 +17,7 @@ import com.sdicons.json.validator.ValidationException;
 public class Object
 extends Predicate
 {
-    public Object(String aName, JSONObject aRule)
-    throws ValidationException
+    public Object(String aName)
     {
         super(aName);
     }

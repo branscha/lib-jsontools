@@ -5,6 +5,7 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +39,11 @@ extends Predicate
             Validator lValidator = ValidatorUtil.buildValidator(lRule, aRuleset);
             rules.add(lValidator);
         }
+    }
+
+    public Or(String aName, Validator ... validators) {
+        super(aName);
+        rules.addAll(Arrays.asList(validators));
     }
 
     public void validate(JSONValue aValue)

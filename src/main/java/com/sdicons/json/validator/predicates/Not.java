@@ -30,6 +30,11 @@ extends Predicate
         rule = ValidatorUtil.buildValidator(aRule.get(ValidatorUtil.PARAM_RULE), aRuleset);
     }
 
+    public Not(String aName, Validator rule) {
+        super(aName);
+        this.rule = rule;
+    }
+
     public void validate(JSONValue aValue)
     throws ValidationException
     {

@@ -31,4 +31,9 @@ extends Predicate
     {
         if(!aValue.isBoolean()) fail("The value is not a JSONBoolean", aValue);
     }
+
+    // TODO creating rules.
+//    public JSONObject createRule() {
+//        return ValidatorUtil.createRule(getName(), "bool");
+//    }
 }

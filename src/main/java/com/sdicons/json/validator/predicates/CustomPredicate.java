@@ -8,6 +8,7 @@ package com.sdicons.json.validator.predicates;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
@@ -40,7 +41,7 @@ extends Predicate
 {
     private Validator validator;
 
-    public CustomPredicate(String aName, JSONObject aRule, HashMap<String, Validator> aRuleset)
+    public CustomPredicate(String aName, JSONObject aRule, Map<String, Validator> aRuleset)
     throws ValidationException
     {
         super(aName);
@@ -57,7 +58,7 @@ extends Predicate
             }
             else
             {
-                Constructor<?> lConstructor = lCustomClass.getConstructor(String.class, JSONObject.class,HashMap.class);
+                Constructor<?> lConstructor = lCustomClass.getConstructor(String.class, JSONObject.class, HashMap.class);
                 validator = (Validator) lConstructor.newInstance(aName, aRule, aRuleset);
             }
         }
