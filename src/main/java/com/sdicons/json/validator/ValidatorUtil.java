@@ -36,8 +36,15 @@ import com.sdicons.json.validator.predicates.Str;
 import com.sdicons.json.validator.predicates.Switch;
 import com.sdicons.json.validator.predicates.True;
 
+/**
+ * Utility functions used by the {@link JSONValidator}.
+ */
 public class ValidatorUtil
 {
+    private ValidatorUtil() {
+        // Prevent the utility class from being instantiated.
+    }
+    
     public static final String PARAM_NAME = "name";
     public static final String PARAM_TYPE = "type";
     public static final String PARAM_RULES = "rules";
