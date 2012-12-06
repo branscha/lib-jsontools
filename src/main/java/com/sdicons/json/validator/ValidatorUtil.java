@@ -62,6 +62,12 @@ public class ValidatorUtil
 
     public static final String ANONYMOUS_RULE = "[anonymous rule]";
 
+    public static JSONObject createRule(String name, String type) {
+        JSONObject rule = new JSONObject();
+        rule.getValue().put(PARAM_NAME, new JSONString(name));
+        rule.getValue().put(PARAM_TYPE, new JSONString(type));
+        return rule;
+    }
 
     public static void requiresAttribute(JSONObject aTarget, String aAttrib, Class<?> aValueType)
     throws ValidationException
@@ -116,7 +122,7 @@ public class ValidatorUtil
         else if("object".equals(lRuleType)) lNewValidator = new Object(lRuleName, lRule);
         else if("simple".equals(lRuleType)) lNewValidator = new Simple(lRuleName, lRule);
         else if("null".equals(lRuleType))   lNewValidator = new Null(lRuleName, lRule);
-        else if("bool".equals(lRuleType))   lNewValidator = new Bool(lRuleName, lRule);
+        else if("bool".equals(lRuleType))   lNewValidator = new Bool(lRuleName);
         else if("string".equals(lRuleType)) lNewValidator = new Str(lRuleName, lRule);
         else if("number".equals(lRuleType)) lNewValidator = new Nr(lRuleName, lRule);
         else if("int".equals(lRuleType))    lNewValidator = new Int(lRuleName, lRule);

@@ -52,7 +52,7 @@ extends Predicate
     public Let(String aName, JSONObject aRule, HashMap<String,Validator> aRuleset)
     throws ValidationException
     {
-        super(aName, aRule);
+        super(aName);
 
         ruleset = aRuleset;
         ValidatorUtil.requiresAttribute(aRule, ValidatorUtil.PARAM_RULES, JSONArray.class);

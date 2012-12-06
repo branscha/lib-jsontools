@@ -25,7 +25,7 @@ extends Predicate
     public Enumeration(String aName, JSONObject aRule)
     throws ValidationException
     {
-        super(aName, aRule);
+        super(aName);
 
        ValidatorUtil.requiresAttribute(aRule, ValidatorUtil.PARAM_VALUES, JSONArray.class);
        enumValues = ((JSONArray) aRule.get(ValidatorUtil.PARAM_VALUES)).getValue();

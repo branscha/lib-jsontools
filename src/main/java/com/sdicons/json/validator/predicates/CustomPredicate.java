@@ -43,7 +43,7 @@ extends Predicate
     public CustomPredicate(String aName, JSONObject aRule, HashMap<String, Validator> aRuleset)
     throws ValidationException
     {
-        super(aName, aRule);
+        super(aName);
         ValidatorUtil.requiresAttribute(aRule, ValidatorUtil.PARAM_CLASS, JSONString.class);
         String lClassname = ((JSONString) aRule.get(ValidatorUtil.PARAM_CLASS)).getValue();
 

@@ -30,7 +30,7 @@ extends Predicate
 {
     public False(String aName, JSONObject aRule)
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)

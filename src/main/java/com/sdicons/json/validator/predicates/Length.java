@@ -38,7 +38,7 @@ extends Predicate
     public Length(String aName, JSONObject aRule)
     throws ValidationException
     {
-        super(aName, aRule);
+        super(aName);
 
         if (aRule.containsKey(ValidatorUtil.PARAM_MIN))
         {

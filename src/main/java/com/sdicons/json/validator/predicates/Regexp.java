@@ -37,7 +37,7 @@ extends Predicate
     public Regexp(String aName, JSONObject aRule)
     throws ValidationException
     {
-        super(aName, aRule);
+        super(aName);
 
         ValidatorUtil.requiresAttribute(aRule, ValidatorUtil.PARAM_PATTERN, JSONString.class);
         String lPattern = ((JSONString) aRule.get(ValidatorUtil.PARAM_PATTERN)).getValue();

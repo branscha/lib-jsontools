@@ -36,10 +36,23 @@ extends Predicate
     private BigDecimal minValue = null;
     private BigDecimal maxValue = null;
 
+    public Range(String aName, Integer min, Integer max) {
+        super(aName);
+        minValue = maxValue = null;
+        if(min != null) minValue = new BigDecimal(min);
+        if(max != null) maxValue = new BigDecimal(max);
+    }
+    
+    public Range(String aName, BigDecimal min, BigDecimal max) {
+        super(aName);
+        this.minValue = min;
+        this.maxValue = max;
+    }
+    
     public Range(String aName, JSONObject aRule)
     throws ValidationException
     {
-        super(aName, aRule);
+        super(aName);
 
         if (aRule.containsKey(ValidatorUtil.PARAM_MIN))
         {

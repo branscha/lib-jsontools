@@ -20,7 +20,7 @@ extends Predicate
     public Object(String aName, JSONObject aRule)
     throws ValidationException
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)

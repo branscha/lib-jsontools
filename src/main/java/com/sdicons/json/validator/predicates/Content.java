@@ -41,7 +41,7 @@ extends Predicate
     public Content(String aName, JSONObject aRule, HashMap<String, Validator> aRuleset)
     throws ValidationException
     {
-        super(aName, aRule);
+        super(aName);
 
         rule = new True(aName, aRule);
         if (aRule.containsKey(ValidatorUtil.PARAM_RULE))

@@ -19,7 +19,7 @@ extends Predicate
 {
     public Null(String aName, JSONObject aRule)
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)
