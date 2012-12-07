@@ -43,10 +43,11 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class Properties
 extends Predicate
 {
-    private static class PropRule
+    public static class PropRule
     {
         private String key;
         private Validator rule;
+        private boolean optional;
 
         public PropRule(String key, Validator rule, boolean optional)
         {
@@ -63,11 +64,23 @@ extends Predicate
         {
             return rule;
         }
+        
+        public boolean isOptional() {
+            return optional;
+        }
     }
 
     private List<PropRule> required = new LinkedList<PropRule>();
     private HashMap<String, PropRule> all = new HashMap<String, PropRule>();
 
+    public Properties(String aName, HashMap<String,Validator> aRuleset, PropRule ...rules) {
+        super(aName);
+        for(PropRule rule: rules) {
+            all.put(rule.getKey(), rule);
+            if(!rule.isOptional()) required.add(rule);
+        }
+    }
+    
     public Properties(String aName, JSONObject aRule, HashMap<String,Validator> aRuleset)
     throws ValidationException
     {

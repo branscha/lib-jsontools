@@ -1,6 +1,7 @@
 package com.sdicons.json.validator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,11 +21,15 @@ import com.sdicons.json.validator.predicates.Not;
 import com.sdicons.json.validator.predicates.Nr;
 import com.sdicons.json.validator.predicates.Null;
 import com.sdicons.json.validator.predicates.Or;
+import com.sdicons.json.validator.predicates.Properties;
+import com.sdicons.json.validator.predicates.Properties.PropRule;
 import com.sdicons.json.validator.predicates.Range;
 import com.sdicons.json.validator.predicates.Ref;
 import com.sdicons.json.validator.predicates.Regexp;
 import com.sdicons.json.validator.predicates.Simple;
 import com.sdicons.json.validator.predicates.Str;
+import com.sdicons.json.validator.predicates.Switch;
+import com.sdicons.json.validator.predicates.Switch.SwitchCase;
 import com.sdicons.json.validator.predicates.True;
 
 public class ValidatorBuilder {
@@ -259,10 +264,32 @@ public class ValidatorBuilder {
     public Validator string() {
         return new Str("string");
     }
-
-
-    // TODO Properties-predicate
-
-    // TODO Switch predicate
-
+    
+    public Validator properties(String ruleName, PropRule ... rules){
+        Validator validator = new Properties(ruleName, ruleSet, rules);
+        ruleSet.put(ruleName, validator);
+        return validator;
+    }
+    
+    public Validator properties(PropRule ... rules){
+        return new Properties("properties", ruleSet, rules);
+    }
+    
+    public Validator switchrule(String ruleName, String discriminator, SwitchCase cases) {
+        Validator validator = new Switch(ruleName, discriminator, ruleSet, cases);
+        ruleSet.put(ruleName, validator);
+        return validator;
+    }
+    
+    public Validator switchrule(String discriminator, SwitchCase cases) {
+        return new Switch("switch", discriminator, ruleSet, cases);
+    }
+    
+    public static SwitchCase switchcase(Validator rule, JSONValue ...values) {
+        return new SwitchCase(Arrays.asList(values), rule);
+    }
+    
+    public static PropRule propRule(String propName, Validator rule, boolean optional){
+        return new PropRule(propName, rule, optional);
+    }
 }

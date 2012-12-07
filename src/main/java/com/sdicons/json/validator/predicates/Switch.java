@@ -39,18 +39,18 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class Switch
 extends Predicate
 {
-    private List<Case> rules = new LinkedList<Case>();
+    private List<SwitchCase> rules = new LinkedList<SwitchCase>();
     private String key;
 
-    private static class Case
+    public static class SwitchCase
     {
         private List<JSONValue> values;
         private Validator validator;
 
-        public Case(Validator validator, List<JSONValue> values)
+        public SwitchCase(List<JSONValue> when, Validator validator)
         {
             this.validator = validator;
-            this.values = values;
+            this.values = when;
         }
 
         public Validator getValidator()
@@ -61,6 +61,14 @@ extends Predicate
         public boolean isApplicable(JSONValue aVal)
         {
             return values.contains(aVal);
+        }
+    }
+    
+    public Switch(String aName, String discriminator, HashMap<String,Validator> aRuleset, SwitchCase ... cases) {
+        super(aName);
+        this.key = discriminator;
+        for(SwitchCase cas : cases){
+            rules.add(cas);
         }
     }
 
@@ -83,7 +91,7 @@ extends Predicate
             ValidatorUtil.requiresAttribute(lObjCase, ValidatorUtil.PARAM_VALUES, JSONArray.class);
             JSONArray lVals = (JSONArray) lObjCase.get(ValidatorUtil.PARAM_VALUES);
 
-            Case lNewCase = new Case(lValidator, lVals.getValue());
+            SwitchCase lNewCase = new SwitchCase(lVals.getValue(), lValidator);
             rules.add(lNewCase);
         }
 
@@ -100,7 +108,7 @@ extends Predicate
         if(!lObj.containsKey(key)) fail("The object does not contain the key: \"" + key + "\".", lObj);
         JSONValue lVal = lObj.get(key);
 
-        for (Case aCase : rules)
+        for (SwitchCase aCase : rules)
         {
             if(aCase.isApplicable(lVal))
             {
