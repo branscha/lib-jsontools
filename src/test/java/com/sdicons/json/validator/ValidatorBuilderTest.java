@@ -68,16 +68,9 @@ public class ValidatorBuilderTest {
     
     @Test(expected=ValidationException.class)
     public void falseTest() throws ParserException, ValidationException {
+        // It always fails.
         Validator v = vb.falsep();
         p = new JSONParser("false");
-        JSONValue json = p.nextValue();
-        v.validate(json);
-    }
-    
-    @Test(expected=ValidationException.class)
-    public void falseUnhappyTest() throws ParserException, ValidationException {
-        Validator v = vb.falsep();
-        p = new JSONParser("123");
         JSONValue json = p.nextValue();
         v.validate(json);
     }
@@ -113,4 +106,130 @@ public class ValidatorBuilderTest {
         JSONValue json = p.nextValue();
         v.validate(json);
     }
+    
+    @Test
+    public void numberTest() throws ParserException, ValidationException {
+        Validator v = vb.nr();
+        p = new JSONParser("12345");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+        
+        p = new JSONParser("3.1415");
+        json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void numberUnhappyTest() throws ParserException, ValidationException {
+        Validator v = vb.nr();
+        p = new JSONParser("{}");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void objectTest() throws ParserException, ValidationException {
+        Validator v = vb.object();
+        p = new JSONParser("{\"key\": 123}");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void objectUnhappyTest() throws ParserException, ValidationException {
+        Validator v = vb.object();
+        p = new JSONParser("false");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void simpleTest() throws ParserException, ValidationException {
+        Validator v = vb.simple();
+        p = new JSONParser("123");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+        
+        p = new JSONParser("true");
+        json = p.nextValue();
+        v.validate(json);
+        
+        p = new JSONParser("null");
+        json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void simpleUnhappyTest() throws ParserException, ValidationException {
+        Validator v = vb.simple();
+        p = new JSONParser("[1, 2, 3]");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void stringTest() throws ParserException, ValidationException {
+        Validator v = vb.string();
+        p = new JSONParser("\"abcdef\"");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void stringUnhappyTest() throws ParserException, ValidationException {
+        Validator v = vb.string();
+        p = new JSONParser("{}");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void trueTest() throws ParserException, ValidationException {
+        // It always succeeds.
+        Validator v = vb.truep();
+        p = new JSONParser("[]");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void arrayTest() throws ParserException, ValidationException {
+        Validator v = vb.array();
+        p = new JSONParser("[1, 2, 3]");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void arrayUnhappyTest() throws ParserException, ValidationException {
+        Validator v = vb.array();
+        p = new JSONParser("{}");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void andTest() throws ParserException, ValidationException {
+        Validator v = vb.and(vb.simple(), vb.nr(), vb.intp());
+        p = new JSONParser("123");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void contentTest() throws ParserException, ValidationException {
+        Validator v = vb.content(vb.bool());
+        p = new JSONParser("[true, false, false, true, true, false]");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void contentUnhappyTest() throws ParserException, ValidationException {
+        Validator v = vb.content(vb.bool());
+        p = new JSONParser("[true, false, 3, true, true, false]");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+
 }

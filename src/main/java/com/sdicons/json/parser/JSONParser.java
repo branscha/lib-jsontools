@@ -224,14 +224,17 @@ public class JSONParser
                 if ("false".equalsIgnoreCase(st.sval)) {
                     // JSON boolean "false" constant.
                     //
+                    parsed.append("false");
                     return JSONBoolean.FALSE;
                 } else if ("true".equalsIgnoreCase(st.sval)) {
                     // JSON boolean "true" constant.
                     //
+                    parsed.append("true");
                     return JSONBoolean.TRUE;
                 } else if (NULL_LITERAL.equalsIgnoreCase(st.sval)) {
                     // JSON null.
                     //
+                    parsed.append("null");
                     return JSONNull.NULL;
                 } else {
                     throw new IllegalArgumentException(String.format(PARSER001, parsed.toString()));
