@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StreamTokenizer;
+import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -111,6 +112,11 @@ public class JSONParser
     throws ParserException
     {
         this(aReader, null);
+    }
+    
+    public JSONParser(String jsonText)
+    throws ParserException {
+        this(new StringReader(jsonText));
     }
 
     /**
