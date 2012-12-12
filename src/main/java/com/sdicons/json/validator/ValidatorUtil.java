@@ -41,6 +41,11 @@ import com.sdicons.json.validator.predicates.True;
  */
 public class ValidatorUtil
 {
+    private static final String VAL001 = "JSONValidator/001: Attribute '%s'not present in '%s'.";
+    private static final String VAL002 = "JSONValidator/002: Expected type '%s' but received value '%s'.";
+    private static final String VAL003 = "JSONValidator/003: Expected a JSONObject but received value '%s'.";
+    private static final String VAL004 = "JSONValidator/004: Unknown validator type '%s' in rule '%s'; complete rule '%s'.";
+
     private ValidatorUtil() {
         // Prevent the utility class from being instantiated.
     }
@@ -100,14 +105,12 @@ public class ValidatorUtil
     {
         if(!aTarget.containsKey(aAttrib))
         {
-            final String lMsg = "Attribute not present: \"" + aAttrib + "\"";
-            throw new ValidationException(lMsg, aTarget, "MISSING ATTRIBUTE");
+            throw new ValidationException(String.format(VAL001, aAttrib, aTarget.toString()));
         }
 
         if (!(aValueType.isInstance(aTarget.get(aAttrib))))
         {
-            final String lMsg = "Expected other type: \"" + aValueType.getName() + "\"";
-            throw new ValidationException(lMsg, aTarget, "UNEXPECTED TYPE");
+            throw new ValidationException(String.format(VAL002, aValueType.getName(), aTarget.toString()));
         }
     }
 
@@ -122,8 +125,7 @@ public class ValidatorUtil
     {
         if(! aVal.isObject())
         {
-            final String lMsg = "A rule should have object type.";
-            throw new ValidationException(lMsg, aVal, "OBJECT REQUIRED");
+            throw new ValidationException(String.format(VAL003, aVal.toString()));
         }
 
         JSONObject lRule = (JSONObject) aVal;
@@ -164,8 +166,7 @@ public class ValidatorUtil
         else if(TYPE_SWITCH.equals(lRuleType)) lNewValidator = new Switch(lRuleName, lRule, aRuleset);
         else
         {
-            final String lMsg = "Unknown validator type: \""  + lRuleType + "\" for rule: \""  + lRuleName + "\"";
-            throw new ValidationException(lMsg, lRule, "UNKNOWN VALIDATION TYPE");
+            throw new ValidationException(String.format(VAL004, lRuleType, lRuleName, lRule.toString()));
         }
 
         // You cannot refer to anonymous rules. It would leave the door

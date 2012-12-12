@@ -26,6 +26,8 @@ import com.sdicons.json.validator.ValidationException;
 public class Array
 extends Predicate
 {
+    private static final String ARR001 = "JSONValidator/Array/001: The value '%s' is not a JSONArray in rule '%s'.";
+
     public Array(String aName)
     {
         super(aName);
@@ -35,6 +37,7 @@ extends Predicate
     throws ValidationException
     {
         // First we check if we have an array.
-        if(!aValue.isArray()) fail("The value is not a JSONArray.", aValue);
+        if(!aValue.isArray())
+            throw new ValidationException(String.format(ARR001, aValue.toString(), this.getName()));
     }
 }

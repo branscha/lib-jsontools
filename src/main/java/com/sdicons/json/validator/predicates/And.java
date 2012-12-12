@@ -24,6 +24,8 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class And
 extends Predicate
 {
+    private static final String AND001 = "JSONValidator/And/001: One of the and rules in rule '%s' failed: %s";
+
     private List<Validator> rules = new LinkedList<Validator>();
 
     /**
@@ -63,17 +65,14 @@ extends Predicate
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        for (Validator rule1 : rules)
-        {
-            rule1.validate(aValue);
+        try {
+            for (Validator rule1 : rules)
+            {
+                rule1.validate(aValue);
+            }
         }
-    }
-
-    public JSONObject createRule() {
-//        JSONObject rule = ValidatorUtil.createRule(getName(), ValidatorUtil.TYPE_AND);
-//        List<JSONObject>
-//        rule.put(ValidatorUtil.PARAM_RULES, new JSONArray())
-        // TODO
-        return null;
+        catch (ValidationException e) {
+           throw new ValidationException(String.format(AND001, this.getName(), e.getMessage()));
+        }
     }
 }

@@ -20,6 +20,7 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class Not
 extends Predicate
 {
+    private static final String NOT001 = "JSONValidator/Not/001: This rule '%s'fails because internal rule succeeds on value '%s'.";
     private Validator rule;
 
     public Not(String aName, JSONObject aRule, HashMap<String,Validator> aRuleset)
@@ -50,6 +51,6 @@ extends Predicate
         }
         // If we get here, then the inner validation succeeded.
         // In that case we fail by raising an exception.
-        fail(aValue);
+        throw new ValidationException(String.format(NOT001, this.getName(), aValue.toString()));
     }
 }

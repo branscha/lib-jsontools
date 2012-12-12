@@ -22,6 +22,8 @@ import com.sdicons.json.validator.ValidationException;
 public class Str
 extends Predicate
 {
+    private static final String STR001 = "JSONValidator/String/001: The value '%s' is not a JSONString in rule '%s'.";
+
     public Str(String aName)
     {
         super(aName);
@@ -30,6 +32,7 @@ extends Predicate
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isString()) fail("The value is not a JSONString." ,aValue);
+        if(!aValue.isString())
+            throw new ValidationException(String.format(STR001, aValue.toString(), this.getName()));
     }
 }

@@ -27,6 +27,8 @@ import com.sdicons.json.validator.ValidationException;
 public class False
 extends Predicate
 {
+    private static final String FALSE001 = "JSONValidator/False/001: This rule '%s' always fails by definition independent of the value ('%s').";
+
     public False(String aName)
     {
         super(aName);
@@ -35,6 +37,6 @@ extends Predicate
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        fail("Always false.", aValue);
+        throw new ValidationException(String.format(FALSE001, this.getName(), aValue.toString()));
     }
 }

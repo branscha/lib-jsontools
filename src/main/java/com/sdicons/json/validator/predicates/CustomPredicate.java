@@ -39,6 +39,11 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class CustomPredicate
 extends Predicate
 {
+    private static final String CUST001 = "JSONValidator/CustomPredicate/001: The custom predicate class '%s' is not derived from CustomValidator in rule '%s'.";
+    private static final String CUST002 = "JSONValidator/CustomPredicate/002: The custom predicate class '%s' cannot be found  in rule '%s'.";
+    private static final String CUST003 = "JSONValidator/CustomPredicate/003: The custom predicate class '%s' does not have a suitable constructor in rule '%s'.";
+    private static final String CUST004 = "JSONValidator/CustomPredicate/004: Cannot instantiate predicate class '%s' in rule '%s'.";
+
     private Validator validator;
 
     public CustomPredicate(String aName, JSONObject aRule, Map<String, Validator> aRuleset)
@@ -54,7 +59,7 @@ extends Predicate
             if(!CustomValidator.class.isAssignableFrom(lCustomClass))
             {
                 // Problem, not derived from CustomValidator.
-                throw new ValidationException("The custom class is not derived from CustomValidator: " + lClassname, aRule, aName);
+                throw new ValidationException(String.format(CUST001, lClassname, this.getName()));
             }
             else
             {
@@ -64,23 +69,23 @@ extends Predicate
         }
         catch (ClassNotFoundException e)
         {
-            throw new ValidationException("The custom class was not found: " + lClassname, aRule, aName);
+            throw new ValidationException(String.format(CUST002, lClassname, this.getName()), e);
         }
         catch (NoSuchMethodException e)
         {
-            throw new ValidationException("Constructor method not found on custom class: " + lClassname, aRule, aName);
+            throw new ValidationException(String.format(CUST003, lClassname, this.getName()), e);
         }
         catch (InstantiationException e)
         {
-            throw new ValidationException("Error during construction of validtor of class: " + lClassname, aRule, aName);
+            throw new ValidationException(String.format(CUST004, lClassname, this.getName()), e);
         }
         catch (IllegalAccessException e)
         {
-            throw new ValidationException("Access rights problem during construction of validator of class: " + lClassname, aRule, aName);
+            throw new ValidationException(String.format(CUST004, lClassname, this.getName()), e);
         }
         catch (InvocationTargetException e)
         {
-            throw new ValidationException("Access rights problem during construction of validator of class: " + lClassname, aRule, aName);
+            throw new ValidationException(String.format(CUST004, lClassname, this.getName()), e);
         }
     }
 

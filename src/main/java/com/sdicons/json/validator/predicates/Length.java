@@ -32,6 +32,12 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class Length
 extends Predicate
 {
+    private static final String LEN001 = "JSONValidator/Length/001: Minimum length should be specified using an integer in rule '%s'.";
+    private static final String LEN002 = "JSONValidator/Length/002: Maximum length should be specified using an integer in rule '%s'.";
+    private static final String LEN003 = "JSONValidator/Length/003: The value '%s' is not a JSONArray, JSONString or JSONObject in rule '%s'.";
+    private static final String LEN004 = "JSONValidator/Length/004: The size %s from '%s' is smaller then minimum %s in rule '%s'.";
+    private static final String LEN005 = "JSONValidator/Length/005: The size %s from '%s' is larger then maximum %s in rule '%s'.";
+
     private Integer minLength = null;
     private Integer maxLength = null;
 
@@ -43,22 +49,14 @@ extends Predicate
         if (aRule.containsKey(ValidatorUtil.PARAM_MIN))
         {
             JSONValue lMin = aRule.get(ValidatorUtil.PARAM_MIN);
-            if (!lMin.isInteger())
-            {
-                final String lMsg = "Minimum length should be specified using an integer.";
-                throw new ValidationException(lMsg, aRule, "WRONG TYPE");
-            }
+            if (!lMin.isInteger()) throw new ValidationException(String.format(LEN001, this.getName()));
             else minLength = ((JSONInteger) lMin).getValue().intValue();
         }
 
         if (aRule.containsKey(ValidatorUtil.PARAM_MAX))
         {
             JSONValue lMax = aRule.get(ValidatorUtil.PARAM_MAX);
-            if (!lMax.isInteger())
-            {
-                final String lMsg = "Maximum length should be specified using an integer.";
-                throw new ValidationException(lMsg, aRule, "WRONG TYPE");
-            }
+            if (!lMax.isInteger()) throw new ValidationException(String.format(LEN002, this.getName()));
             else maxLength = ((JSONInteger) lMax).getValue().intValue();
         }
 
@@ -76,16 +74,18 @@ extends Predicate
         if(aValue.isArray()) lSize = ((JSONArray) aValue).getValue().size();
         else if(aValue.isString()) lSize = ((JSONString) aValue).getValue().length();
         else if(aValue.isObject()) lSize = ((JSONObject) aValue).getValue().size();
-        else fail("The value is not a JSONArray, JSONString or JSONObject.", aValue);
+        else throw new ValidationException(String.format(LEN003, aValue.toString(), this.getName()));
 
-        // If there are lenght specs, we check them.
+        // If there are length specifications, we check them.
         if(minLength != null)
         {
-            if(lSize < minLength) fail("The size (" + lSize +") is smaller then allowed (" + minLength + ").", aValue);
+            if(lSize < minLength)
+                throw new ValidationException(String.format(LEN004, lSize, aValue.toString(),  minLength, this.getName()));
         }
         if(maxLength != null)
         {
-            if( lSize > maxLength ) fail("The size (" + lSize +") is larger then allowed (" + maxLength + ").", aValue);
+            if( lSize > maxLength )
+                throw new ValidationException(String.format(LEN005, lSize, aValue.toString(),  maxLength, this.getName()));
         }
     }
 }

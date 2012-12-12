@@ -16,6 +16,8 @@ import com.sdicons.json.validator.ValidationException;
 public class Null
 extends Predicate
 {
+    private static final String NULL001 = "The value '%s' is not a JSONNull in rule '%s'.";
+
     public Null(String aName)
     {
         super(aName);
@@ -24,6 +26,7 @@ extends Predicate
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isNull()) fail("The value is not a JSONNull." ,aValue);
+        if(!aValue.isNull())
+            throw new ValidationException(String.format(NULL001, aValue.toString(), this.getName()));
     }
 }

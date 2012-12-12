@@ -40,6 +40,12 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class Switch
 extends Predicate
 {
+
+    private static final String CAS001 = "JSONValidator/Switch/001: A case in a switch predicate should be an object type but found '%s' in rule '%s'.";
+    private static final String CAS002 = "JSONValidator/Switch/002: The value '%s' is not a JSONObject in rule '%s'.";
+    private static final String CAS003 = "JSONValidator/Switch/003: The value '%s' does not contain the discriminator '%s' in rule '%s'";
+    private static final String CAS004 = "JSONValidator/Switch/004: No applicable rule found for discriminator '%s' in value '%s' in rule '%s'.";
+
     private List<SwitchCase> rules = new LinkedList<SwitchCase>();
     private String key;
 
@@ -53,7 +59,7 @@ extends Predicate
             this.validator = validator;
             this.values = when;
         }
-        
+
         public SwitchCase(JSONValue when, Validator validator)
         {
             this.values = new ArrayList<JSONValue>();
@@ -71,7 +77,7 @@ extends Predicate
             return values.contains(aVal);
         }
     }
-    
+
     public Switch(String aName, String discriminator, HashMap<String,Validator> aRuleset, SwitchCase ... cases) {
         super(aName);
         this.key = discriminator;
@@ -89,7 +95,8 @@ extends Predicate
         List<JSONValue> lCases = ((JSONArray) aRule.get(ValidatorUtil.PARAM_CASE)).getValue();
         for (JSONValue lCase : lCases)
         {
-            if(!lCase.isObject()) fail("A case in a swicht should be an object type.", lCase);
+            if(!lCase.isObject())
+                throw new ValidationException(String.format(CAS001, lCase.toString(), this.getName()));
             JSONObject lObjCase = (JSONObject) lCase;
 
             ValidatorUtil.requiresAttribute(lObjCase, ValidatorUtil.PARAM_RULE, JSONObject.class);
@@ -110,10 +117,12 @@ extends Predicate
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isObject()) fail("The value is not a JSONObject.", aValue);
+        if(!aValue.isObject())
+            throw new ValidationException(String.format(CAS002, aValue.toString(), this.getName()));
         JSONObject lObj = (JSONObject) aValue;
 
-        if(!lObj.containsKey(key)) fail("The object does not contain the key: \"" + key + "\".", lObj);
+        if(!lObj.containsKey(key))
+            throw new ValidationException(String.format(CAS003, lObj.toString(), key, this.getName()));
         JSONValue lVal = lObj.get(key);
 
         for (SwitchCase aCase : rules)
@@ -124,6 +133,6 @@ extends Predicate
                 return;
             }
         }
-        fail("No applicable rule found for key: \"" + key + "\", value: " + lVal.toString(), aValue);
+        throw new ValidationException(String.format(CAS004, key, aValue, this.getName()));
     }
 }

@@ -17,6 +17,8 @@ import com.sdicons.json.validator.ValidationException;
 public class Object
 extends Predicate
 {
+    private static final String OBJ001 = "JSONValidator/Object/001: The value '%s' is not a JSONObject in rule '%s'.";
+
     public Object(String aName)
     {
         super(aName);
@@ -26,6 +28,7 @@ extends Predicate
     throws ValidationException
     {
         // First we check if we have an array.
-        if(!aValue.isObject()) fail("The value is not a JSONObject.", aValue);
+        if(!aValue.isObject())
+            throw new ValidationException(String.format(OBJ001, aValue.toString(), this.getName()));
     }
 }

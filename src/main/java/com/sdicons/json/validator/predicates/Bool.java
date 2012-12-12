@@ -21,6 +21,8 @@ import com.sdicons.json.validator.ValidationException;
 public class Bool
 extends Predicate
 {
+    private static final String BOOL001 = "JSONValidator/Bool/001: The value '%s' is not a JSONBoolean in rule '%s'.";
+
     public Bool(String aName)
     {
         super(aName);
@@ -29,11 +31,7 @@ extends Predicate
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isBoolean()) fail("The value is not a JSONBoolean", aValue);
+        if(!aValue.isBoolean())
+            throw new ValidationException(String.format(BOOL001, aValue.toString(), this.getName()));
     }
-
-    // TODO creating rules.
-//    public JSONObject createRule() {
-//        return ValidatorUtil.createRule(getName(), "bool");
-//    }
 }

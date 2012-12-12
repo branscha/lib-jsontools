@@ -15,6 +15,8 @@ import com.sdicons.json.validator.ValidationException;
 public class Complex
 extends Predicate
 {
+    private static final String CPLX001 = "JSONValidator/Complex/001: The value '%s' is not a JSONComplex in rule '%s'.";
+
     public Complex(String aName)
     {
         super(aName);
@@ -23,6 +25,7 @@ extends Predicate
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isComplex()) fail("The value is not a JSONCOmplex", aValue);
+        if(!aValue.isComplex())
+            throw new ValidationException(String.format(CPLX001, aValue.toString(), this.getName()));
     }
 }

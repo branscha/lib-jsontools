@@ -21,6 +21,8 @@ import com.sdicons.json.validator.ValidationException;
 public class Simple
 extends Predicate
 {
+    private static final String SIM001 = "JSONValidator/Simple/001: The value '%s' is not JSONSimple in rule '%s'.";
+
     public Simple(String aName)
     {
         super(aName);
@@ -29,6 +31,7 @@ extends Predicate
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isSimple()) fail("The value is not JSONSimple.", aValue);
+        if(!aValue.isSimple())
+            throw new ValidationException(String.format(SIM001, aValue.toString(), this.getName()));
     }
 }

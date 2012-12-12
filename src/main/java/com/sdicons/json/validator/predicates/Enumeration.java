@@ -22,6 +22,8 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class Enumeration
 extends Predicate
 {
+    private static final String ENUM001 = "JSONValidator/Enumeration/001: The enumeration does not contain the value '%s' in rule '%s'.";
+
     private List<JSONValue> enumValues;
 
     public Enumeration(String aName, JSONObject aRule)
@@ -41,6 +43,7 @@ extends Predicate
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!enumValues.contains(aValue)) fail("The enumeration does not contain the value.", aValue);
+        if(!enumValues.contains(aValue))
+            throw new ValidationException(String.format(ENUM001, aValue.toString(), this.getName()));
     }
 }

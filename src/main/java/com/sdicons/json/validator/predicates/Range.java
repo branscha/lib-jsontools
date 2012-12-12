@@ -33,6 +33,12 @@ v  }
 public class Range
 extends Predicate
 {
+    private static final String RAN001 = "JSONValidator/Range/001: Minimum length should be specified using a number in rule '%s'.";
+    private static final String RAN002 = "JSONValidator/Range/002: Maximum length should be specified using an integer in rule '%s'.";
+    private static final String RAN003 = "JSONValidator/Range/003: The value '%s' is not a JSONNumber in rule '%s'.";
+    private static final String RAN004 = "JSONValidator/Range/004: The value %s from '%s' is below the lower boundary %s in rule '%s'.";
+    private static final String RAN005 = "JSONValidator/Range/005: The value %s from '%s' is above the upper boundary %s in rule '%s'.";
+
     private BigDecimal minValue = null;
     private BigDecimal maxValue = null;
 
@@ -42,13 +48,13 @@ extends Predicate
         if(min != null) minValue = new BigDecimal(min);
         if(max != null) maxValue = new BigDecimal(max);
     }
-    
+
     public Range(String aName, BigDecimal min, BigDecimal max) {
         super(aName);
         this.minValue = min;
         this.maxValue = max;
     }
-    
+
     public Range(String aName, JSONObject aRule)
     throws ValidationException
     {
@@ -59,8 +65,7 @@ extends Predicate
             JSONValue lMin = aRule.get(ValidatorUtil.PARAM_MIN);
             if (!lMin.isNumber())
             {
-                final String lMsg = "Minimum length should be specified using a number.";
-                throw new ValidationException(lMsg, aRule, "WRONG TYPE");
+                throw new ValidationException(String.format(RAN001, aName));
             }
             else minValue = cvtNumber((JSONNumber) lMin);
         }
@@ -70,8 +75,7 @@ extends Predicate
             JSONValue lMax = aRule.get(ValidatorUtil.PARAM_MAX);
             if (!lMax.isInteger())
             {
-                final String lMsg = "Maximum length should be specified using an integer.";
-                throw new ValidationException(lMsg, aRule, "WRONG TYPE");
+                throw new ValidationException(String.format(RAN002, aName));
             }
             else maxValue = cvtNumber((JSONNumber) lMax);
         }
@@ -79,17 +83,20 @@ extends Predicate
 
     public void validate(JSONValue aValue) throws ValidationException
     {
-        if(!aValue.isNumber()) fail("The value is not a JSONNumber.", aValue);
+        if(!aValue.isNumber())
+            throw new ValidationException(String.format(RAN003, aValue.toString(), this.getName()));
         BigDecimal lSize = cvtNumber((JSONNumber) aValue);
 
         // If there are length specs, we check them.
         if(minValue != null)
         {
-            if(lSize.compareTo(minValue) < 0) fail("The size (" + lSize +") is smaller then allowed (" + minValue + ").", aValue);
+            if(lSize.compareTo(minValue) < 0)
+                throw new ValidationException(String.format(RAN004, lSize, aValue.toString(), minValue, this.getName()));
         }
         if(maxValue != null)
         {
-            if(lSize.compareTo(maxValue) > 0 ) fail("The size (" + lSize +") is larger then allowed (" + maxValue + ").", aValue);
+            if(lSize.compareTo(maxValue) > 0 )
+                throw new ValidationException(String.format(RAN005, lSize, aValue.toString(), maxValue, this.getName()));
         }
     }
 

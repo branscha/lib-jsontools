@@ -5,8 +5,8 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
-import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.model.JSONValue;
+import com.sdicons.json.validator.ValidationException;
 
 /**
  * A predicate to check if a JSON value is an integer or not.
@@ -14,6 +14,8 @@ import com.sdicons.json.model.JSONValue;
 public class Int
 extends Predicate
 {
+    private static final String INT001 = "JSONValidator/Int/001: The value '%s' is not a JSONInteger in rule '%s'.";
+
     public Int(String aName)
     {
         super(aName);
@@ -22,6 +24,7 @@ extends Predicate
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isInteger()) fail("The value is not a JSONInteger.", aValue);
+        if(!aValue.isInteger())
+            throw new ValidationException(String.format(INT001, aValue.toString(), this.getName()));
     }
 }

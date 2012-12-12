@@ -30,6 +30,7 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class Ref
 extends Predicate
 {
+    private static final String REF001 = "JSONValidator/Ref/001: Cannot resolve reference '%s' in rule '%s'.";
     private Map<String, Validator> ruleset;
     private String ref;
 
@@ -57,6 +58,6 @@ extends Predicate
             Validator lValidator = ruleset.get(ref);
             lValidator.validate(aValue);
         }
-        else fail("Reference to an unexisting rule: \"" + ref + "\"." ,aValue);
+        else throw new ValidationException(String.format(REF001, ref, this.getName()));
     }
 }

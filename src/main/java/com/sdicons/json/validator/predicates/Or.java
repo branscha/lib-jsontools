@@ -25,6 +25,7 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class Or
 extends Predicate
 {
+    private static final String OR001 = "JSONValidator/Or/001: All or rules failed for value '%s' in rule '%s'.";
     private List<Validator> rules = new LinkedList<Validator>();
 
     public Or(String aName, JSONObject aRule, HashMap<String,Validator> aRuleset)
@@ -61,10 +62,11 @@ extends Predicate
             catch (ValidationException e)
             {
                 // This rule failed. Ignore for the time being.
+                // Try the other ones first.
             }
         }
         // If we get here, then all rules failed.
         // If all rules fail, we fail as well.
-        fail("All or rules failed.", aValue);
+        throw new ValidationException(String.format(OR001, aValue.toString(), this.getName()));
     }
 }
