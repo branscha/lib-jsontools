@@ -36,6 +36,11 @@ public class ValidatorBuilder {
 
     private HashMap<String,Validator> ruleSet = new HashMap<String, Validator>();
 
+    public Validator getRule(String ruleName) {
+        if(ruleSet.containsKey(ruleName)) return ruleSet.get(ruleName);
+        else throw new IllegalArgumentException(String.format("EXCxxx: Rule '%s' does not exist.", ruleName));
+    }
+    
     public Validator bool() {
         return new Bool("bool");
     }

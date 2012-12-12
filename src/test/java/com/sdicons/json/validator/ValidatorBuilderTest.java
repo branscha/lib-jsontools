@@ -231,5 +231,47 @@ public class ValidatorBuilderTest {
         JSONValue json = p.nextValue();
         v.validate(json);
     }
+    
+    @Test
+    public void lengthTest() throws ParserException, ValidationException {
+        Validator v = vb.length(3, 8);
+        p = new JSONParser("[1, 2, 3, 4]");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void lengthTest2() throws ParserException, ValidationException {
+        Validator v = vb.length(3, 8);
+        p = new JSONParser("\"abcde\"");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void lengthUnhappyTest() throws ParserException, ValidationException {
+        Validator v = vb.length(3, 8);
+        p = new JSONParser("[1, 2]");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void lengthUnhappyTest2() throws ParserException, ValidationException {
+        Validator v = vb.length(3, 8);
+        p = new JSONParser("\"abcdefghij\"");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void letTest() throws ParserException, ValidationException {
+        vb.intp("all-integers");
+        Validator v = vb.content("content-integers", vb.ref("all-integers"));
+        p = new JSONParser("[2, 3, 5, 7]");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+       
+    }
 
 }
