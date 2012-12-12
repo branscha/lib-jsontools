@@ -271,7 +271,22 @@ public class ValidatorBuilderTest {
         p = new JSONParser("[2, 3, 5, 7]");
         JSONValue json = p.nextValue();
         v.validate(json);
-       
+    }
+    
+    @Test
+    public void notTest() throws ValidationException, ParserException {
+        Validator v = vb.not(vb.intp());
+        p = new JSONParser("true");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void notUnhappyTest() throws ValidationException, ParserException {
+        Validator v = vb.not(vb.intp());
+        p = new JSONParser("17");
+        JSONValue json = p.nextValue();
+        v.validate(json);
     }
 
 }

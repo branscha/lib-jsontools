@@ -41,11 +41,15 @@ extends Predicate
         try
         {
             rule.validate(aValue);
-            fail(aValue);
         }
         catch (ValidationException e)
         {
+            // It is ok if the inner validation failed.
+            // We undo that failure by returning.
             return;
         }
+        // If we get here, then the inner validation succeeded.
+        // In that case we fail by raising an exception.
+        fail(aValue);
     }
 }
