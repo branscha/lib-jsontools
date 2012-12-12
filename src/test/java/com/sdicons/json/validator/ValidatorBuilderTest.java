@@ -3,9 +3,12 @@ package com.sdicons.json.validator;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.parser.JSONParser;
 import com.sdicons.json.parser.ParserException;
+import com.sdicons.json.validator.predicates.Properties.PropRule;
+import com.sdicons.json.validator.predicates.Switch.SwitchCase;
 
 public class ValidatorBuilderTest {
     
@@ -288,5 +291,86 @@ public class ValidatorBuilderTest {
         JSONValue json = p.nextValue();
         v.validate(json);
     }
-
+    
+    @Test
+    public void orTest() throws ParserException, ValidationException {
+        Validator v = vb.or(vb.intp(), vb.bool());
+        p = new JSONParser("17");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+        
+        p = new JSONParser("true");
+        json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void orUnhappyTest() throws ParserException, ValidationException {
+        Validator v = vb.or(vb.intp(), vb.bool());
+        p = new JSONParser("17.67");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void propertiesTest() throws ParserException, ValidationException {
+        Validator v = vb.properties(
+                new PropRule("name", vb.string(), false),
+                new PropRule("age", vb.intp(), false));
+        p = new JSONParser("{\"name\":\"Jack\", \"age\": 23}");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void propertiesUnhappyTest() throws ParserException, ValidationException {
+        Validator v = vb.properties(
+                new PropRule("name", vb.string(), false),
+                new PropRule("age", vb.intp(), false));
+        p = new JSONParser("{\"name\":\"Jack\"}");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void rangeTest() throws ParserException, ValidationException{
+        Validator v = vb.range(5, 10);
+        p = new JSONParser("7");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void rangeUnhappyTest() throws ParserException, ValidationException{
+        Validator v = vb.range(5, 10);
+        p = new JSONParser("13");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void regexpTest() throws ParserException, ValidationException {
+        Validator v = vb.regexp("a+b+c+");
+        p = new JSONParser("\"aaaaabbbbbbbc\"");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void regexpUnhappyTest() throws ParserException, ValidationException {
+        Validator v = vb.regexp("a+b+c+");
+        p = new JSONParser("\"aaaaabbbbbbbcXX\"");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void switchTest() throws ValidationException, ParserException{
+        Validator v = vb.switchrule("flag", 
+                new SwitchCase(new JSONString("hey"), vb.intp()),
+                new SwitchCase(new JSONString("ho"), vb.truep()));
+        p = new JSONParser("{\"flag\": \"ho\"}");
+        JSONValue json = p.nextValue();
+        v.validate(json);
+    }
 }

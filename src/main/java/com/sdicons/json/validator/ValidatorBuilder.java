@@ -280,13 +280,13 @@ public class ValidatorBuilder {
         return new Properties("properties", ruleSet, rules);
     }
     
-    public Validator switchrule(String ruleName, String discriminator, SwitchCase cases) {
+    public Validator switchrule(String ruleName, String discriminator, SwitchCase ...cases) {
         Validator validator = new Switch(ruleName, discriminator, ruleSet, cases);
         ruleSet.put(ruleName, validator);
         return validator;
     }
     
-    public Validator switchrule(String discriminator, SwitchCase cases) {
+    public Validator switchrule(String discriminator, SwitchCase ...cases) {
         return new Switch("switch", discriminator, ruleSet, cases);
     }
     
