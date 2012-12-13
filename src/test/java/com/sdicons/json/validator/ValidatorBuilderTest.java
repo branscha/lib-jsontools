@@ -26,7 +26,7 @@ public class ValidatorBuilderTest {
     public void boolTest() throws ParserException, ValidationException {
         v = vb.bool();
         p = new JSONParser("true");
-        JSONValue json = p.nextValue();
+        json = p.nextValue();
         v.validate(json);
     }
 
@@ -34,6 +34,26 @@ public class ValidatorBuilderTest {
     public void boolUnhappyTest() throws ParserException, ValidationException {
         v = vb.bool();
         p = new JSONParser("123");
+        json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test
+    public void complexTest() throws ParserException, ValidationException {
+        v = vb.complex();
+        p = new JSONParser("{}");
+        json = p.nextValue();
+        v.validate(json);
+        
+        p = new JSONParser("[]");
+        json = p.nextValue();
+        v.validate(json);
+    }
+    
+    @Test(expected=ValidationException.class)
+    public void complexUnhappyTest() throws ParserException, ValidationException {
+        v = vb.complex();
+        p = new JSONParser("true");
         json = p.nextValue();
         v.validate(json);
     }

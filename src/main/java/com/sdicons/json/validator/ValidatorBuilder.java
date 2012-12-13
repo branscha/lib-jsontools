@@ -32,61 +32,170 @@ import com.sdicons.json.validator.predicates.Switch;
 import com.sdicons.json.validator.predicates.Switch.SwitchCase;
 import com.sdicons.json.validator.predicates.True;
 
+/**
+ * A builder class to create atomic and composite JSON validators. 
+ * The validators can be constructed manually but it is a much easier job
+ * using this builder.
+ */
 public class ValidatorBuilder {
 
     private HashMap<String,Validator> ruleSet = new HashMap<String, Validator>();
 
+    /**
+     * Get a named validator that was previously built using this builder.
+     * 
+     * @param ruleName
+     *        The name of the validator rule.
+     * @return
+     *        The requested validator rule.
+     */
     public Validator getRule(String ruleName) {
         if(ruleSet.containsKey(ruleName)) return ruleSet.get(ruleName);
         else throw new IllegalArgumentException(String.format("EXCxxx: Rule '%s' does not exist.", ruleName));
     }
     
+    /**
+     * Create an anonymous {@link Bool} validator.
+     * 
+     * @return A validator that validates boolean values.
+     */
     public Validator bool() {
         return new Bool("bool");
     }
 
+    /** 
+     * Create a named {@link Bool} validator.
+     * 
+     * @param ruleName
+     *        The name of the rule you are building.
+     * @return
+     *        A named validator that validates boolean values.
+     */
     public Validator bool(String ruleName) {
         Validator validator = new Bool(ruleName);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * An anonymous {@link Range} validator.
+     * 
+     * @param min
+     *        The lower bound (inclusive). Value null means that there is no
+     *        lower boundary.
+     * @param max
+     *        The upper bound (inclusive). Value null means that there is no 
+     *        upper boundary.
+     * @return
+     *        The range validator.
+     */
     public Validator range(Integer min, Integer max) {
         return new Range("range", min, max);
     }
 
+    /**
+     * Create a named {@link Range} validator.
+     * 
+     * @param ruleName
+     *        The name of the rule being created.
+     * @param min
+     *        The lower boundary (inclusive). Value null means that there is no lower boundary.
+     * @param max
+     *        The upper bound (inclusive). Value null means that there is no upper boundary.
+     * @return
+     *        The named validator.
+     */
     public Validator range(String ruleName, Integer min, Integer max) {
         Validator validator = new Range(ruleName, min, max);
         ruleSet.put(ruleName,  validator);
         return validator;
     }
 
+    /**
+     * Create a named and-combination {@link And}of a series of validators.
+     * The validation process halts when the first failure is encountered.
+     * 
+     * @param ruleName
+     *        The name of the rule under construction.
+     * @param validators
+     *        The array of validators that will be combined using the and operator.
+     * @return
+     *        The requested validator.
+     */
     public Validator and(String ruleName, Validator ...validators) {
         Validator validator = new And(ruleName, validators);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous and-combination {@link And} of a series of validators.
+     * The validation process halts when the first failure is encountered.
+     * 
+     * @param validators
+     *        The array of validators that will be combined using the and operator.
+     * @return
+     *        The requested validator.
+     */
     public Validator and(Validator ...validators) {
         return  new And("and", validators);
     }
 
+    /**
+     * Create a named {@link Ref} validator. It creates an alias for another 
+     * named rule.
+     * It is useful to refer to another rule inside a composite validator.
+     * 
+     * @param ruleName
+     *        The name of the validator under construction.
+     * @param ref
+     *        The name of the rule you are referring to.
+     * @return
+     *        The new validator.
+     */
     public Validator ref(String ruleName, String ref) {
         Validator validator = new Ref(ruleName, ref, ruleSet);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link Ref} validator. 
+     * It is useful to refer to another rule inside a composite validator.
+     * 
+     * @param ruleName
+     *        The name of the validator under construction.
+     * @param ref
+     *        The name of the rule you are referring to.
+     * @return
+     *        The new validator.
+     */
     public Validator ref(String ref) {
         return new Ref("ref", ref, ruleSet);
     }
 
+    /**
+     * Create a named {@link Array} validator.
+     * 
+     * @param ruleName
+     *        The name of the rule under construction.
+     * @return
+     *        The newly created validator.
+     */
     public Validator array(String ruleName) {
         Validator validator = new Array(ruleName);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link Array} validator.
+     * 
+     * @param ruleName
+     *        The name of the rule under construction.
+     * @return
+     *        The newly created validator.
+     */
     public Validator array() {
         return new Array("array");
     }
