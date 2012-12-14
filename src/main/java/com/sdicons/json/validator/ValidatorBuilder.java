@@ -163,8 +163,6 @@ public class ValidatorBuilder {
      * Create an anonymous {@link Ref} validator. 
      * It is useful to refer to another rule inside a composite validator.
      * 
-     * @param ruleName
-     *        The name of the validator under construction.
      * @param ref
      *        The name of the rule you are referring to.
      * @return
@@ -191,8 +189,6 @@ public class ValidatorBuilder {
     /**
      * Create an anonymous {@link Array} validator.
      * 
-     * @param ruleName
-     *        The name of the rule under construction.
      * @return
      *        The newly created validator.
      */
@@ -215,7 +211,7 @@ public class ValidatorBuilder {
     }
 
     /**
-     * Create an anonymus {@link Complex\] validator to check if a value is
+     * Create an anonymus {@link Complex} validator to check if a value is
      * an array or an object.
      * 
      * @return The newly created validator.
@@ -431,7 +427,7 @@ public class ValidatorBuilder {
      *        The minimum length for the value (string or array).
      * @param max
      *        The maximum length for the value (string or array).
-     * @return
+     * @return The new length validator.
      */
     public Validator length(String ruleName, Integer min, Integer max) {
         Validator validator = new Length(ruleName, min, max);
@@ -501,7 +497,7 @@ public class ValidatorBuilder {
     }
 
     /**
-     * Create an anonymous {@link Null) checking validator.
+     * Create an anonymous {@link Null} checking validator.
      * 
      * @return The new validator.
      */
@@ -683,7 +679,7 @@ public class ValidatorBuilder {
      *        The name of the field that will be used to select a {@link SwitchCase}.
      * @param cases
      *        An array of {@link SwitchCase} elements. 
-     *        You can use the {@link ValidatorBuilder#switchrule(String, SwitchCase...)} method to quickly create a case.
+     *        You can use the {@link ValidatorBuilder#switchcase(Validator, JSONValue...)} method to quickly create a case.
      * @return The new validator.
      */
     public Validator switchrule(String discriminator, SwitchCase ...cases) {
@@ -705,7 +701,7 @@ public class ValidatorBuilder {
     }
     
     /**
-     * Create a {@link PropRule} that is used to build a {@link Property} validator for objects.
+     * Create a {@link PropRule} that is used to build a {@link Properties} validator for objects.
      * 
      * @param propName
      *        The name of the object property to which this rule applies.

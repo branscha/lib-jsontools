@@ -12,8 +12,8 @@ import java.lang.annotation.Target;
 
 /**
  * Annotate the method in the JavaBean that generates the Object array that
- * will be used in the @JSONConstructor annotated method. The two annotations
- * @JSONConstructor and @JSONConstructorArgs work together.
+ * will be used in the {@code JSONConstructor} annotated method. The two annotations
+ * @JSONConstructor and {@code JSONConstructorArgs} work together.
  *
  *  * @see JSONConstructor
  */
