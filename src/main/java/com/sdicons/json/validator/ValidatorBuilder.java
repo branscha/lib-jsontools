@@ -200,46 +200,118 @@ public class ValidatorBuilder {
         return new Array("array");
     }
 
+    /**
+     * Create a named {@link Complex} validator to check if a value is 
+     * an array or an object.
+     * 
+     * @param ruleName
+     *        The name of the validation rule.
+     * @return The validator.
+     */
     public Validator complex(String ruleName) {
         Validator validator = new Complex(ruleName);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymus {@link Complex\] validator to check if a value is
+     * an array or an object.
+     * 
+     * @return The newly created validator.
+     */
     public Validator complex() {
         return new Complex("complex");
     }
 
+    /**
+     * Create a named {@link Content} validator that puts constraints on 
+     * the contents of an array or an object.
+     * 
+     * @param ruleName
+     *        The name of the content validation rule.
+     * @param rule 
+     *        The validation rule that applies to the elements of the array or object.
+     * @return The new content validator.
+     */
     public Validator content(String ruleName, Validator rule) {
         Validator validator = new Content(ruleName, rule);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link Content} validator that puts constraints on
+     * the contents of an array or an object.
+     * 
+     * @param rule
+     *        The validation rule that applies to the elements of the array or object.
+     * @return The new content validator.
+     */
     public Validator content(Validator rule) {
         return new Content("content", rule);
     }
 
+    /**
+     * Create a named {@link Decimal} validator to check if a value is a decimal.
+     * 
+     * @param ruleName
+     *        The name of the validation rule.
+     * @return The new validation rule.
+     */
     public Validator decimal(String ruleName) {
         Validator validator = new Decimal(ruleName);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link Decimal} validator to check if a value contains a decimal.
+     * 
+     * @return The new validation rule.
+     */
     public Validator decimal() {
         return new Decimal("decimal");
     }
 
+    /**
+     * Create a named {@link Enumeration} validation rule. Check if a value belongs
+     * to a predefined set of values.
+     * 
+     * @param ruleName
+     *        The name of the validation rule.
+     * @param values
+     *        The values of the enumeration.
+     * @return The enumeration validation rule.
+     */
     public Validator enumeration(String ruleName, JSONValue ... values) {
         Validator validator = new Enumeration(ruleName, values);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link Enumeration} validation rule. Check if a value belongs
+     * to a predefined set of values.
+     * @param values
+     * 
+     * @return The enumeration validation rule.
+     */
     public Validator enumeration(JSONValue ... values) {
         return new Enumeration("enumeration", values);
     }
 
+    /**
+     * A convenience method to create a named {@link Enumeration} validation using a set of String values.
+     * The elements of the enumeration are {@link JSONValue} instances, but this method lets you 
+     * construct the enumeration using plain Strings.
+     * 
+     * @param ruleName
+     *        The name of the validation rule.
+     * @param values
+     *        The elements of the enumeration set, they will be converted to {@link JSONString} values.
+     * @return The enumeration validation rule.
+     */
     public Validator enumeration(String ruleName, String ... values) {
         List<JSONValue> strings = new ArrayList<JSONValue>();
         for(int i = 0; i < values.length; i++) {
@@ -251,6 +323,15 @@ public class ValidatorBuilder {
         return validator;
     }
 
+    /**
+     * A convenience method to create a named {@link Enumeration} validation using a set of String values.
+     * The elements of the enumeration are {@link JSONValue} instances, but this method lets you
+     * construct the enumeration using plain Strings.
+     * 
+     * @param values
+     *        The String values of the enumeration, they will be converted to JSONStrings.
+     * @return The enumeration validation rule.
+     */
     public Validator enumeration(String ... values) {
         List<JSONValue> strings = new ArrayList<JSONValue>();
         for(int i = 0; i < values.length; i++) {
@@ -259,92 +340,221 @@ public class ValidatorBuilder {
         return new Enumeration("enumeration", strings.toArray(new JSONValue[]{}));
     }
 
+    /**
+     * Create a named {@link True} validation rule that always succeeds.
+     * We need to include this for the logic system to be complete.
+     * 
+     * @param ruleName The name of the validation.
+     * @return The newly created validation rule. 
+     */
     public Validator truep(String ruleName) {
         Validator validator = new True(ruleName);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link True} validation rule that always succeeds.
+     * We need to include this for the logic system to be complete.
+     * 
+     * @return The newly created validation rule.
+     */
     public Validator truep() {
         return new True("true");
     }
 
+    /**
+     * Create a named {@link False} validation rule that always fails.
+     * We need to include this for the logic system to be complete.
+     * 
+     * @param ruleName
+     *        The name of our validation rule.
+     * @return The new validation rule.
+     */
     public Validator falsep(String ruleName) {
         Validator validator = new False(ruleName);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /** 
+     * Create an anonymous {@link False}  validatioin rule that always fails.
+     * We need to include this for the logic system to be complete.
+     * 
+     * @return The new validation rule.
+     */
     public Validator falsep() {
         return new False("false");
     }
 
+    /**
+     * Create a named {@link Int} validation rule.
+     * 
+     * @param ruleName
+     *        The name for our new rule.
+     * @return The new validation rule.
+     */
     public Validator intp(String ruleName) {
         Validator validator = new Int(ruleName);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link Int} validation rule.
+     * 
+     * @return The new validation rule.
+     */
     public Validator intp() {
         return new Int("int");
     }
 
+    /**
+     * Create an anonymous {@link Length} validation rule to check the length of an array or a string.
+     * 
+     * @param min
+     *        The minimum length for the value (string or array).
+     * @param max
+     *        The maximum length the value can have (string or array).
+     * @return The new validator.
+     */
     public Validator length(Integer min, Integer max) {
         return new Length("length", min, max);
     }
 
+    /**
+     * Create a named {@link Length} validator to check the length of an array or a string.
+     * 
+     * @param ruleName
+     *        The name of the validation rule.
+     * @param min
+     *        The minimum length for the value (string or array).
+     * @param max
+     *        The maximum length for the value (string or array).
+     * @return
+     */
     public Validator length(String ruleName, Integer min, Integer max) {
         Validator validator = new Length(ruleName, min, max);
         ruleSet.put(ruleName,  validator);
         return validator;
     }
 
+    /**
+     * Create a named logical {@link Not} validation which flips the result of an inner validation.
+     * 
+     * @param ruleName
+     *        The name of our validation rule.
+     * @param rule
+     *        The inner validation, the result will be reversed.
+     * @return The new validator.
+     */
     public Validator not(String ruleName, Validator rule) {
         Validator validator = new Not(ruleName, rule);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous logical {@link Not} validation which reverses the result of an inner validation.
+     * 
+     * @param rule
+     *        The inner validation, the result of it will be reversed.
+     * @return The new validator.
+     */
     public Validator not(Validator rule) {
         return new Not("not", rule);
     }
 
+    /**
+     * Create a named {@link Nr} validator to see if a value is a number.
+     * 
+     * @param ruleName
+     *        The name of the validation rule.
+     * @return The new validator.
+     */
     public Validator nr(String ruleName) {
         Validator validator = new Nr(ruleName);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link Nr} validator to see if a value is a number.
+     * 
+     * @return The new validator.
+     */
     public Validator nr() {
         return new Nr("nr");
     }
 
+    /**
+     * Create a named {@link Null} checking validator.
+     * 
+     * @param ruleName
+     *        A name for the validation rule.
+     * @return The new validator.
+     */
     public Validator nullp(String ruleName) {
         Validator validator = new Null(ruleName);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link Null) checking validator.
+     * 
+     * @return The new validator.
+     */
     public Validator nullp() {
         return new Null("null");
     }
 
+    /**
+     * Create a named {@link com.sdicons.json.validator.predicates.Object} validator to check if a value
+     * is an object.
+     * 
+     * @param ruleName
+     *        The name of the rule.
+     * @return The new validator.
+     */
     public Validator object(String ruleName) {
         Validator validator = new com.sdicons.json.validator.predicates.Object(ruleName);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /** 
+     * Create an anonymous {@link com.sdicons.json.validator.predicates.Object} validator to check if a value
+     * is an object
+     * 
+     * @return The new validator.
+     */
     public Validator object() {
         return new  com.sdicons.json.validator.predicates.Object("object");
     }
 
+    /**
+     * Create a named composite {@link Or} validation. The value must match against one of the inner rules.
+     * 
+     * @param ruleName
+     *        The name for our rule.
+     * @param validators
+     *        The inner validators, one of it must succeed on the value for the complete matcher to succeed.
+     * @return The new validator.
+     */
     public Validator or(String ruleName, Validator ...validators) {
         Validator validator = new Or(ruleName, validators);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link Or} validation rule. The value must match against one of the inner rules.
+     * 
+     * @param validators
+     *        The inner validators, one of it must succeed on the value for the complete matcher to succeed.
+     * @return The new validator.
+     */
     public Validator or(Validator ...validators) {
         return  new Or("or", validators);
     }
