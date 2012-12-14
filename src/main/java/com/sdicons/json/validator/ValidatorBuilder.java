@@ -559,60 +559,163 @@ public class ValidatorBuilder {
         return  new Or("or", validators);
     }
 
+    /**
+     * Create a named {@link Regexp} validator to validate strings against regular expressions.
+     * @param ruleName
+     *        The name of the regular expression rule.
+     * @param pattern
+     *        The regular expression itself.
+     * @return The new validator.
+     */
     public Validator regexp(String ruleName, String pattern) {
         Validator validator = new Regexp(ruleName, pattern);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link Regexp} validator to validate strings against regular expressions.
+     * 
+     * @param pattern 
+     *        The regular expression.
+     * @return The new validator.
+     */
     public Validator regexp(String pattern) {
         return new Regexp("regexp", pattern);
     }
 
+    /** 
+     * Create a named {@link Simple} validator to check that a value is atomic.
+     * 
+     * @param ruleName
+     *        The name of the new validator.
+     * @return The new validator.
+     */
     public Validator simple(String ruleName) {
         Validator validator = new Simple(ruleName);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link Simple} validator to check that a value is atomic.
+     * 
+     * @return the new validator.
+     */
     public Validator simple() {
         return new Simple("simple");
     }
 
+    /**
+     * Create a named {@link Str} validator to check if a value is a string.
+     * 
+     * @param ruleName
+     *        The name of the validator.
+     * @return The new validator.
+     */
     public Validator string(String ruleName) {
         Validator validator = new Str(ruleName);
         ruleSet.put(ruleName, validator);
         return validator;
     }
 
+    /**
+     * Create an anonymous {@link Str} validator to check if a value is a string.
+     * 
+     * @return The new validator.
+     */
     public Validator string() {
         return new Str("string");
     }
     
+    /**
+     * Create a named {@link Properties} validator to check the key/value pairs of an object.
+     * 
+     * @param ruleName
+     *        The name of the validator.
+     * @param rules
+     *        An array of {@link PropRule}, each rule can validate a specific property of the object.
+     *        You can use the {@link ValidatorBuilder#propRule(String, Validator, boolean)} method to 
+     *        quickly create the property rules.
+     * @return The new validator.
+     */
     public Validator properties(String ruleName, PropRule ... rules){
         Validator validator = new Properties(ruleName, ruleSet, rules);
         ruleSet.put(ruleName, validator);
         return validator;
     }
     
+    /**
+     * Create an anonymous {@link Properties} validator to check the key/value pairs of an object.
+     * 
+     * @param rules
+     *        An array of {@link PropRule}, each rule can validate a specific property of the object.
+     *        You can use the {@link ValidatorBuilder#propRule(String, Validator, boolean)} method to 
+     *        quickly create the property rules.
+     * @return The new validator.
+     */
     public Validator properties(PropRule ... rules){
         return new Properties("properties", ruleSet, rules);
     }
     
+    /**
+     * Create a named {@link Switch} validator.
+     * 
+     * @param ruleName
+     *        The name of the rule.
+     * @param discriminator
+     *        The name of the field that will be used to select a {@link SwitchCase}.
+     * @param cases
+     *        An array of {@link SwitchCase} elements. 
+     *        You can use the {@link ValidatorBuilder#switchrule(String, SwitchCase...)} method to quickly create a case.
+     * @return The new validator.
+     */
     public Validator switchrule(String ruleName, String discriminator, SwitchCase ...cases) {
         Validator validator = new Switch(ruleName, discriminator, ruleSet, cases);
         ruleSet.put(ruleName, validator);
         return validator;
     }
     
+    /**
+     * Create an anonymous {@link Switch} validator.
+     * 
+     * @param discriminator
+     *        The name of the field that will be used to select a {@link SwitchCase}.
+     * @param cases
+     *        An array of {@link SwitchCase} elements. 
+     *        You can use the {@link ValidatorBuilder#switchrule(String, SwitchCase...)} method to quickly create a case.
+     * @return The new validator.
+     */
     public Validator switchrule(String discriminator, SwitchCase ...cases) {
         return new Switch("switch", discriminator, ruleSet, cases);
     }
     
+    /**
+     * Create a {@link SwitchCase} that can be used to build a {@link Switch} validator.
+     * 
+     * @param rule
+     *        The internal validator.
+     * @param values
+     *        The discriminating values. If the discriminator is one of these values, the rule
+     *        will be applied to the complete object.
+     * @return The SwitchCase.
+     */
     public static SwitchCase switchcase(Validator rule, JSONValue ...values) {
         return new SwitchCase(Arrays.asList(values), rule);
     }
     
+    /**
+     * Create a {@link PropRule} that is used to build a {@link Property} validator for objects.
+     * 
+     * @param propName
+     *        The name of the object property to which this rule applies.
+     * @param rule
+     *        The validator for this property.
+     * @param optional
+     *        A flag to indicate if the property is optional or not. If it is not optional, a validation
+     *        error will occur if the object does not have a property with that name.
+     * @return The property rule.
+     */
     public static PropRule propRule(String propName, Validator rule, boolean optional){
         return new PropRule(propName, rule, optional);
     }
