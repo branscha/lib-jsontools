@@ -33,9 +33,19 @@ import com.sdicons.json.validator.predicates.Switch.SwitchCase;
 import com.sdicons.json.validator.predicates.True;
 
 /**
- * A builder class to create atomic and composite JSON validators. 
+ * A builder class to create atomic and composite JSON validators.
  * The validators can be constructed manually but it is a much easier job
  * using this builder.
+ *
+ * <pre>
+ * <code>
+ * Validator v = vb.range(50, 100);
+ * p = new JSONParser("55");
+ * json = p.nextValue();
+ * v.validate(json);
+ * </code>
+ * </pre>
+ *
  */
 public class ValidatorBuilder {
 
@@ -43,7 +53,7 @@ public class ValidatorBuilder {
 
     /**
      * Get a named validator that was previously built using this builder.
-     * 
+     *
      * @param ruleName
      *        The name of the validator rule.
      * @return
@@ -53,19 +63,19 @@ public class ValidatorBuilder {
         if(ruleSet.containsKey(ruleName)) return ruleSet.get(ruleName);
         else throw new IllegalArgumentException(String.format("EXCxxx: Rule '%s' does not exist.", ruleName));
     }
-    
+
     /**
      * Create an anonymous {@link Bool} validator.
-     * 
+     *
      * @return A validator that validates boolean values.
      */
     public Validator bool() {
         return new Bool("bool");
     }
 
-    /** 
+    /**
      * Create a named {@link Bool} validator.
-     * 
+     *
      * @param ruleName
      *        The name of the rule you are building.
      * @return
@@ -79,12 +89,12 @@ public class ValidatorBuilder {
 
     /**
      * An anonymous {@link Range} validator.
-     * 
+     *
      * @param min
      *        The lower bound (inclusive). Value null means that there is no
      *        lower boundary.
      * @param max
-     *        The upper bound (inclusive). Value null means that there is no 
+     *        The upper bound (inclusive). Value null means that there is no
      *        upper boundary.
      * @return
      *        The range validator.
@@ -95,7 +105,7 @@ public class ValidatorBuilder {
 
     /**
      * Create a named {@link Range} validator.
-     * 
+     *
      * @param ruleName
      *        The name of the rule being created.
      * @param min
@@ -114,7 +124,7 @@ public class ValidatorBuilder {
     /**
      * Create a named and-combination {@link And}of a series of validators.
      * The validation process halts when the first failure is encountered.
-     * 
+     *
      * @param ruleName
      *        The name of the rule under construction.
      * @param validators
@@ -131,7 +141,7 @@ public class ValidatorBuilder {
     /**
      * Create an anonymous and-combination {@link And} of a series of validators.
      * The validation process halts when the first failure is encountered.
-     * 
+     *
      * @param validators
      *        The array of validators that will be combined using the and operator.
      * @return
@@ -142,10 +152,10 @@ public class ValidatorBuilder {
     }
 
     /**
-     * Create a named {@link Ref} validator. It creates an alias for another 
+     * Create a named {@link Ref} validator. It creates an alias for another
      * named rule.
      * It is useful to refer to another rule inside a composite validator.
-     * 
+     *
      * @param ruleName
      *        The name of the validator under construction.
      * @param ref
@@ -160,9 +170,9 @@ public class ValidatorBuilder {
     }
 
     /**
-     * Create an anonymous {@link Ref} validator. 
+     * Create an anonymous {@link Ref} validator.
      * It is useful to refer to another rule inside a composite validator.
-     * 
+     *
      * @param ref
      *        The name of the rule you are referring to.
      * @return
@@ -174,7 +184,7 @@ public class ValidatorBuilder {
 
     /**
      * Create a named {@link Array} validator.
-     * 
+     *
      * @param ruleName
      *        The name of the rule under construction.
      * @return
@@ -188,7 +198,7 @@ public class ValidatorBuilder {
 
     /**
      * Create an anonymous {@link Array} validator.
-     * 
+     *
      * @return
      *        The newly created validator.
      */
@@ -197,9 +207,9 @@ public class ValidatorBuilder {
     }
 
     /**
-     * Create a named {@link Complex} validator to check if a value is 
+     * Create a named {@link Complex} validator to check if a value is
      * an array or an object.
-     * 
+     *
      * @param ruleName
      *        The name of the validation rule.
      * @return The validator.
@@ -213,7 +223,7 @@ public class ValidatorBuilder {
     /**
      * Create an anonymus {@link Complex} validator to check if a value is
      * an array or an object.
-     * 
+     *
      * @return The newly created validator.
      */
     public Validator complex() {
@@ -221,12 +231,12 @@ public class ValidatorBuilder {
     }
 
     /**
-     * Create a named {@link Content} validator that puts constraints on 
+     * Create a named {@link Content} validator that puts constraints on
      * the contents of an array or an object.
-     * 
+     *
      * @param ruleName
      *        The name of the content validation rule.
-     * @param rule 
+     * @param rule
      *        The validation rule that applies to the elements of the array or object.
      * @return The new content validator.
      */
@@ -239,7 +249,7 @@ public class ValidatorBuilder {
     /**
      * Create an anonymous {@link Content} validator that puts constraints on
      * the contents of an array or an object.
-     * 
+     *
      * @param rule
      *        The validation rule that applies to the elements of the array or object.
      * @return The new content validator.
@@ -250,7 +260,7 @@ public class ValidatorBuilder {
 
     /**
      * Create a named {@link Decimal} validator to check if a value is a decimal.
-     * 
+     *
      * @param ruleName
      *        The name of the validation rule.
      * @return The new validation rule.
@@ -263,7 +273,7 @@ public class ValidatorBuilder {
 
     /**
      * Create an anonymous {@link Decimal} validator to check if a value contains a decimal.
-     * 
+     *
      * @return The new validation rule.
      */
     public Validator decimal() {
@@ -273,7 +283,7 @@ public class ValidatorBuilder {
     /**
      * Create a named {@link Enumeration} validation rule. Check if a value belongs
      * to a predefined set of values.
-     * 
+     *
      * @param ruleName
      *        The name of the validation rule.
      * @param values
@@ -290,7 +300,7 @@ public class ValidatorBuilder {
      * Create an anonymous {@link Enumeration} validation rule. Check if a value belongs
      * to a predefined set of values.
      * @param values
-     * 
+     *
      * @return The enumeration validation rule.
      */
     public Validator enumeration(JSONValue ... values) {
@@ -299,9 +309,9 @@ public class ValidatorBuilder {
 
     /**
      * A convenience method to create a named {@link Enumeration} validation using a set of String values.
-     * The elements of the enumeration are {@link JSONValue} instances, but this method lets you 
+     * The elements of the enumeration are {@link JSONValue} instances, but this method lets you
      * construct the enumeration using plain Strings.
-     * 
+     *
      * @param ruleName
      *        The name of the validation rule.
      * @param values
@@ -323,7 +333,7 @@ public class ValidatorBuilder {
      * A convenience method to create a named {@link Enumeration} validation using a set of String values.
      * The elements of the enumeration are {@link JSONValue} instances, but this method lets you
      * construct the enumeration using plain Strings.
-     * 
+     *
      * @param values
      *        The String values of the enumeration, they will be converted to JSONStrings.
      * @return The enumeration validation rule.
@@ -339,9 +349,9 @@ public class ValidatorBuilder {
     /**
      * Create a named {@link True} validation rule that always succeeds.
      * We need to include this for the logic system to be complete.
-     * 
+     *
      * @param ruleName The name of the validation.
-     * @return The newly created validation rule. 
+     * @return The newly created validation rule.
      */
     public Validator truep(String ruleName) {
         Validator validator = new True(ruleName);
@@ -352,7 +362,7 @@ public class ValidatorBuilder {
     /**
      * Create an anonymous {@link True} validation rule that always succeeds.
      * We need to include this for the logic system to be complete.
-     * 
+     *
      * @return The newly created validation rule.
      */
     public Validator truep() {
@@ -362,7 +372,7 @@ public class ValidatorBuilder {
     /**
      * Create a named {@link False} validation rule that always fails.
      * We need to include this for the logic system to be complete.
-     * 
+     *
      * @param ruleName
      *        The name of our validation rule.
      * @return The new validation rule.
@@ -373,10 +383,10 @@ public class ValidatorBuilder {
         return validator;
     }
 
-    /** 
+    /**
      * Create an anonymous {@link False}  validatioin rule that always fails.
      * We need to include this for the logic system to be complete.
-     * 
+     *
      * @return The new validation rule.
      */
     public Validator falsep() {
@@ -385,7 +395,7 @@ public class ValidatorBuilder {
 
     /**
      * Create a named {@link Int} validation rule.
-     * 
+     *
      * @param ruleName
      *        The name for our new rule.
      * @return The new validation rule.
@@ -398,7 +408,7 @@ public class ValidatorBuilder {
 
     /**
      * Create an anonymous {@link Int} validation rule.
-     * 
+     *
      * @return The new validation rule.
      */
     public Validator intp() {
@@ -407,7 +417,7 @@ public class ValidatorBuilder {
 
     /**
      * Create an anonymous {@link Length} validation rule to check the length of an array or a string.
-     * 
+     *
      * @param min
      *        The minimum length for the value (string or array).
      * @param max
@@ -420,7 +430,7 @@ public class ValidatorBuilder {
 
     /**
      * Create a named {@link Length} validator to check the length of an array or a string.
-     * 
+     *
      * @param ruleName
      *        The name of the validation rule.
      * @param min
@@ -437,7 +447,7 @@ public class ValidatorBuilder {
 
     /**
      * Create a named logical {@link Not} validation which flips the result of an inner validation.
-     * 
+     *
      * @param ruleName
      *        The name of our validation rule.
      * @param rule
@@ -452,7 +462,7 @@ public class ValidatorBuilder {
 
     /**
      * Create an anonymous logical {@link Not} validation which reverses the result of an inner validation.
-     * 
+     *
      * @param rule
      *        The inner validation, the result of it will be reversed.
      * @return The new validator.
@@ -463,7 +473,7 @@ public class ValidatorBuilder {
 
     /**
      * Create a named {@link Nr} validator to see if a value is a number.
-     * 
+     *
      * @param ruleName
      *        The name of the validation rule.
      * @return The new validator.
@@ -476,7 +486,7 @@ public class ValidatorBuilder {
 
     /**
      * Create an anonymous {@link Nr} validator to see if a value is a number.
-     * 
+     *
      * @return The new validator.
      */
     public Validator nr() {
@@ -485,7 +495,7 @@ public class ValidatorBuilder {
 
     /**
      * Create a named {@link Null} checking validator.
-     * 
+     *
      * @param ruleName
      *        A name for the validation rule.
      * @return The new validator.
@@ -498,7 +508,7 @@ public class ValidatorBuilder {
 
     /**
      * Create an anonymous {@link Null} checking validator.
-     * 
+     *
      * @return The new validator.
      */
     public Validator nullp() {
@@ -508,7 +518,7 @@ public class ValidatorBuilder {
     /**
      * Create a named {@link com.sdicons.json.validator.predicates.Object} validator to check if a value
      * is an object.
-     * 
+     *
      * @param ruleName
      *        The name of the rule.
      * @return The new validator.
@@ -519,10 +529,10 @@ public class ValidatorBuilder {
         return validator;
     }
 
-    /** 
+    /**
      * Create an anonymous {@link com.sdicons.json.validator.predicates.Object} validator to check if a value
      * is an object
-     * 
+     *
      * @return The new validator.
      */
     public Validator object() {
@@ -531,7 +541,7 @@ public class ValidatorBuilder {
 
     /**
      * Create a named composite {@link Or} validation. The value must match against one of the inner rules.
-     * 
+     *
      * @param ruleName
      *        The name for our rule.
      * @param validators
@@ -546,7 +556,7 @@ public class ValidatorBuilder {
 
     /**
      * Create an anonymous {@link Or} validation rule. The value must match against one of the inner rules.
-     * 
+     *
      * @param validators
      *        The inner validators, one of it must succeed on the value for the complete matcher to succeed.
      * @return The new validator.
@@ -571,8 +581,8 @@ public class ValidatorBuilder {
 
     /**
      * Create an anonymous {@link Regexp} validator to validate strings against regular expressions.
-     * 
-     * @param pattern 
+     *
+     * @param pattern
      *        The regular expression.
      * @return The new validator.
      */
@@ -580,9 +590,9 @@ public class ValidatorBuilder {
         return new Regexp("regexp", pattern);
     }
 
-    /** 
+    /**
      * Create a named {@link Simple} validator to check that a value is atomic.
-     * 
+     *
      * @param ruleName
      *        The name of the new validator.
      * @return The new validator.
@@ -595,7 +605,7 @@ public class ValidatorBuilder {
 
     /**
      * Create an anonymous {@link Simple} validator to check that a value is atomic.
-     * 
+     *
      * @return the new validator.
      */
     public Validator simple() {
@@ -604,7 +614,7 @@ public class ValidatorBuilder {
 
     /**
      * Create a named {@link Str} validator to check if a value is a string.
-     * 
+     *
      * @param ruleName
      *        The name of the validator.
      * @return The new validator.
@@ -617,21 +627,21 @@ public class ValidatorBuilder {
 
     /**
      * Create an anonymous {@link Str} validator to check if a value is a string.
-     * 
+     *
      * @return The new validator.
      */
     public Validator string() {
         return new Str("string");
     }
-    
+
     /**
      * Create a named {@link Properties} validator to check the key/value pairs of an object.
-     * 
+     *
      * @param ruleName
      *        The name of the validator.
      * @param rules
      *        An array of {@link PropRule}, each rule can validate a specific property of the object.
-     *        You can use the {@link ValidatorBuilder#propRule(String, Validator, boolean)} method to 
+     *        You can use the {@link ValidatorBuilder#propRule(String, Validator, boolean)} method to
      *        quickly create the property rules.
      * @return The new validator.
      */
@@ -640,30 +650,30 @@ public class ValidatorBuilder {
         ruleSet.put(ruleName, validator);
         return validator;
     }
-    
+
     /**
      * Create an anonymous {@link Properties} validator to check the key/value pairs of an object.
-     * 
+     *
      * @param rules
      *        An array of {@link PropRule}, each rule can validate a specific property of the object.
-     *        You can use the {@link ValidatorBuilder#propRule(String, Validator, boolean)} method to 
+     *        You can use the {@link ValidatorBuilder#propRule(String, Validator, boolean)} method to
      *        quickly create the property rules.
      * @return The new validator.
      */
     public Validator properties(PropRule ... rules){
         return new Properties("properties", ruleSet, rules);
     }
-    
+
     /**
      * Create a named {@link Switch} validator.
-     * 
+     *
      * @param ruleName
      *        The name of the rule.
      * @param discriminator
      *        The name of the field that will be used to select a {@link SwitchCase}.
      * @param cases
-     *        An array of {@link SwitchCase} elements. 
-     *        You can use the {@link ValidatorBuilder#switchrule(String, SwitchCase...)} method to quickly create a case.
+     *        An array of {@link SwitchCase} elements.
+     *        You can use the {@link ValidatorBuilder#switchcase(Validator, JSONValue...)} method to quickly create a case.
      * @return The new validator.
      */
     public Validator switchrule(String ruleName, String discriminator, SwitchCase ...cases) {
@@ -671,24 +681,24 @@ public class ValidatorBuilder {
         ruleSet.put(ruleName, validator);
         return validator;
     }
-    
+
     /**
      * Create an anonymous {@link Switch} validator.
-     * 
+     *
      * @param discriminator
      *        The name of the field that will be used to select a {@link SwitchCase}.
      * @param cases
-     *        An array of {@link SwitchCase} elements. 
+     *        An array of {@link SwitchCase} elements.
      *        You can use the {@link ValidatorBuilder#switchcase(Validator, JSONValue...)} method to quickly create a case.
      * @return The new validator.
      */
     public Validator switchrule(String discriminator, SwitchCase ...cases) {
         return new Switch("switch", discriminator, ruleSet, cases);
     }
-    
+
     /**
      * Create a {@link SwitchCase} that can be used to build a {@link Switch} validator.
-     * 
+     *
      * @param rule
      *        The internal validator.
      * @param values
@@ -699,10 +709,10 @@ public class ValidatorBuilder {
     public static SwitchCase switchcase(Validator rule, JSONValue ...values) {
         return new SwitchCase(Arrays.asList(values), rule);
     }
-    
+
     /**
      * Create a {@link PropRule} that is used to build a {@link Properties} validator for objects.
-     * 
+     *
      * @param propName
      *        The name of the object property to which this rule applies.
      * @param rule

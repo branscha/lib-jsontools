@@ -25,7 +25,7 @@ import com.sdicons.json.validator.ValidatorUtil;
  *   "type" :"range",
  *   "min" : 50,
  *   "max" : 100
-v  }
+ * }
  * </code>
  * </pre>
  *
