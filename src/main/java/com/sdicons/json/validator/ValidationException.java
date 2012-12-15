@@ -1,63 +1,33 @@
+/*******************************************************************************
+ * Copyright (c) 2006-2013 Bruno Ranschaert
+ * Released under the MIT License: http://opensource.org/licenses/MIT
+ * Library "jsontools"
+ ******************************************************************************/
 package com.sdicons.json.validator;
 
-/*
-    JSONTools - Java JSON Tools
-    Copyright (C) 2006-2008 S.D.I.-Consulting BVBA
-    http://www.sdi-consulting.com
-    mailto://nospam@sdi-consulting.com
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
-
-import com.sdicons.json.model.JSONValue;
 
 /**
- * The exception is thrown when a validation fails. 
+ * The exception is thrown when a validation fails.
  */
 public class ValidationException
 extends Exception
 {
-    private JSONValue culprit;
-    private String validationRule;
 
-    public ValidationException(String aComments, JSONValue aCulprit, String aRule)
-    {
-        super(aComments);
-        culprit = aCulprit;
-        validationRule = aRule;
-    }
+    private static final long serialVersionUID = 7927493439473661483L;
 
-    public ValidationException(JSONValue aCulprit, String aRule)
-    {
+    public ValidationException() {
         super();
-        culprit = aCulprit;
-        validationRule = aRule;
     }
 
-    public JSONValue getCulprit()
-    {
-        return culprit;
+    public ValidationException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-    public String getValidationRule()
-    {
-        return validationRule;
+    public ValidationException(String message) {
+        super(message);
     }
 
-    public String getMessage()
-    {
-        return "Validation failed on rule \"" + validationRule + "\": " + super.getMessage() + " Offending part: " + culprit;
+    public ValidationException(Throwable cause) {
+        super(cause);
     }
 }

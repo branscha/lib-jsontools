@@ -1,166 +1,89 @@
+/*******************************************************************************
+ * Copyright (c) 2006-2013 Bruno Ranschaert
+ * Released under the MIT License: http://opensource.org/licenses/MIT
+ * Library "jsontools"
+ ******************************************************************************/
 package com.sdicons.json.serializer;
 
-/*
-    JSONTools - Java JSON Tools
-    Copyright (C) 2006-2008 S.D.I.-Consulting BVBA
-    http://www.sdi-consulting.com
-    mailto://nospam@sdi-consulting.com
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
-
-import junit.framework.*;
-
-import com.sdicons.json.serializer.marshall.Marshall;
-import com.sdicons.json.serializer.marshall.MarshallValue;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
 
 public class PrimitiveArrTest
-extends TestCase
 {
 
-    public PrimitiveArrTest(String lName)
-    {
-        super(lName);
-    }
+    JSONSerializer serializer;
 
-    Marshall marshall;
-
+    @Before
     public void setUp()
     throws Exception
     {
-        marshall = new JSONMarshall();
+        serializer = new JSONSerializer();
     }
 
-    public void testBoolean()
+    @Test
+    public void testBoolean() throws SerializerException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall(new boolean[]{true, false, true, false}));
-            Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
-            Assert.assertTrue(java.util.Arrays.equals((boolean[])lResult.getReference(), new boolean[]{true, false, true, false}));
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new boolean[] { true, false, true, false }));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
+        Assert.assertTrue(java.util.Arrays.equals((boolean[])lResult.getReference(), new boolean[]{true, false, true, false}));
     }
 
-    public void testByte()
+    @Test
+    public void testByte() throws SerializerException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall(new byte[]{-1, 0, 1, 2}));
-            Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
-            Assert.assertTrue(java.util.Arrays.equals((byte[])lResult.getReference(), new byte[]{-1, 0, 1, 2}));
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new byte[] { -1, 0, 1, 2 }));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
+        Assert.assertTrue(java.util.Arrays.equals((byte[])lResult.getReference(), new byte[]{-1, 0, 1, 2}));
     }
 
-    public void testShort()
+    @Test
+    public void testShort() throws SerializerException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall(new short[]{-1, 0, 11, 2}));
-            Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
-            Assert.assertTrue(java.util.Arrays.equals((short[])lResult.getReference(), new short[]{-1, 0, 11, 2}));
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new short[] { -1, 0, 11, 2 }));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
+        Assert.assertTrue(java.util.Arrays.equals((short[])lResult.getReference(), new short[]{-1, 0, 11, 2}));
     }
 
-    public void testChar()
+    @Test
+    public void testChar() throws SerializerException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall(new char[]{'a', 'b', 'A', 'Z'}));
-            Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
-            Assert.assertTrue(java.util.Arrays.equals((char[])lResult.getReference(), new char[]{'a', 'b', 'A', 'Z'}));
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new char[] { 'a', 'b', 'A', 'Z' }));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
+        Assert.assertTrue(java.util.Arrays.equals((char[])lResult.getReference(), new char[]{'a', 'b', 'A', 'Z'}));
     }
 
-    public void testInt()
+    @Test
+    public void testInt() throws SerializerException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall(new int[]{-1003, 0, 1003, 2310}));
-            Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
-            Assert.assertTrue(java.util.Arrays.equals((int[])lResult.getReference(), new int[]{-1003, 0, 1003, 2310}));
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new int[] { -1003, 0, 1003, 2310 }));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
+        Assert.assertTrue(java.util.Arrays.equals((int[])lResult.getReference(), new int[]{-1003, 0, 1003, 2310}));
     }
 
-    public void testLong()
+    @Test
+    public void testLong() throws SerializerException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall(new long[]{-1003, 0, 1003, 2311}));
-            Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
-            Assert.assertTrue(java.util.Arrays.equals((long[])lResult.getReference(), new long[]{-1003, 0, 1003, 2311}));
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new long[] { -1003, 0, 1003, 2311 }));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
+        Assert.assertTrue(java.util.Arrays.equals((long[]) lResult.getReference(), new long[] { -1003, 0, 1003, 2311 }));
     }
 
-    public void testFloat()
+    @Test
+    public void testFloat() throws SerializerException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall(new float[]{-1.13f, 0.0f, 1.13f, 2310.1f}));
-            Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
-            Assert.assertTrue(java.util.Arrays.equals((float[])lResult.getReference(), new float[]{-1.13f, 0.0f, 1.13f, 2310.1f}));
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new float[] { -1.13f, 0.0f, 1.13f, 2310.1f }));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
+        Assert.assertTrue(java.util.Arrays.equals((float[])lResult.getReference(), new float[]{-1.13f, 0.0f, 1.13f, 2310.1f}));
     }
 
-    public void testDouble()
+    @Test
+    public void testDouble() throws SerializerException
     {
-        try
-        {
-            MarshallValue lResult = marshall.unmarshall(marshall.marshall(new double[]{-1.14, 0.0, 1.13, 2310.2}));
-            Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
-            Assert.assertTrue(java.util.Arrays.equals((double[])lResult.getReference(), new double[]{-1.14, 0.0, 1.13, 2310.2}));
-        }
-        catch(Exception e)
-        {
-             e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        SerializerValue lResult = serializer.unmarshal(serializer.marshal(new double[] { -1.14, 0.0, 1.13, 2310.2 }));
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
+        Assert.assertTrue(java.util.Arrays.equals((double[])lResult.getReference(), new double[]{-1.14, 0.0, 1.13, 2310.2}));
     }
 }

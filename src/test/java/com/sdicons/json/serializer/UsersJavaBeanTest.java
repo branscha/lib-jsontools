@@ -1,54 +1,35 @@
+/*******************************************************************************
+ * Copyright (c) 2006-2013 Bruno Ranschaert
+ * Released under the MIT License: http://opensource.org/licenses/MIT
+ * Library "jsontools"
+ ******************************************************************************/
 package com.sdicons.json.serializer;
-
-/*
-    JSONTools - Java JSON Tools
-    Copyright (C) 2006-2008 S.D.I.-Consulting BVBA
-    http://www.sdi-consulting.com
-    mailto://nospam@sdi-consulting.com
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
-
-import com.sdicons.json.helper.JSONConstruct;
-import com.sdicons.json.helper.JSONSerialize;
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
-import com.sdicons.json.serializer.marshall.Marshall;
-import com.sdicons.json.serializer.marshall.MarshallException;
-import com.sdicons.json.serializer.marshall.MarshallValue;
-import junit.framework.Assert;
-import junit.framework.TestCase;
 
 import java.util.Date;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.sdicons.json.annotations.JSONConstructor;
+import com.sdicons.json.annotations.JSONConstructorArgs;
+import com.sdicons.json.model.JSONObject;
+
 public class UsersJavaBeanTest
-extends TestCase
 {
     public static class MyDate
     {
         private Date theDate;
         private String theTimeZone;
 
-        @JSONConstruct
+        @JSONConstructor
         public MyDate(long aTime, String aTimeZone)
         {
             theDate = new Date(aTime);
             theTimeZone = aTimeZone;
         }
 
-        @JSONSerialize
+        @JSONConstructorArgs
         public Object[] getTime()
         {
             return new Object[]{theDate.getTime(), theTimeZone};
@@ -156,92 +137,66 @@ extends TestCase
         }
     }
 
-    public UsersJavaBeanTest(String lName)
-    {
-        super(lName);
-    }
+    JSONSerializer marshall;
 
-    Marshall marshall;
-
+    @Before
     public void setUp()
     throws Exception
     {
-        marshall = new JSONMarshall();
+        marshall = new JSONSerializer();
     }
 
-    public void testIt()
+    @Test
+    public void testIt() throws SerializerException
     {
-        try
-        {
-            Transportable lEvil = new Transportable();
-            Integer lID = 13;
-            lEvil.setEventType(lID);
-            lEvil.setParentID(lID);
-            lEvil.setSubObjectID(lID);
-            lEvil.setObjectID(lID);
-            String lStr = "Test";
-            lEvil.setParam1(lStr);
-            lEvil.setParam2(lStr);
+        Transportable lEvil = new Transportable();
+        Integer lID = 13;
+        lEvil.setEventType(lID);
+        lEvil.setParentID(lID);
+        lEvil.setSubObjectID(lID);
+        lEvil.setObjectID(lID);
+        String lStr = "Test";
+        lEvil.setParam1(lStr);
+        lEvil.setParam2(lStr);
 
-            JSONObject lObj = marshall.marshall(lEvil);
-            System.out.println(lObj.render(true));
-            MarshallValue lResult = marshall.unmarshall(lObj);
-            Assert.assertTrue(MarshallValue.REFERENCE == lResult.getType());
-            Transportable lLitmus = (Transportable) lResult.getReference();
+        JSONObject lObj = marshall.marshal(lEvil);
+        Assert.assertNotNull(lObj.render(true));
+        SerializerValue lResult = marshall.unmarshal(lObj);
+        Assert.assertTrue(SerializerValue.REFERENCE == lResult.getType());
+        Transportable lLitmus = (Transportable) lResult.getReference();
 
-            // Test if the contents are intact.
-            Assert.assertNotNull(lLitmus);
-            Assert.assertEquals(lLitmus.getEventType(), lID);
-            Assert.assertTrue(lLitmus.getEventType() == lLitmus.getParentID());
-            Assert.assertTrue(lLitmus.getEventType() == lLitmus.getSubObjectID());
-            Assert.assertTrue(lLitmus.getEventType()== lLitmus.getObjectID());
-            Assert.assertEquals(lLitmus.getParam1(), lStr);
-            Assert.assertTrue(lLitmus.getParam1() == lLitmus.getParam2());
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace(System.out);
-            Assert.fail();
-        }
+        // Test if the contents are intact.
+        Assert.assertNotNull(lLitmus);
+        Assert.assertEquals(lLitmus.getEventType(), lID);
+        Assert.assertTrue(lLitmus.getEventType() == lLitmus.getParentID());
+        Assert.assertTrue(lLitmus.getEventType() == lLitmus.getSubObjectID());
+        Assert.assertTrue(lLitmus.getEventType() == lLitmus.getObjectID());
+        Assert.assertEquals(lLitmus.getParam1(), lStr);
+        Assert.assertTrue(lLitmus.getParam1() == lLitmus.getParam2());
     }
 
-    public void testAnnotatedSerializer()
+    @Test
+    public void testAnnotatedSerializer() throws SerializerException
     {
-        try
-        {
-            // Map fields, not properties.
-            ((JSONMarshall) marshall).usePojoAccess();
-            MyDate lMyDate = new MyDate(new Date().getTime(), "CEST");
-            JSONObject lObj = marshall.marshall(lMyDate);
-            System.out.println(lObj.render(true));
-
-            Object javaObj = marshall.unmarshall(lObj);
-        }
-        catch(MarshallException e)
-        {
-            e.printStackTrace();
-            Assert.fail();
-        }
+        // Map fields, not properties.
+        ((JSONSerializer) marshall).usePojoAccess();
+        MyDate lMyDate = new MyDate(new Date().getTime(), "CEST");
+        JSONObject lObj = marshall.marshal(lMyDate);
+        Assert.assertNotNull(lObj.render(true));
+        Assert.assertNotNull(marshall.unmarshal(lObj));
     }
 
-    public void testDirectHelper()
+    @Test
+    public void testDirectHelper() throws SerializerException
     {
-       try
-        {
-            // Map fields, not properties.
-            ((JSONMarshall) marshall).usePojoAccess();
-            MyPojo lPojo = new MyPojo();
-            lPojo.setNames("Homer", "Simpson");
-            JSONObject lObj = marshall.marshall(lPojo);
-            System.out.println(lObj.render(true));
-
-            Object javaObj =  marshall.unmarshall(lObj);
-            System.out.println(javaObj.toString());
-        }
-        catch(MarshallException e)
-        {
-            e.printStackTrace();
-            Assert.fail();
-        }
+        // Map fields, not properties.
+        ((JSONSerializer) marshall).usePojoAccess();
+        MyPojo lPojo = new MyPojo();
+        lPojo.setNames("Homer", "Simpson");
+        //
+        JSONObject lObj = marshall.marshal(lPojo);
+        Assert.assertNotNull(lObj.render(true));
+        //
+        marshall.unmarshal(lObj);
     }
 }

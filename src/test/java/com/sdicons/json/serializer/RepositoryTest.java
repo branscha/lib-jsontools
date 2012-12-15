@@ -1,124 +1,116 @@
+/*******************************************************************************
+ * Copyright (c) 2006-2013 Bruno Ranschaert
+ * Released under the MIT License: http://opensource.org/licenses/MIT
+ * Library "jsontools"
+ ******************************************************************************/
 package com.sdicons.json.serializer;
 
-/*
-    JSONTools - Java JSON Tools
-    Copyright (C) 2006-2008 S.D.I.-Consulting BVBA
-    http://www.sdi-consulting.com
-    mailto://nospam@sdi-consulting.com
+import java.util.HashMap;
 
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
-import junit.framework.*;
-
-import java.util.*;
-
-import com.sdicons.json.serializer.helper.impl.*;
-import com.sdicons.json.serializer.helper.MarshallHelper;
-import com.sdicons.json.helper.HelperRepository;
-import com.sdicons.json.serializer.marshall.MarshallException;
-import com.sdicons.json.serializer.marshall.JSONMarshall;
 import com.sdicons.json.model.JSONObject;
+import com.sdicons.json.repository.ClassHelperRepository;
+import com.sdicons.json.serializer.helper.BooleanSerializer;
+import com.sdicons.json.serializer.helper.ByteSerializer;
+import com.sdicons.json.serializer.helper.CharacterSerializer;
+import com.sdicons.json.serializer.helper.ClassSerializer;
+import com.sdicons.json.serializer.helper.DateSerializer;
+import com.sdicons.json.serializer.helper.DoubleSerializer;
+import com.sdicons.json.serializer.helper.FloatSerializer;
+import com.sdicons.json.serializer.helper.IntegerSerializer;
+import com.sdicons.json.serializer.helper.LongSerializer;
+import com.sdicons.json.serializer.helper.ObjectSerializerProps;
+import com.sdicons.json.serializer.helper.ShortSerializer;
+import com.sdicons.json.serializer.helper.StringSerializer;
 
 public class RepositoryTest
-extends TestCase
 {
-    public RepositoryTest(String lName)
-    {
-        super(lName);
-    }
+    ClassHelperRepository<ClassSerializer> repo;
 
-    HelperRepository<MarshallHelper> repo;
-
+    @Before
     public void setUp()
     throws Exception
     {
-        repo = new HelperRepository<MarshallHelper>();
+        repo = new ClassHelperRepository<ClassSerializer>();
 
-        repo.addHelper(new ObjectHelper());
-        repo.addHelper(new StringHelper());
-        repo.addHelper(new BooleanHelper());
-        repo.addHelper(new ByteHelper());
-        repo.addHelper(new ShortHelper());
-        repo.addHelper(new IntegerHelper());
-        repo.addHelper(new LongHelper());
-        repo.addHelper(new FloatHelper());
-        repo.addHelper(new DoubleHelper());
-        repo.addHelper(new CharacterHelper());
-        repo.addHelper(new DateHelper());
+        repo.addHelper(new ObjectSerializerProps());
+        repo.addHelper(new StringSerializer());
+        repo.addHelper(new BooleanSerializer());
+        repo.addHelper(new ByteSerializer());
+        repo.addHelper(new ShortSerializer());
+        repo.addHelper(new IntegerSerializer());
+        repo.addHelper(new LongSerializer());
+        repo.addHelper(new FloatSerializer());
+        repo.addHelper(new DoubleSerializer());
+        repo.addHelper(new CharacterSerializer());
+        repo.addHelper(new DateSerializer());
     }
 
+    @Test
     public void testBasicHelpers()
     {
         {
-            Class lClass = String.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            Class<?> lClass = String.class;
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
 
         {
-            Class lClass = Boolean.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            Class<?> lClass = Boolean.class;
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Byte.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            Class<?> lClass = Byte.class;
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Short.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            Class<?> lClass = Short.class;
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Integer.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            Class<?> lClass = Integer.class;
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Short.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            Class<?> lClass = Short.class;
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Long.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            Class<?> lClass = Long.class;
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Float.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            Class<?> lClass = Float.class;
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Double.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            Class<?> lClass = Double.class;
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = Character.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            Class<?> lClass = Character.class;
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
         {
-            Class lClass = String.class;
-            MarshallHelper lHelper = repo.findHelper(lClass);
+            Class<?> lClass = String.class;
+            ClassSerializer lHelper = repo.findHelper(lClass);
             Assert.assertEquals(lClass, lHelper.getHelpedClass());
         }
     }
 
+    @Test
     public void testInheritance()
     {
         class A
@@ -136,20 +128,22 @@ extends TestCase
         }
 
         class AHelper
-        implements MarshallHelper
+        implements ClassSerializer
         {
-            public void renderValue(Object aObj, JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-            throws MarshallException
+            @SuppressWarnings("rawtypes")
+            public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            throws SerializerException
             {
             }
 
-            public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-            throws MarshallException
+            @SuppressWarnings("rawtypes")
+            public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            throws SerializerException
             {
                 return null;
             }
 
-            public Class getHelpedClass()
+            public Class<?> getHelpedClass()
             {
                 return A.class;
             }
@@ -157,40 +151,44 @@ extends TestCase
         }
 
         class BHelper
-        implements MarshallHelper
+        implements ClassSerializer
         {
-            public void renderValue(Object aObj, JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-            throws MarshallException
+            @SuppressWarnings("rawtypes")
+            public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            throws SerializerException
             {
             }
 
-            public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-            throws MarshallException
+            @SuppressWarnings("rawtypes")
+            public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            throws SerializerException
             {
                 return null;
             }
 
-            public Class getHelpedClass()
+            public Class<?> getHelpedClass()
             {
                 return B.class;
             }
         }
 
         class CHelper
-        implements MarshallHelper
+        implements ClassSerializer
         {
-            public void renderValue(Object aObj, JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-            throws MarshallException
+            @SuppressWarnings("rawtypes")
+            public void toJSON(Object aObj, JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            throws SerializerException
             {
             }
 
-            public Object parseValue(JSONObject aObjectElement, JSONMarshall aMarshall, HashMap aPool)
-            throws MarshallException
+            @SuppressWarnings("rawtypes")
+            public Object toJava(JSONObject aObjectElement, JSONSerializer aMarshall, HashMap aPool)
+            throws SerializerException
             {
                 return null;
             }
 
-            public Class getHelpedClass()
+            public Class<?> getHelpedClass()
             {
                 return C.class;
             }
@@ -201,14 +199,13 @@ extends TestCase
         repo.addHelper(new BHelper()); // B first.
         repo.addHelper(new AHelper()); // C and B will be part of rebalancing.
 
-        MarshallHelper lH1 = repo.findHelper(B.class);
+        ClassSerializer lH1 = repo.findHelper(B.class);
         Assert.assertEquals(B.class, lH1.getHelpedClass());
 
-        MarshallHelper lH2 = repo.findHelper(A.class);
+        ClassSerializer lH2 = repo.findHelper(A.class);
         Assert.assertEquals(A.class, lH2.getHelpedClass());
 
-        MarshallHelper lH3 = repo.findHelper(C.class);
+        ClassSerializer lH3 = repo.findHelper(C.class);
         Assert.assertEquals(C.class, lH3.getHelpedClass());
     }
-
 }

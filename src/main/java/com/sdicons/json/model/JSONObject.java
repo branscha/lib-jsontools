@@ -1,31 +1,15 @@
+/*******************************************************************************
+ * Copyright (c) 2006-2013 Bruno Ranschaert
+ * Released under the MIT License: http://opensource.org/licenses/MIT
+ * Library "jsontools"
+ ******************************************************************************/
 package com.sdicons.json.model;
-
-/*
-    JSONTools - Java JSON Tools
-    Copyright (C) 2006-2008 S.D.I.-Consulting BVBA
-    http://www.sdi-consulting.com
-    mailto://nospam@sdi-consulting.com
-
-    This library is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Lesser General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    This library is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-
-    You should have received a copy of the GNU Lesser General Public
-    License along with this library; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
-
-import com.sdicons.json.parser.impl.ParserUtil;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+
+import com.sdicons.json.parser.ParserUtil;
 
 /**
  * Representation of a JSON object, a collection (unordered) of name/value pairs.
@@ -131,7 +115,7 @@ extends JSONComplex
 
     /**
      * Utility method, get the element with specified name without having to
-     * retreive the map first using getValue().
+     * retrieve the map first using getValue().
      * @param aKey The key for which you want to retrieve the element.
      * @return The element corresponding to the key or null if the object
      * does not contain a key with this name.
@@ -141,6 +125,10 @@ extends JSONComplex
         return map.get(aKey);
     }
 
+    public void put(String key, JSONValue value) {
+        map.put(key, value);
+    }
+
     /**
      * Remove all JSON related information. In the case of a JSONObject, a HashMap is returned.
      * The values of the HashMap are stripped as well.
@@ -148,7 +136,7 @@ extends JSONComplex
      */
     public Object strip()
     {
-        HashMap lResult = new HashMap();
+        HashMap<Object, Object> lResult = new HashMap<Object, Object>();
         for(String lKey : map.keySet())
         {
             lResult.put(lKey, map.get(lKey).strip());
