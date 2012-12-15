@@ -1,7 +1,7 @@
 # JSON Tools v2.0
 ## Description
 
-A copy of the original version from [Berlios](http://jsontools.berlios.de/). More documentation can be found in the docs/ directory of this project.
+A copy of the original version from [Berlios](http://jsontools.berlios.de/). More documentation can be found in the [project website](http://branscha.github.com/lib-jsontools/).
 
 The framework lets you (un)marshal Java objects to/from JSON.
 
