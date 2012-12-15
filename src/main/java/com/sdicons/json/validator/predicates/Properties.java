@@ -43,17 +43,22 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class Properties
 extends Predicate
 {
-    private static class PropRule
+    private static final String PROP001 = "JSONValidator/Properties/001: A pair should be described by a JSONObject in rule '%s'. Found '%s'.";
+    private static final String PROP002 = "JSONValidator/Properties/002: The object '%s' lacks a required key '%s' in rule '%s'.";
+    private static final String PROP003 = "JSONValidator/Properties/003: The object '%s' contains an unspecified key '%s' in rule '%s'.";
+    private static final String PROP004 = "JSONValidator/Properties/004: The value '%s' is not a JSONObject in rule '%s'.";
+    private static final String PROP005 = "JSONValidator/Properties/005: The property '%s' in value '%s' is invalid in rule '%s': %s";
+
+    public static class PropRule
     {
         private String key;
         private Validator rule;
-//        private boolean optional;
+        private boolean optional;
 
         public PropRule(String key, Validator rule, boolean optional)
         {
             this.key = key;
             this.rule = rule;
-//            this.optional = optional;
         }
 
         public String getKey()
@@ -61,43 +66,31 @@ extends Predicate
             return key;
         }
 
-//        @SuppressWarnings("unused")
-//        public void setKey(String key)
-//        {
-//            this.key = key;
-//        }
-
         public Validator getRule()
         {
             return rule;
         }
 
-//        @SuppressWarnings("unused")
-//        public void setRule(Validator rule)
-//        {
-//            this.rule = rule;
-//        }
-
-//        @SuppressWarnings("unused")
-//        public boolean isOptional()
-//        {
-//            return optional;
-//        }
-//
-//        @SuppressWarnings("unused")
-//        public void setOptional(boolean optional)
-//        {
-//            this.optional = optional;
-//        }
+        public boolean isOptional() {
+            return optional;
+        }
     }
 
     private List<PropRule> required = new LinkedList<PropRule>();
     private HashMap<String, PropRule> all = new HashMap<String, PropRule>();
 
+    public Properties(String aName, HashMap<String,Validator> aRuleset, PropRule ...rules) {
+        super(aName);
+        for(PropRule rule: rules) {
+            all.put(rule.getKey(), rule);
+            if(!rule.isOptional()) required.add(rule);
+        }
+    }
+
     public Properties(String aName, JSONObject aRule, HashMap<String,Validator> aRuleset)
     throws ValidationException
     {
-        super(aName, aRule);
+        super(aName);
         ValidatorUtil.requiresAttribute(aRule, ValidatorUtil.PARAM_PAIRS, JSONArray.class);
 
         List<JSONValue> lPairs = ((JSONArray) aRule.get(ValidatorUtil.PARAM_PAIRS)).getValue();
@@ -105,8 +98,7 @@ extends Predicate
         {
             if(!lPair.isObject())
             {
-                final String lMsg = "A pair should be described by a JSONObject.";
-                throw new ValidationException(lMsg, lPair, "JSONObject EXPECTED");
+                throw new ValidationException(String.format(PROP001, this.getName(), lPair.toString()));
             }
 
             final JSONObject lObj = (JSONObject) lPair;
@@ -114,7 +106,7 @@ extends Predicate
             ValidatorUtil.requiresAttribute(lObj, ValidatorUtil.PARAM_KEY, JSONString.class);
             final String lKeyname = ((JSONString) lObj.get(ValidatorUtil.PARAM_KEY)).getValue();
 
-            Validator lValrule = new True(ValidatorUtil.ANONYMOUS_RULE, aRule);
+            Validator lValrule = new True(ValidatorUtil.ANONYMOUS_RULE);
             if (lObj.containsKey(ValidatorUtil.PARAM_RULE))
             {
                 ValidatorUtil.requiresAttribute(lObj, ValidatorUtil.PARAM_RULE, JSONObject.class);
@@ -138,19 +130,21 @@ extends Predicate
     throws ValidationException
     {
         // Only for objects.
-        if(!aValue.isObject()) fail("The value is not a JSONObject.", aValue);
+        if(!aValue.isObject()) throw new ValidationException(String.format(PROP004, aValue.toString(), this.getName()));
         JSONObject lObj = (JSONObject) aValue;
 
         // First we check if required keys are there.
         for(PropRule aRequired : required)
         {
-            if(!lObj.containsKey(aRequired.getKey())) fail("The object lacks a required key: \"" + aRequired.getKey() + "\".", aValue);
+            if(!lObj.containsKey(aRequired.getKey()))
+                throw new ValidationException(String.format(PROP002, aValue.toString(), aRequired.getKey(), this.getName()));
         }
 
         // Now we iterate over all keys in the object and lookup the spec.
         for(String lKey : lObj.getValue().keySet())
         {
-            if(!all.containsKey(lKey)) fail("The object contains an unspecified key: \"" + lKey + "\".", aValue);
+            if(!all.containsKey(lKey))
+                throw new ValidationException(String.format(PROP003, aValue.toString(), lKey, this.getName()));
             PropRule lRule = all.get(lKey);
             try
             {
@@ -158,7 +152,7 @@ extends Predicate
             }
             catch(ValidationException e)
             {
-                fail("The object property: \"" + lKey + "\" has invalid content. Internal message: " + e.getMessage(), aValue);
+                throw new ValidationException(String.format(PROP005, lKey, aValue.toString(), this.getName(), e.getMessage()), e);
             }
         }
     }

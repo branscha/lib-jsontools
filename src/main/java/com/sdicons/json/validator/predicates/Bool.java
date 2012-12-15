@@ -6,7 +6,6 @@
 package com.sdicons.json.validator.predicates;
 
 
-import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
@@ -22,14 +21,17 @@ import com.sdicons.json.validator.ValidationException;
 public class Bool
 extends Predicate
 {
-    public Bool(String aName, JSONObject aRule)
+    private static final String BOOL001 = "JSONValidator/Bool/001: The value '%s' is not a JSONBoolean in rule '%s'.";
+
+    public Bool(String aName)
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isBoolean()) fail("The value is not a JSONBoolean", aValue);
+        if(!aValue.isBoolean())
+            throw new ValidationException(String.format(BOOL001, aValue.toString(), this.getName()));
     }
 }

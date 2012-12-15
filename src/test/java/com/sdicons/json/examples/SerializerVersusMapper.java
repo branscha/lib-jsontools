@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import com.sdicons.json.mapper.JSONMapper;
 import com.sdicons.json.mapper.MapperException;
-import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.serializer.JSONSerializer;
 import com.sdicons.json.serializer.SerializerException;
 
@@ -18,7 +17,8 @@ public class SerializerVersusMapper {
         p.setAge(40);
 
         JSONSerializer serializer = new JSONSerializer();
-        JSONValue json = serializer.marshal(p);
+        serializer.marshal(p);
+//        JSONValue json = serializer.marshal(p);
 //        System.out.println(json.render(true));
     }
 
@@ -30,7 +30,8 @@ public class SerializerVersusMapper {
         p.setAge(40);
 
         JSONMapper mapper = new JSONMapper();
-        JSONValue json = mapper.toJSON(p);
+        mapper.toJSON(p);
+//        JSONValue json = mapper.toJSON(p);
         //System.out.println(json.render(true));
 
     }

@@ -5,9 +5,6 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
-import com.sdicons.json.model.JSONObject;
-import com.sdicons.json.model.JSONValue;
-import com.sdicons.json.validator.ValidationException;
 import com.sdicons.json.validator.Validator;
 
 /**
@@ -17,34 +14,15 @@ import com.sdicons.json.validator.Validator;
 public abstract class Predicate
 implements Validator
 {
-    private String name;
-    private JSONObject rule;
+    private String name = "anonymous";
 
-    protected Predicate(String aName, JSONObject aRule)
+    protected Predicate(String aName)
     {
         name = aName;
-        rule = aRule;
-    }
-
-    protected void fail(JSONValue aValue)
-    throws ValidationException
-    {
-        throw new ValidationException(aValue, name);
-    }
-
-    protected void fail(String aMessage, JSONValue aValue)
-    throws ValidationException
-    {
-        throw new ValidationException(aMessage, aValue, name);
     }
 
     public String getName()
     {
         return name;
-    }
-
-    public JSONObject getRule()
-    {
-        return rule;
     }
 }

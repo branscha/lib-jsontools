@@ -5,7 +5,6 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
-import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
@@ -23,14 +22,17 @@ import com.sdicons.json.validator.ValidationException;
 public class Str
 extends Predicate
 {
-    public Str(String aName, JSONObject aRule)
+    private static final String STR001 = "JSONValidator/String/001: The value '%s' is not a JSONString in rule '%s'.";
+
+    public Str(String aName)
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isString()) fail("The value is not a JSONString." ,aValue);
+        if(!aValue.isString())
+            throw new ValidationException(String.format(STR001, aValue.toString(), this.getName()));
     }
 }

@@ -25,7 +25,7 @@ public class ParserUtil
      *        A boolean flag, indicating if we have to insert indentation or not.
      * @param indent
      *        The indentation, only in effect if the pretty flag is set.
-     * @return
+     * @return The escaped String representation.
      */
     public static String render(String value, boolean pretty, String indent)
     {

@@ -6,6 +6,7 @@
 package com.sdicons.json.validator.predicates;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,8 +23,8 @@ import com.sdicons.json.validator.ValidatorUtil;
  * The switch validator is a convenience one. It is a subset of the or validator, but the problem with the or validator is
  * that it does a bad job for error reporting when things go wrong.
  * The reason is that all rules fail and it is not always clear why, because the reason a rule fails might be some levels deeper.
- *  The switch validator selects a validator based on the value of  a property encountered in the value being validated.
- *  The error produced will be the one of the selected validator.  The first applicable validator is used, the following ones are ignored.
+ * The switch validator selects a validator based on the value of  a property encountered in the value being validated.
+ * The error produced will be the one of the selected validator.  The first applicable validator is used, the following ones are ignored.
  *  <p>
  *  <pre>
  *  <code>
@@ -39,18 +40,31 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class Switch
 extends Predicate
 {
-    private List<Case> rules = new LinkedList<Case>();
+
+    private static final String CAS001 = "JSONValidator/Switch/001: A case in a switch predicate should be an object type but found '%s' in rule '%s'.";
+    private static final String CAS002 = "JSONValidator/Switch/002: The value '%s' is not a JSONObject in rule '%s'.";
+    private static final String CAS003 = "JSONValidator/Switch/003: The value '%s' does not contain the discriminator '%s' in rule '%s'";
+    private static final String CAS004 = "JSONValidator/Switch/004: No applicable rule found for discriminator '%s' in value '%s' in rule '%s'.";
+
+    private List<SwitchCase> rules = new LinkedList<SwitchCase>();
     private String key;
 
-    private static class Case
+    public static class SwitchCase
     {
         private List<JSONValue> values;
         private Validator validator;
 
-        public Case(Validator validator, List<JSONValue> values)
+        public SwitchCase(List<JSONValue> when, Validator validator)
         {
             this.validator = validator;
-            this.values = values;
+            this.values = when;
+        }
+
+        public SwitchCase(JSONValue when, Validator validator)
+        {
+            this.values = new ArrayList<JSONValue>();
+            this.values.add(when);
+            this.validator = validator;
         }
 
         public Validator getValidator()
@@ -64,16 +78,25 @@ extends Predicate
         }
     }
 
+    public Switch(String aName, String discriminator, HashMap<String,Validator> aRuleset, SwitchCase ... cases) {
+        super(aName);
+        this.key = discriminator;
+        for(SwitchCase cas : cases){
+            rules.add(cas);
+        }
+    }
+
     public Switch(String aName, JSONObject aRule, HashMap<String,Validator> aRuleset)
     throws ValidationException
     {
-        super(aName, aRule);
+        super(aName);
 
         ValidatorUtil.requiresAttribute(aRule, ValidatorUtil.PARAM_CASE, JSONArray.class);
         List<JSONValue> lCases = ((JSONArray) aRule.get(ValidatorUtil.PARAM_CASE)).getValue();
         for (JSONValue lCase : lCases)
         {
-            if(!lCase.isObject()) fail("A case in a swicht should be an object type.", lCase);
+            if(!lCase.isObject())
+                throw new ValidationException(String.format(CAS001, lCase.toString(), this.getName()));
             JSONObject lObjCase = (JSONObject) lCase;
 
             ValidatorUtil.requiresAttribute(lObjCase, ValidatorUtil.PARAM_RULE, JSONObject.class);
@@ -83,7 +106,7 @@ extends Predicate
             ValidatorUtil.requiresAttribute(lObjCase, ValidatorUtil.PARAM_VALUES, JSONArray.class);
             JSONArray lVals = (JSONArray) lObjCase.get(ValidatorUtil.PARAM_VALUES);
 
-            Case lNewCase = new Case(lValidator, lVals.getValue());
+            SwitchCase lNewCase = new SwitchCase(lVals.getValue(), lValidator);
             rules.add(lNewCase);
         }
 
@@ -94,13 +117,15 @@ extends Predicate
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isObject()) fail("The value is not a JSONObject.", aValue);
+        if(!aValue.isObject())
+            throw new ValidationException(String.format(CAS002, aValue.toString(), this.getName()));
         JSONObject lObj = (JSONObject) aValue;
 
-        if(!lObj.containsKey(key)) fail("The object does not contain the key: \"" + key + "\".", lObj);
+        if(!lObj.containsKey(key))
+            throw new ValidationException(String.format(CAS003, lObj.toString(), key, this.getName()));
         JSONValue lVal = lObj.get(key);
 
-        for (Case aCase : rules)
+        for (SwitchCase aCase : rules)
         {
             if(aCase.isApplicable(lVal))
             {
@@ -108,6 +133,6 @@ extends Predicate
                 return;
             }
         }
-        fail("No applicable rule found for key: \"" + key + "\", value: " + lVal.toString(), aValue);
+        throw new ValidationException(String.format(CAS004, key, aValue, this.getName()));
     }
 }

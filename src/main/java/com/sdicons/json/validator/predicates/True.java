@@ -5,7 +5,6 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
-import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
@@ -28,9 +27,9 @@ import com.sdicons.json.validator.ValidationException;
 public class True
 extends Predicate
 {
-    public True(String aName, JSONObject aRule)
+    public True(String aName)
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)

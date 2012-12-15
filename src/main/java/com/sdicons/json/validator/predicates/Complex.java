@@ -5,25 +5,27 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
-import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
 /**
- * A predicate to check if a JSON value is a JSONObject or a JSONArray. It fails if 
+ * A predicate to check if a JSON value is a JSONObject or a JSONArray. It fails if
  * the JSON value is a JSONInteger, JSONBoolean, JSONString or JSONDecimal.
  */
 public class Complex
 extends Predicate
 {
-    public Complex(String aName, JSONObject aRule)
+    private static final String CPLX001 = "JSONValidator/Complex/001: The value '%s' is not a JSONComplex in rule '%s'.";
+
+    public Complex(String aName)
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isComplex()) fail("The value is not a JSONCOmplex", aValue);
+        if(!aValue.isComplex())
+            throw new ValidationException(String.format(CPLX001, aValue.toString(), this.getName()));
     }
 }

@@ -9,7 +9,6 @@ import com.sdicons.json.model.JSONBoolean;
 import com.sdicons.json.model.JSONDecimal;
 import com.sdicons.json.model.JSONInteger;
 import com.sdicons.json.model.JSONNull;
-import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
@@ -22,14 +21,17 @@ import com.sdicons.json.validator.ValidationException;
 public class Simple
 extends Predicate
 {
-    public Simple(String aName, JSONObject aRule)
+    private static final String SIM001 = "JSONValidator/Simple/001: The value '%s' is not JSONSimple in rule '%s'.";
+
+    public Simple(String aName)
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isSimple()) fail("The value is not JSONSimple.", aValue);
+        if(!aValue.isSimple())
+            throw new ValidationException(String.format(SIM001, aValue.toString(), this.getName()));
     }
 }

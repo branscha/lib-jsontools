@@ -5,24 +5,26 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
-import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
-/** 
+/**
  * Check if a JSON value is a JSON decimal or not.
  */
 public class Decimal
 extends Predicate
 {
-    public Decimal(String aName, JSONObject aRule)
+    private static final String DEC001 = "JSONValidator/Decimal/001: The value '%s' is not a JSONDecimal in rule '%s'.";
+
+    public Decimal(String aName)
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isDecimal()) fail("The value is not a JSONDecimal.", aValue);
+        if(!aValue.isDecimal())
+            throw new ValidationException(String.format(DEC001, aValue, this.getName()));
     }
 }

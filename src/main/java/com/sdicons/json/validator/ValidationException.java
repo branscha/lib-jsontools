@@ -5,7 +5,6 @@
  ******************************************************************************/
 package com.sdicons.json.validator;
 
-import com.sdicons.json.model.JSONValue;
 
 /**
  * The exception is thrown when a validation fails.
@@ -13,37 +12,26 @@ import com.sdicons.json.model.JSONValue;
 public class ValidationException
 extends Exception
 {
-    private static final long serialVersionUID = 6567006977842147331L;
 
-    private JSONValue culprit;
-    private String validationRule;
+    private static final long serialVersionUID = 7927493439473661483L;
 
-    public ValidationException(String aComments, JSONValue aCulprit, String aRule)
-    {
-        super(aComments);
-        culprit = aCulprit;
-        validationRule = aRule;
-    }
-
-    public ValidationException(JSONValue aCulprit, String aRule)
-    {
+    public ValidationException() {
         super();
-        culprit = aCulprit;
-        validationRule = aRule;
+        // TODO Auto-generated constructor stub
     }
 
-    public JSONValue getCulprit()
-    {
-        return culprit;
+    public ValidationException(String message, Throwable cause) {
+        super(message, cause);
+        // TODO Auto-generated constructor stub
     }
 
-    public String getValidationRule()
-    {
-        return validationRule;
+    public ValidationException(String message) {
+        super(message);
+        // TODO Auto-generated constructor stub
     }
 
-    public String getMessage()
-    {
-        return "Validation failed on rule \"" + validationRule + "\": " + super.getMessage() + " Offending part: " + culprit;
+    public ValidationException(Throwable cause) {
+        super(cause);
+        // TODO Auto-generated constructor stub
     }
 }

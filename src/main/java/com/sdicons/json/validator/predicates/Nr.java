@@ -7,7 +7,6 @@ package com.sdicons.json.validator.predicates;
 
 import com.sdicons.json.model.JSONDecimal;
 import com.sdicons.json.model.JSONInteger;
-import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
@@ -18,14 +17,17 @@ import com.sdicons.json.validator.ValidationException;
 public class Nr
 extends Predicate
 {
-    public Nr(String aName, JSONObject aRule)
+    private static final String NR001 = "JSONValidator/Nr/001: The value '%s' is not a JSONNumber in rule '%s'.";
+
+    public Nr(String aName)
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isNumber()) fail("The value is not a JSONNumber.", aValue);
+        if(!aValue.isNumber())
+            throw new ValidationException(String.format(NR001, aValue.toString(), this.getName()));
     }
 }

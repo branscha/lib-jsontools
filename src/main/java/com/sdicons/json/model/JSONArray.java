@@ -6,6 +6,7 @@
 package com.sdicons.json.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +19,13 @@ extends JSONComplex
 {
     private List<JSONValue> array = new ArrayList<JSONValue>();
 
+    public JSONArray(){
+    }
+
+
+    public JSONArray(Collection<JSONValue> contents) {
+        array.addAll(contents);
+    }
     /**
      * @return The length of the array (list).
      */

@@ -5,7 +5,9 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONString;
@@ -28,17 +30,24 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class Ref
 extends Predicate
 {
-    private HashMap<String, Validator> ruleset;
+    private static final String REF001 = "JSONValidator/Ref/001: Cannot resolve reference '%s' in rule '%s'.";
+    private Map<String, Validator> ruleset;
     private String ref;
 
     public Ref(String aName, JSONObject aRule, HashMap<String,Validator> aRuleset)
     throws ValidationException
     {
-        super(aName, aRule);
+        super(aName);
         ruleset = aRuleset;
 
         ValidatorUtil.requiresAttribute(aRule, ValidatorUtil.PARAM_REF, JSONString.class);
         ref = ((JSONString) aRule.get(ValidatorUtil.PARAM_REF)).getValue();
+    }
+
+    public Ref(String name, String ref, Map<String, Validator> table) {
+        super(name);
+        this.ref = ref;
+        this.ruleset = Collections.unmodifiableMap(table);
     }
 
     public void validate(JSONValue aValue)
@@ -49,6 +58,6 @@ extends Predicate
             Validator lValidator = ruleset.get(ref);
             lValidator.validate(aValue);
         }
-        else fail("Reference to an unexisting rule: \"" + ref + "\"." ,aValue);
+        else throw new ValidationException(String.format(REF001, ref, this.getName()));
     }
 }

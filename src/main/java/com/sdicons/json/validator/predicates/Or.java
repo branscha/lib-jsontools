@@ -5,6 +5,7 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,12 +25,13 @@ import com.sdicons.json.validator.ValidatorUtil;
 public class Or
 extends Predicate
 {
+    private static final String OR001 = "JSONValidator/Or/001: All or rules failed for value '%s' in rule '%s'.";
     private List<Validator> rules = new LinkedList<Validator>();
 
     public Or(String aName, JSONObject aRule, HashMap<String,Validator> aRuleset)
     throws ValidationException
     {
-        super(aName, aRule);
+        super(aName);
         ValidatorUtil.requiresAttribute(aRule, ValidatorUtil.PARAM_RULES, JSONArray.class);
 
         List<JSONValue> lRules = ((JSONArray) aRule.get(ValidatorUtil.PARAM_RULES)).getValue();
@@ -38,6 +40,11 @@ extends Predicate
             Validator lValidator = ValidatorUtil.buildValidator(lRule, aRuleset);
             rules.add(lValidator);
         }
+    }
+
+    public Or(String aName, Validator ... validators) {
+        super(aName);
+        rules.addAll(Arrays.asList(validators));
     }
 
     public void validate(JSONValue aValue)
@@ -55,10 +62,11 @@ extends Predicate
             catch (ValidationException e)
             {
                 // This rule failed. Ignore for the time being.
+                // Try the other ones first.
             }
         }
         // If we get here, then all rules failed.
         // If all rules fail, we fail as well.
-        fail("All or rules failed.", aValue);
+        throw new ValidationException(String.format(OR001, aValue.toString(), this.getName()));
     }
 }

@@ -7,7 +7,6 @@ package com.sdicons.json.validator.predicates;
 
 
 import com.sdicons.json.model.JSONNull;
-import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
@@ -17,14 +16,17 @@ import com.sdicons.json.validator.ValidationException;
 public class Null
 extends Predicate
 {
-    public Null(String aName, JSONObject aRule)
+    private static final String NULL001 = "The value '%s' is not a JSONNull in rule '%s'.";
+
+    public Null(String aName)
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)
     throws ValidationException
     {
-        if(!aValue.isNull()) fail("The value is not a JSONNull." ,aValue);
+        if(!aValue.isNull())
+            throw new ValidationException(String.format(NULL001, aValue.toString(), this.getName()));
     }
 }

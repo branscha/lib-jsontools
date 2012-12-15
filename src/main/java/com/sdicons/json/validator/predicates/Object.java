@@ -17,16 +17,18 @@ import com.sdicons.json.validator.ValidationException;
 public class Object
 extends Predicate
 {
-    public Object(String aName, JSONObject aRule)
-    throws ValidationException
+    private static final String OBJ001 = "JSONValidator/Object/001: The value '%s' is not a JSONObject in rule '%s'.";
+
+    public Object(String aName)
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)
     throws ValidationException
     {
         // First we check if we have an array.
-        if(!aValue.isObject()) fail("The value is not a JSONObject.", aValue);
+        if(!aValue.isObject())
+            throw new ValidationException(String.format(OBJ001, aValue.toString(), this.getName()));
     }
 }

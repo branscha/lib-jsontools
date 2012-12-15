@@ -1,11 +1,13 @@
 # Project Tasks
 ## Todo
 
-* 2012-11-28: I finally found out how you can manipulate primitive arrays using the Array class. I already reviewed the ArrayMapper but the ArrayHelper in the serializer should be rewritten as well.
-* 2012-11-27: Adding a helper for a class that is alread in the repo will replace the existing helper. Make note of this in the docs.
+* -
 
 ## Done
 
+* 2012-11-15: A ValidatorBuilder to create a validator in code; just like the JPA QueryBuilder but not so complicated.
+* 2012-11-28: I finally found out how you can manipulate primitive arrays using the Array class. I already reviewed the ArrayMapper but the ArrayHelper in the serializer should be rewritten as well.
+* 2012-11-27: Adding a helper for a class that is alread in the repo will replace the existing helper. Make note of this in the docs.
 * 2012-11-27: Add separate tests for the helper repository using mockito mocks for the helpers. Try out all sorts of inheritance situations.
 * 2012-11-26: Add the direction JSON->Java or Java->JSON to each mapper message.
 * 2012-11-26: Review date mapper, simplify to Java essentials or add configuration options that are picked up. I don't understand how the current mapper got the functionality it has right now ...

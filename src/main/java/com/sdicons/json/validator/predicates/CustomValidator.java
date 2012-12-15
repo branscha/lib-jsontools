@@ -23,7 +23,7 @@ extends Predicate
 
     protected CustomValidator(String aName, JSONObject aRule, HashMap<String, Validator> aRuleset)
     {
-        super(aName, aRule);
+        super(aName);
         ruleset = aRuleset;
     }
 

@@ -5,7 +5,6 @@
  ******************************************************************************/
 package com.sdicons.json.validator.predicates;
 
-import com.sdicons.json.model.JSONObject;
 import com.sdicons.json.model.JSONValue;
 import com.sdicons.json.validator.ValidationException;
 
@@ -27,16 +26,18 @@ import com.sdicons.json.validator.ValidationException;
 public class Array
 extends Predicate
 {
-    public Array(String aName, JSONObject aRule)
-    throws ValidationException
+    private static final String ARR001 = "JSONValidator/Array/001: The value '%s' is not a JSONArray in rule '%s'.";
+
+    public Array(String aName)
     {
-        super(aName, aRule);
+        super(aName);
     }
 
     public void validate(JSONValue aValue)
     throws ValidationException
     {
         // First we check if we have an array.
-        if(!aValue.isArray()) fail("The value is not a JSONArray.", aValue);
+        if(!aValue.isArray())
+            throw new ValidationException(String.format(ARR001, aValue.toString(), this.getName()));
     }
 }

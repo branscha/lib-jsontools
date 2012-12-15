@@ -37,6 +37,19 @@ import com.sdicons.json.model.JSONValue;
  * </code>
  * </pre>
  *
+ * You can also use the {@link ValidatorBuilder} to create the validators programmatically.
+ *
+ * <pre>
+ * <code>
+ * Validator v = vb.range(50, 100);
+ * p = new JSONParser("55");
+ * json = p.nextValue();
+ * v.validate(json);
+ * </code>
+ * </pre>
+ *
+ *
+ *
  * @see com.sdicons.json.validator.predicates
  */
 public class JSONValidator
