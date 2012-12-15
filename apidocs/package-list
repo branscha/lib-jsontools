@@ -1,0 +1,10 @@
+com.sdicons.json.annotations
+com.sdicons.json.mapper
+com.sdicons.json.mapper.helper
+com.sdicons.json.model
+com.sdicons.json.parser
+com.sdicons.json.repository
+com.sdicons.json.serializer
+com.sdicons.json.serializer.helper
+com.sdicons.json.validator
+com.sdicons.json.validator.predicates

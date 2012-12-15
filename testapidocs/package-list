@@ -1,0 +1,7 @@
+com.sdicons.json.examples
+com.sdicons.json.helper
+com.sdicons.json.mapper
+com.sdicons.json.mapper.helper.impl
+com.sdicons.json.parser
+com.sdicons.json.serializer
+com.sdicons.json.validator
