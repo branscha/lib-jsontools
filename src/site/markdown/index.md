@@ -12,6 +12,9 @@ Following tools are available:
 * **Mapper**: Map POJO to JSON, this time the JSON text should be as clean as possible. This tool is the best choice when data has to be communicated between Java and other programming languages who can parse JSON.
 * **Validator**: Validate the contents of a JSON file using a JSON schema.
 
+## Project
+
+The project files are located on [Github/lib-jsontools](https://github.com/branscha/lib-jsontools)
 ## License
 
 The library is released under the MIT License. Previous versions < 2.0 were released with LGPL but I like the MIT license more because of its freedom.
