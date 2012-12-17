@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Represents a JSON array (list), an ordered list of values ...
- * Example: <code>[ "one", "two", "tree" ]</code> is an array of 3 strings.
+ * Example: <code>[ "one", "two", "three" ]</code> is an array of 3 strings.
  */
 public class JSONArray
 extends JSONComplex
